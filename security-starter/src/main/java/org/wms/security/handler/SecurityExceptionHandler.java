@@ -20,19 +20,19 @@ public class SecurityExceptionHandler {
     public CommonResult<?> accessDeniedExceptionHandler(HttpServletRequest req, AccessDeniedException e) {
         String token = req.getHeader("token");
         if (!StringUtils.hasLength(token)) {
-            log.warn("[authenticationExceptionHandler][ 无法访问 url({})]",
-                    req.getRequestURL(), e);
+            log.error("[authenticationExceptionHandler][ 无法访问 url({})],{}",
+                    req.getRequestURL(), e.getMessage());
             return CommonResult.error(ErrorCodes.UNAUTHORIZED);
         }
-        log.warn("[accessDeniedExceptionHandler][userId({}) 无法访问 url({})]", JWTUtils.getUserId(token),
-                req.getRequestURL(), e);
+        log.error("[accessDeniedExceptionHandler][userId({}) 无法访问 url({})]:{}", JWTUtils.getUserId(token),
+                req.getRequestURL(), e.getMessage());
         return CommonResult.error(ErrorCodes.FORBIDDEN);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public CommonResult<?> authenticationExceptionHandler(HttpServletRequest req, AuthenticationException e) {
-        log.warn("[authenticationExceptionHandler][ 无法访问 url({})]",
-                req.getRequestURL(), e);
+        log.error("[authenticationExceptionHandler][ 无法访问 url({})]:{}",
+                req.getRequestURL(), e.getMessage());
         return CommonResult.error(ErrorCodes.UNAUTHORIZED);
     }
 }
