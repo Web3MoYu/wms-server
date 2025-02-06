@@ -1,0 +1,2 @@
+org.wms.security.config.SecurityConfiguration
+org.wms.security.config.SecurityBeanConfiguration
