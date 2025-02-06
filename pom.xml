@@ -17,10 +17,11 @@
     <modules>
         <module>security-starter</module>
         <module>common</module>
+        <module>auth-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>
-        <org.projectlombok.version>1.18.36</org.projectlombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <spring-cloud.version>2023.0.1</spring-cloud.version>
         <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
@@ -35,9 +36,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.lsh</groupId>
+                <groupId>org.wms</groupId>
                 <artifactId>security-starter</artifactId>
-                <version>${wms.security-starter.version}</version>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!--spring cloud-->
             <dependency>
@@ -110,23 +111,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${org.projectlombok.version}</version>
-        </dependency>
-        <!--单元测试-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <scope>compile</scope>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
-
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
-
 </project>

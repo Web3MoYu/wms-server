@@ -1,12 +1,12 @@
 package org.wms.security.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.wms.security.filter.TokenFilter;
 import org.wms.security.handler.SecurityExceptionHandler;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
-@AutoConfiguration
+@Configuration
 public class SecurityBeanConfiguration {
     @Bean
     public TokenFilter tokenFilter() {

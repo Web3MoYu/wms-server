@@ -1,3 +1,2 @@
 org.wms.common.config.CommonConfigure
-org.wms.common.config.SpringMVCConfigure
 org.wms.common.config.RedisConfigure
