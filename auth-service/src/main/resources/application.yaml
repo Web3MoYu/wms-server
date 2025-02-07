@@ -6,3 +6,10 @@ spring:
   cloud:
     nacos:
       server-addr: localhost:8848
+    openfeign:
+      okhttp:
+        enabled: true
+feign:
+  sentinel:
+    # 必须引入sentinel并开启这个才可以触发兜底
+    enabled: true

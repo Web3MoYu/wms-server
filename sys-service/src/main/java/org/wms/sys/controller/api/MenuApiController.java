@@ -1,7 +1,8 @@
 package org.wms.sys.controller.api;
 
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,11 @@ import java.util.List;
 /**
  * 暴露菜单接口用于RPC远程调用
  */
-@Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/menu")
 public class MenuApiController {
 
+    private static final Logger log = LoggerFactory.getLogger(MenuApiController.class);
     @Resource
     MenuService menuService;
 
@@ -31,6 +32,7 @@ public class MenuApiController {
     @GetMapping("/tree/{userId}")
     @Cacheable(value = "cache::menuTree", key = "#userId")
     public List<MenuTree> getMenuTree(@PathVariable String userId) {
+        log.info("getMenuTree调用开始,userId:{}", userId);
         return menuService.getTreeMenu(userId);
     }
 }

@@ -1,7 +1,8 @@
 package org.wms.sys.controller.api;
 
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.User;
@@ -12,11 +13,11 @@ import java.util.List;
 /**
  * 暴露用户接口用于RPC远程调用
  */
-@Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserApiController {
 
+    private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
     @Resource
     UserService userService;
 
@@ -26,8 +27,9 @@ public class UserApiController {
      * @param username 用户名
      * @return User
      */
-    @GetMapping("/user")
-    public User getUserByUserName(String username) {
+    @GetMapping("/username")
+    public User getUserByUserName(@RequestParam("username") String username) {
+        log.info("getUserByUserName调用开始,username:{}", username);
         return userService.lambdaQuery().eq(User::getUsername, username).one();
     }
 
@@ -37,8 +39,9 @@ public class UserApiController {
      * @param userId 用户id
      * @return User
      */
-    @GetMapping("/user")
-    public User getUserById(String userId) {
+    @GetMapping("/userId")
+    public User getUserById(@RequestParam("userId") String userId) {
+        log.info("getUserById调用开始,userId:{}", userId);
         return userService.getById(userId);
     }
 
@@ -48,9 +51,35 @@ public class UserApiController {
      * @param email 邮箱
      * @return User
      */
-    @GetMapping("/user")
-    public User getUserByEmail(String email) {
+    @GetMapping("/email")
+    public User getUserByEmail(@RequestParam("email") String email) {
+        log.info("getUserByEmail调用开始,email:{}", email);
         return userService.lambdaQuery().eq(User::getEmail, email).one();
+    }
+
+    /**
+     * 根据手机号获取用户信息
+     *
+     * @param phone 手机号
+     * @return User
+     */
+
+    @GetMapping("/phone")
+    public User getUserByPhone(@RequestParam("phone") String phone) {
+        log.info("getUserByPhone调用开始,phone:{}", phone);
+        return userService.lambdaQuery().eq(User::getPhone, phone).one();
+    }
+
+    /**
+     * 根据wxId获取用户信息
+     *
+     * @param wxId wxId
+     * @return User
+     */
+    @GetMapping("/wxId")
+    public User getUserByWxId(@RequestParam("wxId") String wxId) {
+        log.info("getUserByWxId调用开始,wxId:{}", wxId);
+        return userService.lambdaQuery().eq(User::getWxId, wxId).one();
     }
 
     /**
@@ -61,7 +90,8 @@ public class UserApiController {
      */
     @GetMapping("/authorities")
     @Cacheable(value = "cache::authorities:", key = "#userId")
-    public List<String> getAuthoritiesByUserId(String userId) {
+    public List<String> getAuthoritiesByUserId(@RequestParam("userId") String userId) {
+        log.info("getAuthoritiesByUserId调用开始,userId:{}", userId);
         return userService.getAuthorities(userId);
     }
 
