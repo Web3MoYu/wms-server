@@ -1,8 +1,8 @@
 server:
-  port: 8000
+  port: 8001
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/wms?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
-    username: root
-    password: root
+  application:
+    name: auth-service
+  cloud:
+    nacos:
+      server-addr: localhost:8848

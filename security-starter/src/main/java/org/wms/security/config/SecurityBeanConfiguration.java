@@ -6,6 +6,9 @@ import org.wms.security.handler.SecurityExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
+/**
+ * SpringSecurity配置类
+ */
 @Configuration
 public class SecurityBeanConfiguration {
     @Bean

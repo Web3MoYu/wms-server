@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.sys.mapper.MenuMapper">
+    <select id="getMenuByUserId" resultType="org.wms.common.entity.Menu">
+        select sm.menu_id,
+               parent_id,
+               title,
+               code,
+               name,
+               menu_url,
+               route_path,
+               component_path,
+               `type`,
+               icon,
+               parent_name,
+               order_num
+        from sys_user_role sur
+                 inner join sys_role_menu srm on srm.role_id = sur.role_id
+                 inner join sys_menu sm on sm.menu_id = srm.menu_id
+        where sur.user_id = #{userId}
+        order by order_num;
+    </select>
+    <select id="getMenus" resultType="org.wms.common.entity.Menu">
+        select distinct menu_id,
+                        parent_id,
+                        title,
+                        code,
+                        name,
+                        menu_url,
+                        route_path,
+                        component_path,
+                        `type`,
+                        icon,
+                        parent_name,
+                        order_num
+        from sys_menu
+        order by order_num;
+    </select>
+    <select id="getMenusByRoleId" resultType="org.wms.sys.Vo.UserRoleVo">
+        select sm.menu_id, sm.parent_id
+        from sys_menu sm
+                 inner join sys_role_menu srm on srm.menu_id = sm.menu_id
+        where role_id = #{roleId}
+    </select>
+
+</mapper>

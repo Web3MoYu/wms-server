@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * 加密工具类
+ */
 public class DigestsUtils {
 
     public static final DigestAlgorithm ALGORITHM = DigestAlgorithm.SHA1;
@@ -61,7 +64,13 @@ public class DigestsUtils {
         return map;
     }
 
-    // 匹配密码是否正确
+    /**
+     * 匹配密码是否正确
+     * @param password 明文
+     * @param salt 盐值
+     * @param cryptPassword 密文
+     * @return boolean
+     */
     public static boolean matches(String password, String salt, String cryptPassword) {
         if (StrUtil.isEmpty(password)) {
             return false;

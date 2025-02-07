@@ -17,6 +17,9 @@ import org.wms.common.enums.ErrorCodes;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.CommonResult;
 
+/**
+ * 公共异常处理
+ */
 @RestControllerAdvice
 public class CommonExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(CommonExceptionHandler.class);

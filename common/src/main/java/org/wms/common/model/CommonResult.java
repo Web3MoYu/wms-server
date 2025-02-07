@@ -4,6 +4,10 @@ import lombok.Data;
 import org.wms.common.enums.ErrorCodes;
 
 
+/**
+ * 统一返回结果
+ * @param <T>
+ */
 @Data
 public class CommonResult<T> {
     private Integer code;

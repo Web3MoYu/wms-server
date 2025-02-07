@@ -7,6 +7,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 菜单实体类
+ */
 @Data
 @TableName("sys_menu")
 public class Menu implements Serializable {

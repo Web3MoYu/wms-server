@@ -3,6 +3,9 @@ package org.wms.common.enums;
 
 import org.wms.common.model.ErrorCode;
 
+/**
+ * 异常错误枚举
+ */
 public interface ErrorCodes {
     ErrorCode SUCCESS = new ErrorCode(0, "成功");
 

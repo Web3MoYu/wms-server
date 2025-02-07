@@ -8,6 +8,9 @@ import org.wms.common.model.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SpringSecurity工具类
+ */
 public class SecurityUtil {
     public static String getUserID() {
         UserDetails userDetail = getUserDetail();

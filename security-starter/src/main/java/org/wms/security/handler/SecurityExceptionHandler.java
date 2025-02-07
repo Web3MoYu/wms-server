@@ -12,6 +12,9 @@ import org.wms.common.enums.ErrorCodes;
 import org.wms.common.model.CommonResult;
 import org.wms.common.utils.JWTUtils;
 
+/**
+ * security异常拦截器
+ */
 @RestControllerAdvice
 @AllArgsConstructor
 @Slf4j

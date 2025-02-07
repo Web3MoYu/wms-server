@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * token拦截器
+ */
 public class TokenFilter extends OncePerRequestFilter {
     @Resource
     RedisTemplate<String, String> redisTemplate;

@@ -9,6 +9,9 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
+/**
+ * 配置redis序列化
+ */
 @Configuration
 @ConditionalOnClass(RedisTemplate.class)
 @AutoConfigureBefore(RedisAutoConfiguration.class)

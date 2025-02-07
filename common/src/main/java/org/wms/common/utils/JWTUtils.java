@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * JWT工具类
+ */
 public class JWTUtils {
     // 私钥
     private static final String SECRET_KEY = "SJD(O!I@#()SKD<?X<?Z<D)P:K@_)#IO)_SI[KDL;AO)PQ@I#FKDJNFKL";
@@ -20,7 +23,12 @@ public class JWTUtils {
 
     public static final JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY)).build();
 
-    public static String creatToken(Long userId) {
+    /**
+     * 生成token
+     * @param userId 用户id
+     * @return String
+     */
+    public static String creatToken(String userId) {
 
         JWTCreator.Builder builder = JWT.create();
         builder.withJWTId(UUID.randomUUID().toString())// 设置token唯一标识
@@ -35,11 +43,17 @@ public class JWTUtils {
         return builder.sign(Algorithm.HMAC256(SECRET_KEY));
     }
 
-    public static String creatToken(Map<String, Object> map, Long userId) {
+    /**
+     * 生成token
+     * @param map 需要封装进token的数据
+     * @param userId 用户id
+     * @return String
+     */
+    public static String creatToken(Map<String, Object> map, String userId) {
 
         JWTCreator.Builder builder = JWT.create();
         builder.withJWTId(UUID.randomUUID().toString())// 设置token唯一标识
-                .withSubject(String.valueOf(userId)) // 设置token的主体
+                .withSubject(userId) // 设置token的主体
                 .withIssuer("lsh")// 签发者
                 .withIssuedAt(new Date()) //签发时间
                 .withPayload(map); // 存入动态数据
@@ -51,10 +65,21 @@ public class JWTUtils {
         return builder.sign(Algorithm.HMAC256(SECRET_KEY));
     }
 
+    /**
+     * 验证token是否正确
+     * @param token token
+     * @return DecodedJWT
+     * @throws JWTVerificationException
+     */
     public static DecodedJWT verify(String token) throws JWTVerificationException {
         return verifier.verify(token);
     }
 
+    /**
+     * 从token中获取id
+     * @param token token
+     * @return String
+     */
     public static String getUserId(String token) {
         return verify(token).getSubject();
     }

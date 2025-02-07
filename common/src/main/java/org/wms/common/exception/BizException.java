@@ -2,6 +2,9 @@ package org.wms.common.exception;
 
 import lombok.Getter;
 
+/**
+ * 自定义异常
+ */
 @Getter
 public class BizException extends RuntimeException {
     private final Integer code;
