@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.wms.common.enums.ErrorCodes;
-import org.wms.common.model.CommonResult;
+import org.wms.common.model.Result;
 import org.wms.common.model.UserDetails;
 import org.wms.common.utils.JWTUtils;
 import org.wms.common.utils.RedisUtils;
@@ -60,12 +60,12 @@ public class TokenFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (JWTVerificationException | AuthenticationException e) {
-                CommonResult<?> commonResult = CommonResult.error(ErrorCodes.UNAUTHORIZED);
-                writeJson(response, commonResult);
+                Result<?> result = Result.error(ErrorCodes.UNAUTHORIZED);
+                writeJson(response, result);
                 return;
             } catch (AccessDeniedException e) {
-                CommonResult<?> commonResult = CommonResult.error(ErrorCodes.FORBIDDEN);
-                writeJson(response, commonResult);
+                Result<?> result = Result.error(ErrorCodes.FORBIDDEN);
+                writeJson(response, result);
                 return;
             }
         }

@@ -7,7 +7,7 @@ import org.wms.common.model.ErrorCode;
  * 异常错误枚举
  */
 public interface ErrorCodes {
-    ErrorCode SUCCESS = new ErrorCode(0, "成功");
+    ErrorCode SUCCESS = new ErrorCode(200, "成功");
 
     // ========== 客户端错误段 ==========
     ErrorCode BAD_REQUEST = new ErrorCode(400, "请求参数不正确");

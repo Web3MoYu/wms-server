@@ -1,13 +1,15 @@
 package org.wms.auth.controller;
 
 import jakarta.annotation.Resource;
+import jakarta.annotation.security.PermitAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.wms.api.client.MenuClient;
-import org.wms.api.client.UserClient;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.wms.auth.model.dto.LoginDto;
+import org.wms.auth.model.vo.LoginVo;
+import org.wms.auth.service.AuthService;
+import org.wms.common.model.Result;
 
 /**
  * 权限验证Controller
@@ -17,22 +19,21 @@ import org.wms.api.client.UserClient;
 public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
-    @Resource
-    MenuClient menuClient;
+
 
     @Resource
-    UserClient userClient;
+    AuthService authService;
 
-    @GetMapping("/test")
-    public String test() {
-        log.info("1:{}", menuClient.getMenuTree("1"));
-        log.info("2:{}", userClient.getUserById("1"));
-        log.info("3:{}", userClient.getUserByUserName("test1"));
-        log.info("4:{}", userClient.getUserByWxId("wx"));
-        log.info("5:{}", userClient.getUserByEmail("3040114965@qq.com"));
-        log.info("6:{}", userClient.getAuthoritiesByUserId("1"));
-        log.info("7:{}", userClient.getUserByPhone("11451419198"));
-        return "test";
+    @PermitAll
+    @PostMapping("/login")
+    public Result<LoginVo> login(@RequestBody LoginDto param) {
+        return authService.login(param.getUsername(), param.getPassword());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/logout")
+    public Result<String> token() {
+        return authService.logout();
     }
 
 
