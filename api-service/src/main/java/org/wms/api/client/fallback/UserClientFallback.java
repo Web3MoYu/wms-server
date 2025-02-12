@@ -52,6 +52,11 @@ public class UserClientFallback implements FallbackFactory<UserClient> {
                 log.warn("触发兜底,方法:getAuthoritiesByUserId, userId={}", userId);
                 return List.of();
             }
+
+            @Override
+            public Boolean setWxId(String wxId, String userId) {
+                return false;
+            }
         };
     }
 }

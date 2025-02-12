@@ -69,4 +69,13 @@ public interface UserClient {
     @GetMapping("/api/user/authorities")
     List<String> getAuthoritiesByUserId(@RequestParam("userId") String userId);
 
+    /**
+     * 根据用户id修改该用户的wxId
+     * @param wxId
+     * @param userId
+     * @return
+     */
+    @GetMapping("/api/user/setWxId")
+    Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId);
+
 }

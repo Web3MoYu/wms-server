@@ -34,11 +34,17 @@
         <wms.security.version>0.0.1-SNAPSHOT</wms.security.version>
         <wms.common.version>0.0.1-SNAPSHOT</wms.common.version>
         <wms.api.version>0.0.1-SNAPSHOT</wms.api.version>
+        <netty.dns.version>4.2.0.Alpha5</netty.dns.version>
     </properties>
 
     <!-- 对依赖包进行管理 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver-dns-native-macos</artifactId>
+                <version>${netty.dns.version}</version>
+            </dependency>
             <!--wms依赖管理-->
             <dependency>
                 <groupId>org.wms</groupId>

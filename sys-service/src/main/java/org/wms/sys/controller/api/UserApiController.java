@@ -95,4 +95,10 @@ public class UserApiController {
         return userService.getAuthorities(userId);
     }
 
+    @GetMapping("/setWxId")
+    public Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId) {
+        log.info("setWxId调用开始,wxId:{}", wxId);
+        return userService.lambdaUpdate().set(User::getWxId, wxId).eq(User::getUserId, userId).update();
+    }
+
 }

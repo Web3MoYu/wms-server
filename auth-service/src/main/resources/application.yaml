@@ -13,3 +13,8 @@ feign:
   sentinel:
     # 必须引入sentinel并开启这个才可以触发兜底
     enabled: true
+
+uniqueker:
+  app-id: 3314
+  app-key: e9e8a7b0092d2bb642e936d294a44ce6
+  redirect-url: http://dev.myapp.com:9090/api/auth/wx/login
