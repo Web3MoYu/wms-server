@@ -71,11 +71,13 @@ public interface UserClient {
 
     /**
      * 根据用户id修改该用户的wxId
+     *
      * @param wxId
      * @param userId
      * @return
      */
     @GetMapping("/api/user/setWxId")
-    Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId);
+    Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId,
+                    @RequestParam("avatar") String avatar);
 
 }

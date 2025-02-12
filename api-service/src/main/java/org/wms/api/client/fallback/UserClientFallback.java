@@ -54,9 +54,10 @@ public class UserClientFallback implements FallbackFactory<UserClient> {
             }
 
             @Override
-            public Boolean setWxId(String wxId, String userId) {
+            public Boolean setWxId(String wxId, String userId, String avatar) {
                 return false;
             }
+
         };
     }
 }

@@ -13,6 +13,7 @@ import org.wms.common.model.Result;
 public interface AuthService {
     /**
      * 登录接口，按照账号密码登录后返回登录结果
+     *
      * @param username 账号
      * @param password 密码
      * @return LoginVo
@@ -21,6 +22,7 @@ public interface AuthService {
 
     /**
      * 退出登录接口
+     *
      * @return String
      */
     Result<String> logout();
@@ -28,6 +30,7 @@ public interface AuthService {
 
     /**
      * 根据wxId进行登录请求
+     *
      * @param wxId
      * @return 是否存在用户的信息
      */
@@ -35,6 +38,7 @@ public interface AuthService {
 
     /**
      * 根据用户名和密码绑定微信
+     *
      * @param param
      * @param wxId
      * @return
@@ -43,12 +47,14 @@ public interface AuthService {
 
     /**
      * 获取微信登录二维码
+     *
      * @return
      */
     WxQrCode getQrCode();
 
     /**
      * 获取微信用户的信息，并返回redirect_url
+     *
      * @param type
      * @param code
      * @return

@@ -96,9 +96,13 @@ public class UserApiController {
     }
 
     @GetMapping("/setWxId")
-    public Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId) {
+    public Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId,
+                           @RequestParam("avatar") String avatar) {
         log.info("setWxId调用开始,wxId:{}", wxId);
-        return userService.lambdaUpdate().set(User::getWxId, wxId).eq(User::getUserId, userId).update();
+        return userService.lambdaUpdate()
+                .set(User::getWxId, wxId)
+                .set(User::getAvatar, avatar)
+                .eq(User::getUserId, userId).update();
     }
 
 }

@@ -125,11 +125,15 @@ public class AuthServiceImpl implements AuthService {
         // 拿到权限信息和token存到redis中
         LoginVo loginVo = setUserInfo(user);
 
-        // 更改用户的微信ID
-        Boolean b = userClient.setWxId(wxId, user.getUserId());
+        // 从Redis中获取用户信息
+        Object o = redisTemplate.opsForValue().get(RedisUtils.WX_USER_INFO_KEY + wxId);
+        WxUserInfo bean = JSONUtil.parse(o).toBean(WxUserInfo.class);
+        // 更改用户的微信ID和头像
+        Boolean b = userClient.setWxId(wxId, user.getUserId(), bean.getFaceimg());
         if (!b) {
             throw new BizException("绑定失败");
         }
+        loginVo.getUser().setAvatar(bean.getFaceimg());
         return Result.success(loginVo, "登录成功");
     }
 
