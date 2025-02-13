@@ -45,7 +45,7 @@ public class AuthController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/logout")
-    public Result<String> token() {
+    public Result<String> logout() {
         return authService.logout();
     }
 
@@ -53,5 +53,11 @@ public class AuthController {
     @PostMapping("/wx/bind/{wxId}")
     public Result<LoginVo> bindWxByLogin(@RequestBody LoginDto param, @PathVariable String wxId) {
         return authService.bindWxByLogin(param, wxId);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/token")
+    public Result<LoginVo> token() {
+        return authService.token();
     }
 }

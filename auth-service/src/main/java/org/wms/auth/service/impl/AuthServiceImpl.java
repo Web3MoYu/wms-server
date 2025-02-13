@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -184,6 +185,15 @@ public class AuthServiceImpl implements AuthService {
         }
         return directUrl;
 
+    }
+
+    @Override
+    public Result<LoginVo> token() {
+        String userId = SecurityUtil.getUserID();
+        User user = userClient.getUserById(userId);
+        LoginVo loginVo = new LoginVo();
+        loginVo.setUser(user);
+        return Result.success(loginVo, "验证成功");
     }
 
 

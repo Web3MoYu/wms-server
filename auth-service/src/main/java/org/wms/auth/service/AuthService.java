@@ -60,4 +60,11 @@ public interface AuthService {
      * @return
      */
     String getWxUserInfo(String type, String code);
+
+    /**
+     * 验证token有效性，如果有效返回用户信息
+     * @return
+     */
+    Result<LoginVo> token();
+
 }
