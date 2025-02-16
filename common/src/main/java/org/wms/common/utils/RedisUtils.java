@@ -10,4 +10,6 @@ public class RedisUtils {
     public static String PERMISSIONS_KEY = "permissions:";
 
     public static String WX_USER_INFO_KEY = "wx_user_info:";
+
+    public static String AVATAR_KEY = "avatar:";
 }

@@ -35,11 +35,19 @@
         <wms.common.version>0.0.1-SNAPSHOT</wms.common.version>
         <wms.api.version>0.0.1-SNAPSHOT</wms.api.version>
         <netty.dns.version>4.2.0.Alpha5</netty.dns.version>
+        <minio.version>8.5.10</minio.version>
     </properties>
 
     <!-- 对依赖包进行管理 -->
     <dependencyManagement>
         <dependencies>
+            <!--Minio-->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <!--本地DNS解析-->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-resolver-dns-native-macos</artifactId>

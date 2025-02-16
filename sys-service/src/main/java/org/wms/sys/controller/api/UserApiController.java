@@ -95,6 +95,13 @@ public class UserApiController {
         return userService.getAuthorities(userId);
     }
 
+    /**
+     * 设置微信id
+     * @param wxId
+     * @param userId
+     * @param avatar
+     * @return
+     */
     @GetMapping("/setWxId")
     public Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId,
                            @RequestParam("avatar") String avatar) {

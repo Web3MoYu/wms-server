@@ -22,6 +22,11 @@
             <artifactId>java-jwt</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-annotation</artifactId>
             <scope>compile</scope>
