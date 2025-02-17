@@ -60,24 +60,18 @@ public class UserController {
      * @return
      */
     @PreAuthorize("isAuthenticated()")
-    @PutMapping("/personal")
-    public Result<String> updatePersonal(HttpServletRequest request, @RequestBody User user) {
-        String userId = SecurityUtil.getUserID();
-        boolean update = userService.lambdaUpdate()
-                .set(User::getNickName, user.getNickName())
-                .set(User::getAvatar, user.getAvatar())
-                .eq(User::getUserId, userId).update();
-        if (!update) {
-            throw new BizException("修改个人信息失败");
-        }
-        return Result.success(null, "修改成功");
+    @PutMapping("/personal/{type}")
+    public Result<User> updatePersonal(@PathVariable Integer type, @RequestBody User user) {
+        User result = userService.updatePersonalInfo(type, user);
+
+        return Result.success(result, "修改成功");
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/img/avatar")
     public Result<String> uploadAvatar(@RequestParam("file") MultipartFile file) {
         try {
-            String url = UploadUtils.upload(UploadUtils.AVATAR, file, minioClient);
+            String url = UploadUtils.uploadTemp(UploadUtils.AVATAR, file, minioClient);
             return Result.success(url, "上传图片成功");
         } catch (Exception e) {
             throw new BizException(403, "文件上传失败");

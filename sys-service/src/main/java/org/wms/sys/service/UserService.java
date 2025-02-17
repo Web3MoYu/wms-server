@@ -14,4 +14,5 @@ public interface UserService extends IService<User> {
      */
     List<String> getAuthorities(String userId);
 
+    User updatePersonalInfo(Integer type, User user);
 }

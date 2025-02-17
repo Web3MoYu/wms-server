@@ -27,9 +27,9 @@ public class UploadUtils {
         client.copyObject(
                 CopyObjectArgs.builder()
                         .source(CopySource.builder()
-                                .bucket(target)
+                                .bucket(source)
                                 .object(url).build())
-                        .bucket(source)
+                        .bucket(target)
                         .object(url)
                         .build()
         );
@@ -46,11 +46,11 @@ public class UploadUtils {
     }
 
     public static void delete(String pre, String file, MinioClient client) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        del(WMS_URL, pre, file, client);
+        del(WMS_BUCKET_NAME, pre, file, client);
     }
 
     public static void deleteTemp(String pre, String file, MinioClient client) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        del(TEMP_URL, pre, file, client);
+        del(TEMP_BUCKET_NAME, pre, file, client);
     }
 
     private static String upload(String pre, String bucket, MultipartFile file, MinioClient client) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
