@@ -14,5 +14,11 @@ public interface UserService extends IService<User> {
      */
     List<String> getAuthorities(String userId);
 
+    /**
+     * 更新个人信息包括头像
+     * @param type
+     * @param user
+     * @return
+     */
     User updatePersonalInfo(Integer type, User user);
 }

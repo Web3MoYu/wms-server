@@ -67,6 +67,11 @@ public class UserController {
         return Result.success(result, "修改成功");
     }
 
+    /**
+     * 将头像上传到临时取悦
+     * @param file
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/img/avatar")
     public Result<String> uploadAvatar(@RequestParam("file") MultipartFile file) {
