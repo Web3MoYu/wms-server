@@ -6,6 +6,7 @@ import org.wms.common.entity.User;
 import java.util.List;
 // 1
 // 2
+// 3
 public interface UserService extends IService<User> {
     /**
      * 根据userId获取用户权限信息
