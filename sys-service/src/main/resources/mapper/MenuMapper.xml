@@ -38,7 +38,7 @@
         from sys_menu
         order by order_num;
     </select>
-    <select id="getMenusByRoleId" resultType="org.wms.sys.Vo.UserRoleVo">
+    <select id="getMenusByRoleId" resultType="org.wms.sys.model.vo.UserRoleVo">
         select sm.menu_id, sm.parent_id
         from sys_menu sm
                  inner join sys_role_menu srm on srm.menu_id = sm.menu_id

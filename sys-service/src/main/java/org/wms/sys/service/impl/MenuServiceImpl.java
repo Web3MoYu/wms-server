@@ -5,7 +5,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.wms.common.entity.Menu;
 import org.wms.common.entity.MenuTree;
-import org.wms.sys.Vo.UserRoleVo;
+import org.wms.sys.model.vo.UserRoleVo;
 import org.wms.sys.mapper.MenuMapper;
 import org.wms.sys.service.MenuService;
 

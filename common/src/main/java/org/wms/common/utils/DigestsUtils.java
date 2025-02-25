@@ -19,7 +19,7 @@ public class DigestsUtils {
     // 迭代次数
     public static final Integer ITERATIONS = 520;
 
-    public static final String DEFAULT_PASSWORD = "dms123456";
+    public static final String DEFAULT_PASSWORD = "t123456.";
 
     public static final String SALT = "salt";
 

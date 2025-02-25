@@ -16,6 +16,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 更新个人信息包括头像
+     *
      * @param type
      * @param user
      * @return

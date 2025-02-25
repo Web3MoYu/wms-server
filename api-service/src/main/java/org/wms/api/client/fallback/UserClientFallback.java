@@ -58,6 +58,11 @@ public class UserClientFallback implements FallbackFactory<UserClient> {
                 return false;
             }
 
+            @Override
+            public Boolean updatePass(User user) {
+                return false;
+            }
+
         };
     }
 }

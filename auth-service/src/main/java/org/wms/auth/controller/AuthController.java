@@ -5,6 +5,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.wms.auth.model.dto.ChangePassDto;
 import org.wms.auth.model.dto.LoginDto;
 import org.wms.auth.model.entity.WxQrCode;
 import org.wms.auth.model.vo.LoginVo;
@@ -60,4 +61,11 @@ public class AuthController {
     public Result<LoginVo> token() {
         return authService.token();
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/modifyPass")
+    public Result<String> modifyPass(@RequestBody ChangePassDto param) {
+        return authService.modifyPass(param);
+    }
+
 }

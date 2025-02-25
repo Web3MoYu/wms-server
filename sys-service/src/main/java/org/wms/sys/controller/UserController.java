@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +11,6 @@ import org.wms.common.entity.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.utils.UploadUtils;
-import org.wms.security.util.SecurityUtil;
 import org.wms.sys.mapper.UserRoleMapper;
 import org.wms.sys.service.UserService;
 
@@ -82,5 +80,4 @@ public class UserController {
             throw new BizException(403, "文件上传失败");
         }
     }
-
 }

@@ -112,4 +112,13 @@ public class UserApiController {
                 .eq(User::getUserId, userId).update();
     }
 
+    @PutMapping
+    public Boolean updatePass(@RequestBody User user) {
+        return userService.lambdaUpdate()
+                .set(User::getSalt, user.getSalt())
+                .set(User::getPassword, user.getPassword())
+                .eq(User::getUserId, user.getUserId()).update();
+    }
+
+
 }

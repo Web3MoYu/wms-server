@@ -1,6 +1,7 @@
 package org.wms.auth.service;
 
 
+import org.wms.auth.model.dto.ChangePassDto;
 import org.wms.auth.model.dto.LoginDto;
 import org.wms.auth.model.entity.WxQrCode;
 import org.wms.auth.model.vo.LoginVo;
@@ -67,4 +68,11 @@ public interface AuthService {
      */
     Result<LoginVo> token();
 
+
+    /**
+     * 根据新旧密码修改用户的密码
+     * @param param
+     * @return
+     */
+    Result<String> modifyPass(ChangePassDto param);
 }

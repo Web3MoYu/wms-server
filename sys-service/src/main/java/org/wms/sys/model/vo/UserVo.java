@@ -1,4 +1,4 @@
-package org.wms.sys.Vo;
+package org.wms.sys.model.vo;
 
 import lombok.Data;
 import org.wms.common.entity.User;

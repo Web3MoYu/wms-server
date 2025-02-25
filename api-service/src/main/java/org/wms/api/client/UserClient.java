@@ -2,6 +2,8 @@ package org.wms.api.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wms.api.client.fallback.UserClientFallback;
 import org.wms.common.entity.User;
@@ -79,5 +81,14 @@ public interface UserClient {
     @GetMapping("/api/user/setWxId")
     Boolean setWxId(@RequestParam("wxId") String wxId, @RequestParam("userId") String userId,
                     @RequestParam("avatar") String avatar);
+
+    /**
+     * 修改用户信息
+     *
+     * @param user
+     * @return
+     */
+    @PutMapping("/api/user")
+    Boolean updatePass(@RequestBody User user);
 
 }

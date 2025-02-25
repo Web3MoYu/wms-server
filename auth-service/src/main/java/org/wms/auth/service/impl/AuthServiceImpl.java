@@ -5,7 +5,6 @@ import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.wms.api.client.MenuClient;
 import org.wms.api.client.UserClient;
+import org.wms.auth.model.dto.ChangePassDto;
 import org.wms.auth.model.dto.LoginDto;
 import org.wms.auth.model.entity.WxQrCode;
 import org.wms.auth.model.vo.LoginVo;
@@ -24,7 +24,9 @@ import org.wms.auth.properties.ThirdLogin;
 import org.wms.auth.service.AuthService;
 import org.wms.common.entity.MenuTree;
 import org.wms.common.entity.User;
+import org.wms.common.enums.ErrorCodes;
 import org.wms.common.exception.BizException;
+import org.wms.common.model.ErrorCode;
 import org.wms.common.model.Result;
 import org.wms.common.utils.DigestsUtils;
 import org.wms.common.utils.JWTUtils;
@@ -35,6 +37,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -151,6 +154,29 @@ public class AuthServiceImpl implements AuthService {
         URI uri = builder.queryParams(params).build().encode().toUri();
         ResponseEntity<WxQrCode> exchange = restTemplate.getForEntity(uri, WxQrCode.class);
         return exchange.getBody();
+    }
+
+    @Override
+    public Result<String> modifyPass(ChangePassDto param) {
+        String newPass = param.getNewPass();
+        String oldPass = param.getOldPass();
+        String userID = SecurityUtil.getUserID();
+        User user = userClient.getUserById(userID);
+        if (!DigestsUtils.matches(oldPass, user.getSalt(), user.getPassword())) {
+            return Result.error(ErrorCodes.ERROR_PASS);
+        }
+        if (DigestsUtils.matches(newPass, user.getSalt(), user.getPassword())) {
+            return Result.error(ErrorCodes.REPEAT_PASS);
+        }
+        Map<String, String> map = DigestsUtils.encrypt(newPass);
+        user.setSalt(map.get(DigestsUtils.SALT));
+        user.setPassword(map.get(DigestsUtils.PASSWORD));
+        Boolean isUpdate = userClient.updatePass(user);
+        logout();
+        if (!isUpdate) {
+            throw new BizException("修改失败");
+        }
+        return Result.success(null, "修改成功");
     }
 
     @Override
