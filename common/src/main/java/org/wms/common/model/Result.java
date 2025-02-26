@@ -6,6 +6,7 @@ import org.wms.common.enums.ErrorCodes;
 
 /**
  * 统一返回结果
+ *
  * @param <T>
  */
 @Data
@@ -13,14 +14,6 @@ public class Result<T> {
     private Integer code;
     private String msg;
     private T data;
-
-    public static <T> Result<T> success(T data) {
-        Result<T> result = new Result<>();
-        result.code = ErrorCodes.SUCCESS.getCode();
-        result.data = data;
-        result.msg = "";
-        return result;
-    }
 
     public static <T> Result<T> success(T data, String msg) {
         Result<T> result = new Result<>();

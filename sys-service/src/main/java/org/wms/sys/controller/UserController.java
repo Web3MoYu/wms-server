@@ -4,21 +4,28 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wms.common.entity.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.utils.UploadUtils;
+import org.wms.sys.mapper.UserMapper;
 import org.wms.sys.mapper.UserRoleMapper;
+import org.wms.sys.model.dto.UserDto;
+import org.wms.sys.model.vo.UserVo;
 import org.wms.sys.service.UserService;
+
+import java.util.Objects;
 
 /**
  * 用户管理相关接口
  */
 @RestController
-@RequestMapping("/sys")
+@RequestMapping("/sys/user")
 public class UserController {
 
     @Resource
@@ -27,9 +34,10 @@ public class UserController {
     @Resource
     UserService userService;
 
-
     @Resource
     UserRoleMapper userRoleMapper;
+    @Autowired
+    private UserMapper userMapper;
 
 
     /**
@@ -42,12 +50,8 @@ public class UserController {
      */
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('sys:user:index')")
-    public Result<Page<User>> search(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize, @RequestParam(required = false) String nickName) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.select(User::getUserId, User::getNickName, User::getPhone,
-                        User::getUsername, User::getSex, User::getAvatar, User::getEmail)
-                .like(nickName != null, User::getNickName, nickName);
-        Page<User> result = userService.page(new Page<>(page, pageSize), wrapper);
+    public Result<Page<UserDto>> search(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize, @RequestParam(required = false) String nickName) {
+        Page<UserDto> result = userMapper.pageList(new Page<>(page, pageSize), nickName);
         return Result.success(result, "查询成功");
     }
 
@@ -65,8 +69,41 @@ public class UserController {
         return Result.success(result, "修改成功");
     }
 
+
+    @GetMapping("/username/{username}")
+    @PreAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:update')")
+    public Result<Boolean> getUserByUsername(@PathVariable String username) {
+        User user = userService.lambdaQuery().eq(User::getUsername, username).one();
+        if (Objects.nonNull(user)) {
+            throw new BizException("用户名重复");
+        }
+        return Result.success(false, "不存在");
+    }
+
+    @GetMapping("/phone/{phone}")
+    @PreAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:update')")
+    public Result<Boolean> getUserByPhone(@PathVariable String phone) {
+        User user = userService.lambdaQuery().eq(User::getPhone, phone).one();
+        if (Objects.nonNull(user)) {
+            throw new BizException("手机号重复");
+        }
+        return Result.success(false, "不存在");
+    }
+
+    @GetMapping("/email/{email}")
+    @PreAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:update')")
+    public Result<Boolean> getUserByEmail(@PathVariable String email) {
+        User user = userService.lambdaQuery().eq(User::getEmail, email).one();
+        if (Objects.nonNull(user)) {
+            throw new BizException("邮箱重复");
+        }
+        return Result.success(false, "不存在");
+    }
+
+
     /**
      * 将头像上传到临时取悦
+     *
      * @param file
      * @return
      */
@@ -79,5 +116,22 @@ public class UserController {
         } catch (Exception e) {
             throw new BizException(403, "文件上传失败");
         }
+    }
+
+    /**
+     * 添加用户
+     */
+    @PostMapping("/add")
+    @PreAuthorize("hasAuthority('sys:user:add')")
+    @Transactional
+    public Result<String> add(@RequestBody UserVo user) {
+        return userService.addUser(user);
+    }
+
+    @PutMapping("/edit/{userId}")
+    @PreAuthorize("hasAuthority('sys:user:update')")
+    @Transactional
+    public Result<String> update(@RequestBody UserVo user, @PathVariable String userId) {
+        return userService.updateUser(user, userId);
     }
 }

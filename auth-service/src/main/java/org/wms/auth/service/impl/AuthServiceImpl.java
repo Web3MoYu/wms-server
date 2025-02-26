@@ -90,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
         String userID = SecurityUtil.getUserID();
         redisTemplate.delete(RedisUtils.TOKEN_KEY + userID);
         redisTemplate.delete(RedisUtils.PERMISSIONS_KEY + userID);
-        return Result.success("退出登录成功");
+        return Result.success(null, "退出登录成功");
     }
 
     @Override

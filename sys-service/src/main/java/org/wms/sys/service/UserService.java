@@ -2,6 +2,8 @@ package org.wms.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.common.entity.User;
+import org.wms.common.model.Result;
+import org.wms.sys.model.vo.UserVo;
 
 import java.util.List;
 
@@ -22,4 +24,19 @@ public interface UserService extends IService<User> {
      * @return
      */
     User updatePersonalInfo(Integer type, User user);
+
+    /**
+     * 添加用户信息
+     * @param user
+     * @return
+     */
+    Result<String> addUser(UserVo user);
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @param userId
+     * @return
+     */
+    Result<String> updateUser(UserVo user, String userId);
 }

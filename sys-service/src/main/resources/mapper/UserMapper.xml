@@ -10,4 +10,23 @@
                  inner join sys_menu sm on sm.menu_id = srm.menu_id
         where sur.user_id = #{userId}
     </select>
+    <select id="pageList" resultType="org.wms.sys.model.dto.UserDto">
+        select su.user_id as user_id,avatar,
+        username,
+        nick_name,
+        sex,
+        phone,
+        email,
+        sr.role_id as role_id,
+        role_name
+        from sys_user su
+        left join sys_user_role sur on su.user_id = sur.user_id
+        left join sys_role sr on sr.role_id = sur.role_id
+        <where>
+            <if test="nickName != '' and nickName != null">
+                nick_name like "%"#{nickName}"%"
+            </if>
+        </where>
+        order by su.update_time desc
+    </select>
 </mapper>
