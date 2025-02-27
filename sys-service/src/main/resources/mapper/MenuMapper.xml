@@ -20,7 +20,6 @@
                  inner join sys_role_menu srm on srm.role_id = sur.role_id
                  inner join sys_menu sm on sm.menu_id = srm.menu_id
         where sur.user_id = #{userId}
-        order by order_num;
     </select>
     <select id="getMenus" resultType="org.wms.common.entity.Menu">
         select distinct menu_id,
@@ -36,7 +35,6 @@
                         parent_name,
                         order_num
         from sys_menu
-        order by order_num;
     </select>
     <select id="getMenusByRoleId" resultType="org.wms.sys.model.vo.UserRoleVo">
         select sm.menu_id, sm.parent_id

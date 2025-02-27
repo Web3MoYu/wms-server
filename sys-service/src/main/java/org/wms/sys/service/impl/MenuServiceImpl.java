@@ -9,10 +9,7 @@ import org.wms.sys.model.vo.UserRoleVo;
 import org.wms.sys.mapper.MenuMapper;
 import org.wms.sys.service.MenuService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -45,7 +42,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>
                 map.put(menu.getMenuId(), menuTree);
             }
         }
-        return getMenuTrees(map, list);
+        List<MenuTree> res = getMenuTrees(map, list);
+        sort(res);
+        return res;
     }
 
     @Override
@@ -62,7 +61,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>
             }
             map.put(menu.getMenuId(), menuTree);
         }
-        return getMenuTrees(map, list);
+        List<MenuTree> res = getMenuTrees(map, list);
+        sort(res);
+        return res;
     }
 
     @Override
@@ -94,5 +95,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>
             }
         }
         return list;
+    }
+
+    private void sort(List<MenuTree> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        list.sort(Comparator.comparingInt(o -> o.getMenu().getOrderNum()));
+        for (MenuTree menuTree : list) {
+            sort(menuTree.getChildren());
+        }
     }
 }
