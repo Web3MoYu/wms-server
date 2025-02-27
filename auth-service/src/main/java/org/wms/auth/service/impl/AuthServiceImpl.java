@@ -26,7 +26,6 @@ import org.wms.common.entity.MenuTree;
 import org.wms.common.entity.User;
 import org.wms.common.enums.ErrorCodes;
 import org.wms.common.exception.BizException;
-import org.wms.common.model.ErrorCode;
 import org.wms.common.model.Result;
 import org.wms.common.utils.DigestsUtils;
 import org.wms.common.utils.JWTUtils;
@@ -144,6 +143,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BizException("绑定失败");
         }
         loginVo.getUser().setAvatar(bean.getFaceimg());
+        loginVo.getUser().setWxId(wxId);
         return Result.success(loginVo, "登录成功");
     }
 
@@ -216,7 +216,7 @@ public class AuthServiceImpl implements AuthService {
             if (login.getUserInfo() != null) {
                 directUrl +=
                         URLEncoder.encode(JSONUtil.toJsonStr(login.getUserInfo()), StandardCharsets.UTF_8);
-            }else{
+            } else {
                 directUrl += "null";
             }
             return directUrl;
