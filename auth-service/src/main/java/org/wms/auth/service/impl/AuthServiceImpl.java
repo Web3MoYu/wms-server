@@ -38,6 +38,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -82,6 +83,9 @@ public class AuthServiceImpl implements AuthService {
 
         // 拿到权限信息和token存到redis中
         LoginVo loginVo = setUserInfo(user);
+        if (loginVo == null) {
+            return Result.error(402, "当前用户没有权限，请联系管理员");
+        }
         return Result.success(loginVo, "登录成功");
     }
 
@@ -128,7 +132,9 @@ public class AuthServiceImpl implements AuthService {
 
         // 拿到权限信息和token存到redis中
         LoginVo loginVo = setUserInfo(user);
-
+        if (Objects.isNull(loginVo)) {
+            return Result.error(402, "当前用户没有权限，请联系管理员");
+        }
         // 从Redis中获取用户信息
         Object o = redisTemplate.opsForValue().get(RedisUtils.WX_USER_INFO_KEY + wxId);
         WxUserInfo bean = JSONUtil.parse(o).toBean(WxUserInfo.class);
@@ -206,8 +212,14 @@ public class AuthServiceImpl implements AuthService {
         String directUrl = "http://dev.myapp.com:9090/"
                 + "?binding=" + login.getBinding() + "&wxId=" + userInfo.getSocial_uid();
         if (login.getBinding()) {
-            directUrl += "&userInfo="
-                    + URLEncoder.encode(JSONUtil.toJsonStr(login.getUserInfo()), StandardCharsets.UTF_8);
+            directUrl += "&userInfo=";
+            if (login.getUserInfo() != null) {
+                directUrl +=
+                        URLEncoder.encode(JSONUtil.toJsonStr(login.getUserInfo()), StandardCharsets.UTF_8);
+            }else{
+                directUrl += "null";
+            }
+            return directUrl;
         }
         return directUrl;
 
@@ -228,6 +240,9 @@ public class AuthServiceImpl implements AuthService {
         // 获取权限信息
         List<MenuTree> menuTree = menuClient.getMenuTree(user.getUserId());
         List<String> authorities = userClient.getAuthoritiesByUserId(user.getUserId());
+        if (Objects.isNull(menuTree) || menuTree.isEmpty()) {
+            return null;
+        }
         // 保存到redis中
         redisTemplate.opsForValue().set(RedisUtils.TOKEN_KEY + user.getUserId(),
                 token, JWTUtils.EXPIRE_TIME, TimeUnit.DAYS);
