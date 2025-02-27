@@ -14,8 +14,8 @@ public class AuthTools {
     @Resource
     RedisTemplate<String, Objects> redisTemplate;
 
-    public void deleteByUserId(List<Long> ids) {
-        for (Long id : ids) {
+    public void deleteByUserId(List<String> ids) {
+        for (String id : ids) {
             redisTemplate.delete(RedisUtils.TOKEN_KEY + id);
             redisTemplate.delete(RedisUtils.PERMISSIONS_KEY + id);
         }

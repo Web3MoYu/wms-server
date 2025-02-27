@@ -1,6 +1,5 @@
 package org.wms.sys.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
@@ -36,8 +35,9 @@ public class UserController {
 
     @Resource
     UserRoleMapper userRoleMapper;
-    @Autowired
-    private UserMapper userMapper;
+
+    @Resource
+    UserMapper userMapper;
 
 
     /**
@@ -49,7 +49,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('sys:user:index')")
+    @PreAuthorize("hasAuthority('sys:user:list')")
     public Result<Page<UserDto>> search(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize, @RequestParam(required = false) String nickName) {
         Page<UserDto> result = userMapper.pageList(new Page<>(page, pageSize), nickName);
         return Result.success(result, "查询成功");
@@ -71,7 +71,7 @@ public class UserController {
 
 
     @GetMapping("/username/{username}")
-    @PreAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:update')")
+    @PreAuthorize("isAuthenticated()")
     public Result<Boolean> getUserByUsername(@PathVariable String username) {
         User user = userService.lambdaQuery().eq(User::getUsername, username).one();
         if (Objects.nonNull(user)) {
@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @GetMapping("/phone/{phone}")
-    @PreAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:update')")
+    @PreAuthorize("isAuthenticated()")
     public Result<Boolean> getUserByPhone(@PathVariable String phone) {
         User user = userService.lambdaQuery().eq(User::getPhone, phone).one();
         if (Objects.nonNull(user)) {
@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    @PreAuthorize("hasAuthority('sys:user:add') or hasAuthority('sys:user:update')")
+    @PreAuthorize("isAuthenticated()")
     public Result<Boolean> getUserByEmail(@PathVariable String email) {
         User user = userService.lambdaQuery().eq(User::getEmail, email).one();
         if (Objects.nonNull(user)) {
@@ -133,5 +133,16 @@ public class UserController {
     @Transactional
     public Result<String> update(@RequestBody UserVo user, @PathVariable String userId) {
         return userService.updateUser(user, userId);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    @PreAuthorize("hasAuthority('sys:user:delete')")
+    @Transactional
+    public Result<String> delete(@PathVariable String userId) {
+        // 首先删除角色信息
+        userRoleMapper.deleteUserRoleById(userId);
+        //删除角色
+        userService.removeById(userId);
+        return Result.success(null, "删除成功");
     }
 }

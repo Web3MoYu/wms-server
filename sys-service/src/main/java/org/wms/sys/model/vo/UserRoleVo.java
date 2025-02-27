@@ -11,5 +11,5 @@ public class UserRoleVo {
 
     private String parentId;
 
-    private List<Long> permissions;
+    private List<String> permissions;
 }
