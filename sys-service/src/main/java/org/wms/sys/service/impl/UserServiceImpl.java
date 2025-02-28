@@ -62,6 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         boolean update = this.lambdaUpdate()
                 .set(User::getNickName, user.getNickName())
+                .set(User::getRealName, user.getRealName())
                 .set(User::getAvatar, user.getAvatar())
                 .eq(User::getUserId, userId).update();
         if (!update) {
@@ -125,6 +126,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 修改其他信息
         wrapper.set(user.getUsername() != null, User::getUsername, user.getUsername())
                 .set(user.getPhone() != null, User::getPhone, user.getPhone())
+                .set(user.getRealName() != null, User::getRealName, user.getRealName())
                 .set(user.getNickName() != null, User::getNickName, user.getNickName())
                 .set(user.getSex() != null, User::getSex, user.getSex())
                 .set(user.getUpdateTime() != null, User::getUpdateTime, user.getUpdateTime())

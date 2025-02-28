@@ -19,7 +19,8 @@ public interface UserMapper extends BaseMapper<User> {
      */
     List<String> getAuthorities(String userId);
 
-    Page<UserDto> pageList(@Param("page") Page<UserDto> objectPage, @Param("nickName") String nickName);
+    Page<UserDto> pageList(@Param("page") Page<UserDto> objectPage,
+                           @Param("nickName") String nickName, @Param("realName") String realName);
 }
 
 

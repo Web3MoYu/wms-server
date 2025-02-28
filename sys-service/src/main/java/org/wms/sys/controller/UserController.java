@@ -50,8 +50,9 @@ public class UserController {
      */
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('sys:user:list')")
-    public Result<Page<UserDto>> search(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize, @RequestParam(required = false) String nickName) {
-        Page<UserDto> result = userMapper.pageList(new Page<>(page, pageSize), nickName);
+    public Result<Page<UserDto>> search(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int pageSize,
+                                        @RequestParam(required = false) String nickName, @RequestParam(required = false) String realName) {
+        Page<UserDto> result = userMapper.pageList(new Page<>(page, pageSize), nickName, realName);
         return Result.success(result, "查询成功");
     }
 

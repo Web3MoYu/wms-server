@@ -18,15 +18,18 @@
         phone,
         email,
         sr.role_id as role_id,
-        role_name
+        role_name,
+        real_name
         from sys_user su
         left join sys_user_role sur on su.user_id = sur.user_id
         left join sys_role sr on sr.role_id = sur.role_id
-        <where>
-            <if test="nickName != '' and nickName != null">
-                nick_name like "%"#{nickName}"%"
-            </if>
-        </where>
+        where 1=1
+        <if test="nickName != '' and nickName != null">
+            and nick_name like "%"#{nickName}"%"
+        </if>
+        <if test="realName != '' and realName != null">
+            and real_name like "%"#{realName}"%"
+        </if>
         order by su.update_time desc
     </select>
 </mapper>
