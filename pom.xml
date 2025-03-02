@@ -21,6 +21,7 @@
         <module>gateway</module>
         <module>sys-service</module>
         <module>api-service</module>
+        <module>msg-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>
