@@ -1,5 +1,6 @@
 package org.wms.common.config;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -7,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnClass({MessageConverter.class, Jackson2JsonMessageConverter.class})
+@ConditionalOnClass({RabbitTemplate.class, Jackson2JsonMessageConverter.class})
 public class MQConfig {
     @Bean
     public MessageConverter messageConverter() {
