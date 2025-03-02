@@ -1,3 +1,4 @@
 org.wms.common.config.CommonConfigure
 org.wms.common.config.RedisConfigure
 org.wms.common.config.MinioConfig
+org.wms.common.config.MQConfig

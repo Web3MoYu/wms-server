@@ -1,5 +1,6 @@
 server:
   port: 8001
+
 spring:
   application:
     name: auth-service
@@ -9,6 +10,7 @@ spring:
     openfeign:
       okhttp:
         enabled: true
+
 feign:
   sentinel:
     # 必须引入sentinel并开启这个才可以触发兜底
