@@ -52,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             try {
                 String avatar = this.lambdaQuery().eq(User::getUserId, userId).one().getAvatar();
                 String url = UploadUtils.moveFile(minioClient, "temp", "wms", user.getAvatar());
-                if (Objects.nonNull(avatar)) {
+                if (Objects.nonNull(avatar) && avatar.startsWith("http")) {
                     UploadUtils.delete(UploadUtils.AVATAR, avatar, minioClient);
                 }
                 user.setAvatar(url);
