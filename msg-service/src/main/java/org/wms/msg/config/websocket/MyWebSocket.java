@@ -74,6 +74,9 @@ public class MyWebSocket {
 
     @Scheduled(fixedRate = 30000) // 每 30 秒发送一次心跳
     public void sendHeartbeat() {
+        if (sessionList.isEmpty()){
+            return;
+        }
         log.info("触发心跳定时任务");
         sessionList.forEach((clientId, session) -> {
             if (session.isOpen()) {

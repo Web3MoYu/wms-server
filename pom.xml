@@ -37,7 +37,6 @@
         <wms.api.version>0.0.1-SNAPSHOT</wms.api.version>
         <netty.dns.version>4.2.0.Alpha5</netty.dns.version>
         <minio.version>8.5.10</minio.version>
-        <jackson.version>2.18.2</jackson.version>
     </properties>
 
     <!-- 对依赖包进行管理 -->
@@ -134,11 +133,6 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${jwt.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-xml</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

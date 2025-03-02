@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.wms.common.enums.sys.RoleEnums;
 
 /**
  * 角色实体类
@@ -20,6 +21,8 @@ public class Role {
      * 角色名称
      */
     private String roleName;
+
+    private RoleEnums type;
     /**
      * 备注
      */
