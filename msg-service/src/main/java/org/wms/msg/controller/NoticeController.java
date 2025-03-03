@@ -3,7 +3,6 @@ package org.wms.msg.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.msg.model.dto.NoticePageDTO;
