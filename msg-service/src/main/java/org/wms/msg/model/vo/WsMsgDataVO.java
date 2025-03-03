@@ -1,4 +1,4 @@
-package org.wms.msg.vo;
+package org.wms.msg.model.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
