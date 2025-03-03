@@ -39,5 +39,6 @@
         <if test="param.isTop != null">
             and nn.is_top = #{param.isTop}
         </if>
+        order by nn.status, nn.publish_time desc, nn.end_time desc
     </select>
 </mapper>
