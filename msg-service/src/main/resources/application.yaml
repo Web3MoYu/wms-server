@@ -27,10 +27,10 @@ spring:
     password: admin
 
 
-
 mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler

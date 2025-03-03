@@ -3,8 +3,10 @@ package org.wms.msg.model.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.msg.model.enums.NoticeIsTop;
 import org.wms.msg.model.enums.NoticePriority;
@@ -42,12 +44,14 @@ public class Notice {
     /**
      * 发布时间
      */
-    private Date publishTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDateTime publishTime;
 
     /**
      * 结束时间
      */
-    private Date endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDateTime endTime;
 
     /**
      * 状态：0-未发布，1-已发布，2-废弃
@@ -67,11 +71,13 @@ public class Notice {
     /**
      * 创建时间
      */
-    private Date createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateTime;
 
 }

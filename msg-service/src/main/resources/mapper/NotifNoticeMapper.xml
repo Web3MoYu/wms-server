@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.msg.mapper.NoticeMapper">
+
+    <resultMap id="BaseResultMap" type="org.wms.msg.model.entity.Notice">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="publisher" column="publisher"/>
+        <result property="publishTime" column="publish_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
+        <result property="priority" column="priority"/>
+        <result property="isTop" column="is_top"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,content,publisher,publish_time,end_time,
+        `status`,priority,is_top,create_time,update_time
+    </sql>
+    <select id="pageList" resultType="org.wms.msg.model.vo.NoticeVO">
+        select nn.*, su.real_name as publisherName
+        from notif_notice nn
+        inner join sys_user su on su.user_id = nn.publisher
+        where 1 = 1
+        <if test="param.priority != '' and param.priority != null">
+            and nn.priority = #{param.priority}
+        </if>
+        <if test="param.publisher != '' and param.publisher != null">
+            and nn.publisher = #{param.publisher}
+        </if>
+        <if test="param.status != '' and param.status != null">
+            and nn.status = #{param.status}
+        </if>
+        <if test="param.isTop != '' and param.isTop != null">
+            and nn.is_top = #{param.isTop}
+        </if>
+    </select>
+</mapper>

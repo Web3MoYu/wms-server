@@ -3,9 +3,10 @@ package org.wms.common.enums.sys;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
+import org.wms.common.enums.BaseEnums;
 
 @Getter
-public enum RoleEnums {
+public enum RoleEnums implements BaseEnums {
     SUPER_ADMIN(0, "超级管理员"), ADMIN(1, "管理员"), EMPLOYEE(2, "员工");
 
     @EnumValue
@@ -17,5 +18,4 @@ public enum RoleEnums {
         this.code = type;
         this.desc = desc;
     }
-
 }
