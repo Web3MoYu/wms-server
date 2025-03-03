@@ -78,6 +78,6 @@ public class Notice {
      * 更新时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 }
