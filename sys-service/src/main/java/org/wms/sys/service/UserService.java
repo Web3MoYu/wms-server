@@ -27,6 +27,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 添加用户信息
+     *
      * @param user
      * @return
      */
@@ -34,9 +35,13 @@ public interface UserService extends IService<User> {
 
     /**
      * 修改用户信息
+     *
      * @param user
      * @param userId
      * @return
      */
     Result<String> updateUser(UserVo user, String userId);
+
+    Result<List<User>> getAdminList();
+
 }

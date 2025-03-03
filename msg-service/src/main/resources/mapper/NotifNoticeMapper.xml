@@ -27,16 +27,16 @@
         from notif_notice nn
         inner join sys_user su on su.user_id = nn.publisher
         where 1 = 1
-        <if test="param.priority != '' and param.priority != null">
+        <if test="param.priority != null">
             and nn.priority = #{param.priority}
         </if>
-        <if test="param.publisher != '' and param.publisher != null">
+        <if test="param.publisher != null">
             and nn.publisher = #{param.publisher}
         </if>
-        <if test="param.status != '' and param.status != null">
+        <if test="param.status != null">
             and nn.status = #{param.status}
         </if>
-        <if test="param.isTop != '' and param.isTop != null">
+        <if test="param.isTop != null">
             and nn.is_top = #{param.isTop}
         </if>
     </select>

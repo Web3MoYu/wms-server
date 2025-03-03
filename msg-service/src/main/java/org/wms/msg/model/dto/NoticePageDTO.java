@@ -10,5 +10,5 @@ public class NoticePageDTO {
     private Integer status;
     private Integer priority;
     private Integer isTop;
-    private Integer publisher;
+    private String publisher;
 }

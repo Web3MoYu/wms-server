@@ -137,4 +137,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return Result.success(null, "修改成功");
     }
 
+    @Override
+    public Result<List<User>> getAdminList() {
+        List<User> list = userMapper.getAminList();
+        return Result.success(list, "查询成功");
+    }
+
 }

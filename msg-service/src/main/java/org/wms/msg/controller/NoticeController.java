@@ -10,14 +10,14 @@ import org.wms.msg.model.vo.NoticeVO;
 import org.wms.msg.service.NoticeService;
 
 @RestController
-@RequestMapping("/msg")
+@RequestMapping("/msg/notice")
 public class NoticeController {
 
     @Resource
     NoticeService noticeService;
 
     @PostMapping("/pageList")
-    @PreAuthorize("hasAuthority('sys:notice:index')")
+    @PreAuthorize("hasAuthority('sys:notice:list')")
     public Result<Page<NoticeVO>> pageList(@RequestBody NoticePageDTO param) {
         return noticeService.pageList(param);
     }

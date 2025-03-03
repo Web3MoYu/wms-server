@@ -18,6 +18,7 @@ import org.wms.sys.model.dto.UserDto;
 import org.wms.sys.model.vo.UserVo;
 import org.wms.sys.service.UserService;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -145,5 +146,11 @@ public class UserController {
         //删除角色
         userService.removeById(userId);
         return Result.success(null, "删除成功");
+    }
+
+    @GetMapping("/admin/list")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<User>> getAdminList() {
+        return userService.getAdminList();
     }
 }

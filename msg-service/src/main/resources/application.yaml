@@ -33,4 +33,3 @@ mybatis-plus:
       id-type: assign_id
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler

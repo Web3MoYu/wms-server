@@ -21,6 +21,9 @@ public interface UserMapper extends BaseMapper<User> {
 
     Page<UserDto> pageList(@Param("page") Page<UserDto> objectPage,
                            @Param("nickName") String nickName, @Param("realName") String realName);
+
+    List<User> getAminList();
+
 }
 
 
