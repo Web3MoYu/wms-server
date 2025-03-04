@@ -21,12 +21,30 @@ public class NoticeController {
     @Resource
     NoticeService noticeService;
 
+    /**
+     * 分页查询公告列表
+     * 
+     * 根据条件查询公告，支持标题模糊搜索、状态筛选等
+     *
+     * @param param 查询参数，包含页码、每页大小、查询条件等
+     * @return 公告分页结果
+     */
     @PostMapping("/pageList")
     @PreAuthorize("hasAuthority('sys:notice:list')")
     public Result<Page<NoticeVO>> pageList(@RequestBody NoticePageDTO param) {
         return noticeService.pageList(param);
     }
 
+    /**
+     * 更新公告信息
+     * 
+     * 修改公告的标题、内容、优先级等信息，
+     * 但不改变公告的发布状态
+     *
+     * @param id 公告ID
+     * @param notice 更新后的公告信息
+     * @return 操作结果
+     */
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('sys:notice:update')")
     public Result<String> update(@PathVariable String id, @RequestBody Notice notice) {
@@ -38,6 +56,14 @@ public class NoticeController {
         return Result.error(500, "修改失败");
     }
 
+    /**
+     * 废弃公告
+     * 
+     * 将公告状态设置为已废弃，使其不再显示
+     *
+     * @param id 公告ID
+     * @return 操作结果
+     */
     @DeleteMapping("/abandon/{id}")
     @PreAuthorize("hasAuthority('sys:notice:delete')")
     public Result<String> abandoned(@PathVariable String id) {
@@ -53,6 +79,14 @@ public class NoticeController {
         return Result.error(500, "废弃失败");
     }
 
+    /**
+     * 添加新公告
+     * 
+     * 创建新的公告，初始状态为未发布
+     *
+     * @param notice 公告信息
+     * @return 操作结果
+     */
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('sys:notice:add')")
     public Result<String> add(@RequestBody Notice notice) {
@@ -67,6 +101,15 @@ public class NoticeController {
         return Result.error(500, "添加失败");
     }
 
+    /**
+     * 发布公告
+     * 
+     * 将公告状态修改为已发布，设置发布时间，
+     * 使其对用户可见
+     *
+     * @param id 公告ID
+     * @return 操作结果
+     */
     @PutMapping("/publish/{id}")
     @PreAuthorize("hasAuthority('sys:notice:publish')")
     public Result<String> publish(@PathVariable String id) {

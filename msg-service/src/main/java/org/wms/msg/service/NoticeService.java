@@ -15,5 +15,11 @@ import org.wms.msg.model.vo.NoticeVO;
 */
 public interface NoticeService extends IService<Notice> {
 
+    /**
+     * 分页查询公告列表
+     *
+     * @param param 查询参数，包含页码、每页大小、查询条件等
+     * @return 公告分页结果，包装在Result对象中
+     */
     Result<Page<NoticeVO>> pageList(NoticePageDTO param);
 }
