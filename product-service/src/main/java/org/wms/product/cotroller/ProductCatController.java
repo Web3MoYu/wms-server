@@ -3,6 +3,7 @@ package org.wms.product.cotroller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import io.micrometer.common.util.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,9 @@ public class ProductCatController {
     public Result<String> add(@RequestBody ProductCat productCat) {
         productCat.setCreateTime(LocalDateTime.now());
         productCat.setUpdateTime(LocalDateTime.now());
+        if (StringUtils.isEmpty(productCat.getParentId())) {
+            productCat.setParentId(null);
+        }
         boolean save = productCatService.save(productCat);
         if (save) {
             return Result.success(null, "添加成功");
