@@ -45,10 +45,13 @@ public class ProductCatController {
      * @param categoryCode
      * @return
      */
-    @GetMapping("/check/{categoryCode}")
+    @GetMapping("/check/{parent}/{categoryCode}")
     @PreAuthorize("hasAuthority('product:cat:list')")
-    public Result<Boolean> checkCategoryCode(@PathVariable String categoryCode) {
-        boolean exists = productCatService.lambdaQuery().eq(ProductCat::getCategoryCode, categoryCode).exists();
+    public Result<Boolean> checkCategoryCode(@PathVariable String parent, @PathVariable String categoryCode) {
+        boolean exists = productCatService.lambdaQuery()
+                .eq(ProductCat::getCategoryCode, categoryCode)
+                .eq(ProductCat::getParentId, parent)
+                .exists();
         return Result.success(exists, "检查成功");
     }
 
