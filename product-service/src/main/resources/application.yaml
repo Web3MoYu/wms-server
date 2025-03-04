@@ -1,9 +1,9 @@
 server:
-  port: 8003
+  port: 8004
 
 spring:
   application:
-    name: msg-service
+    name: product-service
   cloud:
     nacos:
       server-addr: localhost:8848
@@ -13,14 +13,6 @@ spring:
     url: jdbc:mysql://localhost:3306/wms?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: root
     password: root
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-    virtual-host: /wms
-    username: admin
-    password: admin
-
 
 mybatis-plus:
   global-config:

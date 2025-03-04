@@ -22,3 +22,7 @@ spring:
           uri: lb://msg-service
           predicates:
             - Path=/msg/**
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product/**
