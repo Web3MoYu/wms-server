@@ -237,7 +237,6 @@ CREATE TABLE `product_cat`
     `category_name` varchar(100) NOT NULL COMMENT '分类名称',
     `category_code` varchar(50)  NOT NULL COMMENT '分类编码',
     `parent_id`     varchar(32) DEFAULT NULL COMMENT '父级ID',
-    `level`         int         DEFAULT '1' COMMENT '层级',
     `sort`          int         DEFAULT '0' COMMENT '排序',
     `create_time`   datetime     NOT NULL COMMENT '创建时间',
     `update_time`   datetime     NOT NULL COMMENT '更新时间',
