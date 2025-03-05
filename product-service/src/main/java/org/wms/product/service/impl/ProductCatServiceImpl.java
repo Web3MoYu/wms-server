@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.wms.common.model.Result;
 import org.wms.product.mapper.ProductCatMapper;
+import org.wms.product.mapper.ProductMapper;
 import org.wms.product.model.entity.Product;
 import org.wms.product.model.entity.ProductCat;
 import org.wms.product.model.vo.ProductCatTree;
@@ -28,7 +30,7 @@ public class ProductCatServiceImpl extends ServiceImpl<ProductCatMapper, Product
         implements ProductCatService {
 
     @Resource
-    ProductService productService;
+    ProductMapper productMapper;
 
     @Override
     public List<ProductCatTree> getAllCategoryTree() {
@@ -104,7 +106,9 @@ public class ProductCatServiceImpl extends ServiceImpl<ProductCatMapper, Product
             return Result.error(500, "存在子类别，无法删除");
         }
         // 是否有产品
-        boolean hasProduct = productService.lambdaQuery().eq(Product::getCategoryId, id).exists();
+        LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Product::getCategoryId, id);
+        boolean hasProduct = productMapper.exists(wrapper);
         if (hasProduct) {
             return Result.error(500, "存在产品，无法删除");
         }

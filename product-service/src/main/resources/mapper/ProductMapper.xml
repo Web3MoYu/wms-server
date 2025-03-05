@@ -20,10 +20,43 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+    
+    <resultMap id="ProductVoResultMap" type="org.wms.product.model.vo.ProductVo" extends="BaseResultMap">
+        <result property="categoryName" column="category_name"/>
+    </resultMap>
 
     <sql id="Base_Column_List">
         id,product_name,product_code,category_id,brand,model,
         spec,price,min_stock,max_stock,image_url,
         description,create_time,update_time
     </sql>
+    
+    <!-- 递归查询分类名称 -->
+    <select id="selectProductVoPage" resultMap="ProductVoResultMap">
+        WITH RECURSIVE category_path(id, category_name, parent_id, full_path) AS (
+            SELECT 
+                id, 
+                category_name, 
+                parent_id,
+                category_name as full_path
+            FROM product_cat
+            WHERE parent_id = '0' OR parent_id IS NULL
+            
+            UNION ALL
+            
+            SELECT 
+                pc.id, 
+                pc.category_name, 
+                pc.parent_id,
+                CONCAT(cp.full_path, '-', pc.category_name) as full_path
+            FROM product_cat pc
+            JOIN category_path cp ON pc.parent_id = cp.id
+        )
+        SELECT 
+            p.*,
+            cp.full_path as category_name
+        FROM product p
+        LEFT JOIN category_path cp ON p.category_id = cp.id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>
