@@ -23,4 +23,5 @@ public interface ProductService extends IService<Product> {
      * @return 包含分类全称的产品分页结果
      */
     Page<ProductVo> pageProductVo(int page, int pageSize, String productName, String categoryId, String brand);
+
 }

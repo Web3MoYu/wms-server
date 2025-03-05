@@ -68,11 +68,6 @@ public class Product {
     private Integer maxStock;
 
     /**
-     * 图片URL
-     */
-    private String imageUrl;
-
-    /**
      * 描述
      */
     private String description;

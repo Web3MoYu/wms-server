@@ -1,10 +1,19 @@
 package org.wms.product.cotroller;
 
+import java.time.LocalDateTime;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
+import org.wms.product.model.entity.Product;
 import org.wms.product.model.vo.ProductVo;
 import org.wms.product.service.ProductService;
 
@@ -29,6 +38,7 @@ public class ProductController {
      * @param brand       品牌（可选）
      * @return 包含分类全称的产品分页结果
      */
+    @PreAuthorize("hasAuthority('product:list')")
     @GetMapping("/page")
     public Result<Page<ProductVo>> pageProducts(
             @RequestParam(defaultValue = "1") int page,
@@ -40,4 +50,71 @@ public class ProductController {
         Page<ProductVo> result = productService.pageProductVo(page, pageSize, productName, categoryId, brand);
         return Result.success(result, "查询成功");
     }
+
+    /**
+     * 根据产品编码，查询产品是否存在
+     *
+     * @param productCode 产品编码
+     * @return 是否存在
+     */
+    @PreAuthorize("hasAuthority('product:list')")
+    @GetMapping("/checkCode")
+    public Result<Boolean> existsByProductCode(@RequestParam String productCode) {
+        boolean exists = productService.lambdaQuery().eq(Product::getProductCode, productCode).exists();
+        return Result.success(exists, "查询成功");
+    }
+
+    /**
+     * 根据id删除产品
+     *
+     * @param id 产品id
+     * @return 是否删除成功
+     */
+    @PreAuthorize("hasAuthority('product:delete')")
+    @DeleteMapping("/{id}")
+    public Result<Boolean> deleteProductById(@PathVariable String id) {
+        boolean result = productService.removeById(id);
+        if (result) {
+            return Result.success(null, "删除成功");
+        }
+        return Result.error(500, "删除失败");
+    }
+
+    /**
+     * 新增产品
+     *
+     * @param product 产品
+     * @return 是否新增成功
+     */
+    @PreAuthorize("hasAuthority('product:add')")
+    @PostMapping
+    public Result<Boolean> addProduct(@RequestBody Product product) {
+        product.setCreateTime(LocalDateTime.now());
+        product.setUpdateTime(LocalDateTime.now());
+        boolean result = productService.save(product);
+        if (result) {
+            return Result.success(null, "新增成功");
+        }
+        return Result.error(500, "新增失败");
+    }
+
+    /**
+     * 更新产品
+     *
+     * @param product 产品
+     * @return 是否更新成功
+     */
+    @PreAuthorize("hasAuthority('product:update')")
+    @PutMapping("/{id}")
+    public Result<Boolean> updateProduct(@RequestBody Product product, @PathVariable String id) {
+        product.setUpdateTime(LocalDateTime.now());
+        boolean result = productService.lambdaUpdate()
+                .eq(Product::getId, id)
+                .update(product);
+        if (result) {
+            return Result.success(null, "更新成功");
+        }
+        return Result.error(500, "更新失败");
+    }
+
 }
