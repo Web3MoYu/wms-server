@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +74,29 @@ public class AreaController {
             return Result.success(null, "添加成功");
         } else {
             return Result.error(500, "添加失败");
+        }
+    }
+
+    /**
+     * 修改区域信息
+     *
+     * @param area 区域信息
+     * @param id 区域ID
+     * @return 修改结果
+     */
+    @PreAuthorize("hasAuthority('location:area:update')")
+    @PutMapping("/{id}")
+    public Result<String> updateArea(@RequestBody Area area, @PathVariable String id) {
+        // 设置ID和更新时间
+        area.setId(id);
+        area.setUpdateTime(LocalDateTime.now());
+        
+        // 执行更新操作
+        boolean updated = areaService.updateById(area);
+        if (updated) {
+            return Result.success(null, "修改成功");
+        } else {
+            return Result.error(500, "修改失败");
         }
     }
 }
