@@ -1,5 +1,7 @@
 package org.wms.location.service.impl;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.wms.location.mapper.AreaMapper;
 import org.wms.location.model.entity.Area;
@@ -8,6 +10,7 @@ import org.wms.location.model.vo.AreaVo;
 import org.wms.location.service.AreaService;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -53,6 +56,16 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
 
         // 使用连表查询直接获取包含负责人名称的区域信息
         return areaMapper.selectAreaVoPage(pageParam, queryWrapper);
+    }
+
+    @Override
+    public boolean updateStatus(String id, StatusEnums status) {
+        LambdaUpdateWrapper<Area> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(Area::getId, id)
+                     .set(Area::getStatus, status)
+                     .set(Area::getUpdateTime, LocalDateTime.now());
+        
+        return update(updateWrapper);
     }
 }
 

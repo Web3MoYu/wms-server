@@ -3,6 +3,7 @@ package org.wms.location.controller;
 import java.time.LocalDateTime;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,6 +98,24 @@ public class AreaController {
             return Result.success(null, "修改成功");
         } else {
             return Result.error(500, "修改失败");
+        }
+    }
+
+    /**
+     * 删除区域（逻辑删除，实际是将状态设置为禁用）
+     *
+     * @param id 区域ID
+     * @return 删除结果
+     */
+    @PreAuthorize("hasAuthority('location:area:delete')")
+    @DeleteMapping("/{id}")
+    public Result<String> deleteArea(@PathVariable String id) {
+        // 将状态设置为禁用，实现逻辑删除
+        boolean updated = areaService.updateStatus(id, StatusEnums.DISABLED);
+        if (updated) {
+            return Result.success(null, "删除成功");
+        } else {
+            return Result.error(500, "删除失败");
         }
     }
 }

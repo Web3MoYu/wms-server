@@ -24,4 +24,13 @@ public interface AreaService extends IService<Area> {
      * @return 包含负责人名称的区域分页结果
      */
     Page<AreaVo> pageAreaVos(int page, int pageSize, String areaName, String areaManager, StatusEnums status);
+
+    /**
+     * 更新区域状态
+     *
+     * @param id    区域ID
+     * @param status 新状态
+     * @return 是否更新成功
+     */
+    boolean updateStatus(String id, StatusEnums status);
 }
