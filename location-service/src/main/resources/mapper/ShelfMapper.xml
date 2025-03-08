@@ -18,6 +18,6 @@
 
     <sql id="Base_Column_List">
         id,area_id,shelf_name,shelf_code,row_num,column_num,
-        status,create_time,update_time
+        `status`,create_time,update_time
     </sql>
 </mapper>

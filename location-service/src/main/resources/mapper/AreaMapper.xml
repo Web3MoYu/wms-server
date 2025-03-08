@@ -14,9 +14,25 @@
             <result property="createTime" column="create_time" />
             <result property="updateTime" column="update_time" />
     </resultMap>
+    
+    <resultMap id="AreaVoResultMap" type="org.wms.location.model.vo.AreaVo" extends="BaseResultMap">
+        <result property="areaManagerName" column="area_manager_name" />
+    </resultMap>
 
     <sql id="Base_Column_List">
-        id,area_name,area_code,area_manager,status,description,
+        id,area_name,area_code,area_manager,`status`,`description`,
         create_time,update_time
     </sql>
+    
+    <!-- 连表查询区域和负责人信息 -->
+    <select id="selectAreaVoPage" resultMap="AreaVoResultMap">
+        SELECT 
+            a.*,
+            IFNULL(u.real_name, u.username) AS area_manager_name
+        FROM 
+            wms_area a
+        INNER JOIN 
+            sys_user u ON a.area_manager = u.user_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

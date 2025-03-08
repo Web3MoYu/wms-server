@@ -19,6 +19,6 @@
 
     <sql id="Base_Column_List">
         id,area_id,shelf_id,location_code,location_name,full_location_code,
-        status,product_id,create_time,update_time
+        `status`,product_id,create_time,update_time
     </sql>
 </mapper>
