@@ -30,7 +30,7 @@ public class NoticeController {
      * @return 公告分页结果
      */
     @PostMapping("/pageList")
-    @PreAuthorize("hasAuthority('sys:notice:list')")
+    @PreAuthorize("hasAuthority('msg:notice:list')")
     public Result<Page<NoticeVO>> pageList(@RequestBody NoticePageDTO param) {
         return noticeService.pageList(param);
     }
@@ -46,7 +46,7 @@ public class NoticeController {
      * @return 操作结果
      */
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('sys:notice:update')")
+    @PreAuthorize("hasAuthority('msg:notice:update')")
     public Result<String> update(@PathVariable String id, @RequestBody Notice notice) {
         notice.setUpdateTime(LocalDateTime.now());
         boolean update = noticeService.lambdaUpdate().eq(Notice::getId, id).update(notice);
@@ -65,7 +65,7 @@ public class NoticeController {
      * @return 操作结果
      */
     @DeleteMapping("/abandon/{id}")
-    @PreAuthorize("hasAuthority('sys:notice:delete')")
+    @PreAuthorize("hasAuthority('msg:notice:delete')")
     public Result<String> abandoned(@PathVariable String id) {
 
         boolean remove = noticeService.lambdaUpdate()
@@ -88,7 +88,7 @@ public class NoticeController {
      * @return 操作结果
      */
     @PostMapping("/add")
-    @PreAuthorize("hasAuthority('sys:notice:add')")
+    @PreAuthorize("hasAuthority('msg:notice:add')")
     public Result<String> add(@RequestBody Notice notice) {
         String userId = SecurityUtil.getUserID();
         notice.setPublisher(userId);
@@ -111,7 +111,7 @@ public class NoticeController {
      * @return 操作结果
      */
     @PutMapping("/publish/{id}")
-    @PreAuthorize("hasAuthority('sys:notice:publish')")
+    @PreAuthorize("hasAuthority('msg:notice:publish')")
     public Result<String> publish(@PathVariable String id) {
         boolean update = noticeService.lambdaUpdate()
                 .eq(Notice::getId, id)
