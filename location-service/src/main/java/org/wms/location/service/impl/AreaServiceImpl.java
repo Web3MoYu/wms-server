@@ -29,7 +29,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
     private AreaMapper areaMapper;
 
     @Override
-    public Page<AreaVo> pageAreaVos(int page, int pageSize, String areaName, String areaManager, StatusEnums status) {
+    public Page<AreaVo> pageAreaVos(int page, int pageSize, String areaName, String areaManager, Integer status) {
         // 创建分页对象
         Page<Area> pageParam = new Page<>(page, pageSize);
 
@@ -62,10 +62,17 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
     public boolean updateStatus(String id, StatusEnums status) {
         LambdaUpdateWrapper<Area> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Area::getId, id)
-                     .set(Area::getStatus, status)
-                     .set(Area::getUpdateTime, LocalDateTime.now());
-        
+                .set(Area::getStatus, status.getCode())
+                .set(Area::getUpdateTime, LocalDateTime.now());
+
         return update(updateWrapper);
+    }
+
+    @Override
+    public boolean checkAreaCode(String areaCode) {
+        LambdaQueryWrapper<Area> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Area::getAreaCode, areaCode);
+        return this.exists(queryWrapper);
     }
 }
 

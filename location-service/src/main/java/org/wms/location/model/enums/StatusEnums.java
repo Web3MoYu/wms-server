@@ -6,9 +6,9 @@ import lombok.Getter;
 
 @Getter
 public enum StatusEnums {
-    ENABLED(0, "启用"),
+    ENABLED(1, "启用"),
 
-    DISABLED(1, "禁用");
+    DISABLED(0, "启用");
 
     @JsonValue
     @EnumValue

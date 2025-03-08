@@ -46,7 +46,7 @@ public class AreaController {
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(required = false) String areaName,
             @RequestParam(required = false) String areaManager,
-            @RequestParam(required = false) StatusEnums status) {
+            @RequestParam(required = false) Integer status) {
 
         Page<AreaVo> result = areaService.pageAreaVos(page, pageSize, areaName, areaManager, status);
         return Result.success(result, "查询成功");
@@ -64,12 +64,12 @@ public class AreaController {
         // 设置创建时间和更新时间
         area.setCreateTime(LocalDateTime.now());
         area.setUpdateTime(LocalDateTime.now());
-        
+
         // 如果状态为空，默认设置为启用
         if (area.getStatus() == null) {
             area.setStatus(StatusEnums.ENABLED);
         }
-        
+
         boolean saved = areaService.save(area);
         if (saved) {
             return Result.success(null, "添加成功");
@@ -82,7 +82,7 @@ public class AreaController {
      * 修改区域信息
      *
      * @param area 区域信息
-     * @param id 区域ID
+     * @param id   区域ID
      * @return 修改结果
      */
     @PreAuthorize("hasAuthority('location:area:update')")
@@ -91,7 +91,7 @@ public class AreaController {
         // 设置ID和更新时间
         area.setId(id);
         area.setUpdateTime(LocalDateTime.now());
-        
+
         // 执行更新操作
         boolean updated = areaService.updateById(area);
         if (updated) {
@@ -118,4 +118,31 @@ public class AreaController {
             return Result.error(500, "删除失败");
         }
     }
+
+    /**
+     * 检查AreaCode是否重复
+     *
+     * @param areaCode 区域编码
+     * @return 检查结果
+     */
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/checkAreaCode")
+    public Result<Boolean> checkAreaCode(@RequestParam String areaCode) {
+        boolean exists = areaService.checkAreaCode(areaCode);
+        return Result.success(exists, "检查成功");
+    }
+
+    /**
+     * 检查AreaName是否重复
+     *
+     * @param areaName 区域编码
+     * @return 检查结果
+     */
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/checkAreaName")
+    public Result<Boolean> checkAreaName(@RequestParam String areaName) {
+        boolean exists = areaService.lambdaQuery().eq(Area::getAreaName, areaName).exists();
+        return Result.success(exists, "查询成功");
+    }
+
 }
