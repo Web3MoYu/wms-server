@@ -131,6 +131,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .set(user.getSex() != null, User::getSex, user.getSex())
                 .set(user.getUpdateTime() != null, User::getUpdateTime, user.getUpdateTime())
                 .set(user.getSalt() != null, User::getSalt, user.getSalt())
+                .set(user.getEmail() != null, User::getEmail, user.getEmail())
                 .set(user.getPassword() != null, User::getPassword, user.getPassword())
                 .eq(User::getUserId, user.getUserId());
         this.update(wrapper);
