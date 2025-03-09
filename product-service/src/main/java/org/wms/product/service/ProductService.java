@@ -1,6 +1,6 @@
 package org.wms.product.service;
 
-import org.wms.product.model.entity.Product;
+import org.wms.common.entity.Product;
 import org.wms.product.model.vo.ProductVo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

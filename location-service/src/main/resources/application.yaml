@@ -14,6 +14,11 @@ spring:
     username: root
     password: root
 
+feign:
+  sentinel:
+    # 必须引入sentinel并开启这个才可以触发兜底
+    enabled: true
+
 mybatis-plus:
   global-config:
     db-config:

@@ -6,8 +6,9 @@ import lombok.Getter;
 
 @Getter
 public enum LocationStatusEnums {
-    NO(0, "否"),
-    YES(1, "是");
+    OCCUPIED(0, "占用"),
+    FREE(1, "空闲"),
+    DISABLED(2, "禁用");
 
     @JsonValue
     @EnumValue

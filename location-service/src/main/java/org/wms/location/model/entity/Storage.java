@@ -16,7 +16,7 @@ import org.wms.location.model.enums.LocationStatusEnums;
  */
 @TableName(value = "wms_storage_location")
 @Data
-public class StorageLocation {
+public class Storage {
     /**
      * 库位ID
      */

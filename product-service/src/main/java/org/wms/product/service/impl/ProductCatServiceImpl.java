@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 import org.wms.common.model.Result;
 import org.wms.product.mapper.ProductCatMapper;
 import org.wms.product.mapper.ProductMapper;
-import org.wms.product.model.entity.Product;
+import org.wms.common.entity.Product;
 import org.wms.product.model.entity.ProductCat;
 import org.wms.product.model.vo.ProductCatTree;
 import org.wms.product.service.ProductCatService;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.wms.product.service.ProductService;
 
 /**
  * @author moyu

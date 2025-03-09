@@ -1,6 +1,7 @@
 package org.wms.product.cotroller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
-import org.wms.product.model.entity.Product;
+import org.wms.common.entity.Product;
 import org.wms.product.model.vo.ProductVo;
 import org.wms.product.service.ProductService;
 
@@ -48,6 +49,7 @@ public class ProductController {
             @RequestParam(required = false) String brand) {
 
         Page<ProductVo> result = productService.pageProductVo(page, pageSize, productName, categoryId, brand);
+        result.getRecords().forEach(System.out::println);
         return Result.success(result, "查询成功");
     }
 
@@ -115,6 +117,20 @@ public class ProductController {
             return Result.success(null, "更新成功");
         }
         return Result.error(500, "更新失败");
+    }
+
+    /**
+     * 模糊查询产品名称
+     *
+     * @param productName 产品名称
+     * @return 查询结果
+     */
+    @GetMapping("/list/{productName}")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<Product>> listProducts(@PathVariable String productName) {
+        List<Product> list = productService.lambdaQuery()
+                .like(Product::getProductName, productName).list();
+        return Result.success(list, "查询成功");
     }
 
 }

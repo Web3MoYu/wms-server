@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.wms.location.mapper.StorageLocationMapper">
 
-    <resultMap id="BaseResultMap" type="org.wms.location.model.entity.StorageLocation">
+    <resultMap id="BaseResultMap" type="org.wms.location.model.entity.Storage">
         <id property="id" column="id"/>
         <result property="areaId" column="area_id"/>
         <result property="shelfId" column="shelf_id"/>
@@ -16,8 +16,45 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <resultMap id="StorageVoResultMap" type="org.wms.location.model.vo.StorageVo" extends="BaseResultMap">
+        <result property="areaName" column="area_name"/>
+        <result property="shelfName" column="shelf_name"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
-        id,area_id,shelf_id,location_code,location_name,full_location_code,
+        id,area_id,shelf_id,location_code,location_name,
         `status`,product_id,create_time,update_time
     </sql>
+
+    <!-- 分页查询库位信息 -->
+    <select id="pageQuery" resultMap="StorageVoResultMap">
+        SELECT
+        s.*,
+        a.area_name,
+        sh.shelf_name
+        FROM
+        wms_storage_location s
+        LEFT JOIN
+        wms_area a ON s.area_id = a.id
+        LEFT JOIN
+        wms_shelf sh ON s.shelf_id = sh.id
+        <where>
+            <if test="areaId != null and areaId != ''">
+                AND s.area_id = #{areaId}
+            </if>
+            <if test="shelfId != null and shelfId != ''">
+                AND s.shelf_id = #{shelfId}
+            </if>
+            <if test="status != null">
+                AND s.status = #{status}
+            </if>
+            <if test="locationName != null and locationName != ''">
+                AND s.location_name LIKE CONCAT('%', #{locationName}, '%')
+            </if>
+            <if test="productId != null and productId != ''">
+                AND s.product_id = #{productId}
+            </if>
+        </where>
+        ORDER BY s.create_time DESC
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package org.wms.product.model.entity;
+package org.wms.common.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
