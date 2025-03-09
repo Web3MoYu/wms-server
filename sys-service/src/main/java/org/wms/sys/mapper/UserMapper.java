@@ -19,9 +19,22 @@ public interface UserMapper extends BaseMapper<User> {
      */
     List<String> getAuthorities(String userId);
 
+    /**
+     * 分页查询用户列表
+     *
+     * @param objectPage 分页对象
+     * @param nickName   昵称
+     * @param realName   真实姓名
+     * @return 用户列表
+     */
     Page<UserDto> pageList(@Param("page") Page<UserDto> objectPage,
                            @Param("nickName") String nickName, @Param("realName") String realName);
 
+    /**
+     * 获取管理员列表
+     *
+     * @return 管理员列表
+     */
     List<User> getAminList();
 
 }

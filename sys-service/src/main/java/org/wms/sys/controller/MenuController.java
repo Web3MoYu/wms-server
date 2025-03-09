@@ -55,6 +55,12 @@ public class MenuController {
         return Result.success(menuService.getTreeMenuByRoleId(id), "查询成功");
     }
 
+    /**
+     * 添加菜单
+     *
+     * @param menu 菜单
+     * @return 结果
+     */
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('sys:menu:add')")
     public Result<String> addMenu(@RequestBody Menu menu) {
@@ -68,6 +74,13 @@ public class MenuController {
         return Result.success(null, "添加成功");
     }
 
+    /**
+     * 更新菜单
+     *
+     * @param menu 菜单
+     * @param id   菜单id
+     * @return 结果
+     */
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('sys:menu:update')")
     public Result<String> updateMenu(@RequestBody Menu menu, @PathVariable String id) {
@@ -83,6 +96,12 @@ public class MenuController {
         return Result.success(null, "修改成功");
     }
 
+    /**
+     * 删除菜单
+     *
+     * @param id 菜单id
+     * @return 结果
+     */
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('sys:menu:delete')")
     public Result<String> deleteMenu(@PathVariable String id) {

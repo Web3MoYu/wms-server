@@ -42,6 +42,11 @@ public interface UserService extends IService<User> {
      */
     Result<String> updateUser(UserVo user, String userId);
 
+    /**
+     * 获取管理员列表
+     *
+     * @return 管理员列表
+     */
     Result<List<User>> getAdminList();
 
 }

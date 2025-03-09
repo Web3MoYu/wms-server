@@ -70,7 +70,12 @@ public class UserController {
         return Result.success(result, "修改成功");
     }
 
-
+    /**
+     * 检查用户名是否存在
+     *
+     * @param username 用户名
+     * @return 结果
+     */
     @GetMapping("/username/{username}")
     @PreAuthorize("isAuthenticated()")
     public Result<Boolean> getUserByUsername(@PathVariable String username) {
@@ -81,6 +86,12 @@ public class UserController {
         return Result.success(false, "不存在");
     }
 
+    /**
+     * 检查手机号是否存在
+     *
+     * @param phone 手机号
+     * @return 结果
+     */
     @GetMapping("/phone/{phone}")
     @PreAuthorize("isAuthenticated()")
     public Result<Boolean> getUserByPhone(@PathVariable String phone) {
@@ -91,6 +102,12 @@ public class UserController {
         return Result.success(false, "不存在");
     }
 
+    /**
+     * 检查邮箱是否存在
+     *
+     * @param email 邮箱
+     * @return 结果
+     */
     @GetMapping("/email/{email}")
     @PreAuthorize("isAuthenticated()")
     public Result<Boolean> getUserByEmail(@PathVariable String email) {
@@ -129,6 +146,13 @@ public class UserController {
         return userService.addUser(user);
     }
 
+    /**
+     * 更新用户
+     *
+     * @param user   用户
+     * @param userId 用户id
+     * @return 结果
+     */
     @PutMapping("/edit/{userId}")
     @PreAuthorize("hasAuthority('sys:user:update')")
     @Transactional
@@ -136,6 +160,12 @@ public class UserController {
         return userService.updateUser(user, userId);
     }
 
+    /**
+     * 删除用户
+     *
+     * @param userId 用户id
+     * @return 结果
+     */
     @DeleteMapping("/delete/{userId}")
     @PreAuthorize("hasAuthority('sys:user:delete')")
     @Transactional
@@ -147,12 +177,22 @@ public class UserController {
         return Result.success(null, "删除成功");
     }
 
+    /**
+     * 获取管理员列表
+     *
+     * @return 结果
+     */
     @GetMapping("/admin/list")
     @PreAuthorize("isAuthenticated()")
     public Result<List<User>> getAdminList() {
         return userService.getAdminList();
     }
 
+    /**
+     * 获取所有用户列表
+     *
+     * @return 结果
+     */
     @GetMapping("/listAll")
     @PreAuthorize("isAuthenticated()")
     public Result<List<User>> getAll() {

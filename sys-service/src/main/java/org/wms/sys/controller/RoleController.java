@@ -114,6 +114,12 @@ public class RoleController {
         return Result.success(null, "删除成功");
     }
 
+    /**
+     * 分配权限
+     * @param roleId 角色id
+     * @param permissions 权限
+     * @return 结果
+     */
     @Transactional
     @PutMapping("/updatePermissions/{roleId}")
     @PreAuthorize("hasAuthority('sys:role:allot')")
