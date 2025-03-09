@@ -26,13 +26,11 @@
     
     <!-- 连表查询区域和负责人信息 -->
     <select id="selectAreaVoPage" resultMap="AreaVoResultMap">
-        SELECT 
-            a.*,
-            IFNULL(u.real_name, u.username) AS area_manager_name
-        FROM 
-            wms_area a
-        INNER JOIN 
-            sys_user u ON a.area_manager = u.user_id
-        ${ew.customSqlSegment}
+        SELECT a.*,
+               IFNULL(u.real_name, u.username) AS area_manager_name
+        FROM wms_area a
+                 INNER JOIN
+             sys_user u ON a.area_manager = u.user_id
+            ${ew.customSqlSegment}
     </select>
 </mapper>

@@ -11,9 +11,10 @@ import org.wms.location.model.enums.StatusEnums;
 
 /**
  * 区域表
+ *
  * @TableName wms_area
  */
-@TableName(value ="wms_area")
+@TableName(value = "wms_area")
 @Data
 public class Area {
     /**

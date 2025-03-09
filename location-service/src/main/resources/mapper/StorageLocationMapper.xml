@@ -5,16 +5,15 @@
 <mapper namespace="org.wms.location.mapper.StorageLocationMapper">
 
     <resultMap id="BaseResultMap" type="org.wms.location.model.entity.StorageLocation">
-            <id property="id" column="id" />
-            <result property="areaId" column="area_id" />
-            <result property="shelfId" column="shelf_id" />
-            <result property="locationCode" column="location_code" />
-            <result property="locationName" column="location_name" />
-            <result property="fullLocationCode" column="full_location_code" />
-            <result property="status" column="status" />
-            <result property="productId" column="product_id" />
-            <result property="createTime" column="create_time" />
-            <result property="updateTime" column="update_time" />
+        <id property="id" column="id"/>
+        <result property="areaId" column="area_id"/>
+        <result property="shelfId" column="shelf_id"/>
+        <result property="locationCode" column="location_code"/>
+        <result property="locationName" column="location_name"/>
+        <result property="status" column="status"/>
+        <result property="productId" column="product_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List">

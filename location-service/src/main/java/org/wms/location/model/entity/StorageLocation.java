@@ -44,11 +44,6 @@ public class StorageLocation {
     private String locationName;
 
     /**
-     * 完整库位编码(如A-02-001)
-     */
-    private String fullLocationCode;
-
-    /**
      * 状态：0-占用，1-空闲，2-禁用
      */
     private LocationStatusEnums status;

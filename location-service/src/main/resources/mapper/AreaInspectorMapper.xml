@@ -5,16 +5,16 @@
 <mapper namespace="org.wms.location.mapper.AreaInspectorMapper">
 
     <resultMap id="BaseResultMap" type="org.wms.location.model.entity.AreaInspector">
-            <id property="id" column="id" />
-            <result property="areaId" column="area_id" />
-            <result property="areaName" column="area_name" />
-            <result property="inspectorId" column="inspector_id" />
-            <result property="inspectorName" column="inspector_name" />
-            <result property="inspectorPhone" column="inspector_phone" />
-            <result property="isPrimary" column="is_primary" />
-            <result property="remark" column="remark" />
-            <result property="createTime" column="create_time" />
-            <result property="updateTime" column="update_time" />
+        <id property="id" column="id"/>
+        <result property="areaId" column="area_id"/>
+        <result property="areaName" column="area_name"/>
+        <result property="inspectorId" column="inspector_id"/>
+        <result property="inspectorName" column="inspector_name"/>
+        <result property="inspectorPhone" column="inspector_phone"/>
+        <result property="isPrimary" column="is_primary"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List">

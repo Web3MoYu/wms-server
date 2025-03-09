@@ -39,16 +39,6 @@ public class Shelf {
     private String shelfCode;
 
     /**
-     * 行数
-     */
-    private Integer rowNum;
-
-    /**
-     * 列数
-     */
-    private Integer columnNum;
-
-    /**
      * 状态：0-禁用，1-启用
      */
     private StatusEnums status;

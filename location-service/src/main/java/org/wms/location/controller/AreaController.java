@@ -1,6 +1,7 @@
 package org.wms.location.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -83,7 +84,7 @@ public class AreaController {
      * 修改区域信息
      *
      * @param areaDto 区域信息
-     * @param id   区域ID
+     * @param id      区域ID
      * @return 修改结果
      */
     @PreAuthorize("hasAuthority('location:area:update')")
@@ -146,4 +147,16 @@ public class AreaController {
         return Result.success(exists, "查询成功");
     }
 
+    /**
+     * 获取所有区域的信息
+     *
+     * @return 返回所有区域的集合
+     */
+    @GetMapping("/getAreas")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<Area>> getAreas() {
+        List<Area> list = areaService.lambdaQuery()
+                .eq(Area::getStatus, StatusEnums.ENABLED.getCode()).list();
+        return Result.success(list, "查询成功");
+    }
 }

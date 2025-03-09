@@ -5,19 +5,50 @@
 <mapper namespace="org.wms.location.mapper.ShelfMapper">
 
     <resultMap id="BaseResultMap" type="org.wms.location.model.entity.Shelf">
-            <id property="id" column="id" />
-            <result property="areaId" column="area_id" />
-            <result property="shelfName" column="shelf_name" />
-            <result property="shelfCode" column="shelf_code" />
-            <result property="rowNum" column="row_num" />
-            <result property="columnNum" column="column_num" />
-            <result property="status" column="status" />
-            <result property="createTime" column="create_time" />
-            <result property="updateTime" column="update_time" />
+        <id property="id" column="id"/>
+        <result property="areaId" column="area_id"/>
+        <result property="shelfName" column="shelf_name"/>
+        <result property="shelfCode" column="shelf_code"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap id="ShelfVoResultMap" type="org.wms.location.model.vo.ShelfVo" extends="BaseResultMap">
+        <result property="areaName" column="area_name"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,area_id,shelf_name,shelf_code,row_num,column_num,
         `status`,create_time,update_time
     </sql>
+
+    <!-- 连表查询货架和区域信息 -->
+    <select id="selectShelfVoPage" resultMap="ShelfVoResultMap">
+        SELECT 
+            s.id,
+            s.area_id,
+            s.shelf_name,
+            s.shelf_code,
+            s.status,
+            s.create_time,
+            s.update_time,
+            a.area_name
+        FROM 
+            wms_shelf s
+        LEFT JOIN 
+            wms_area a ON s.area_id = a.id
+        <where>
+            <if test="shelfName != null and shelfName != ''">
+                AND s.shelf_name LIKE CONCAT('%', #{shelfName}, '%')
+            </if>
+            <if test="areaId != null and areaId != ''">
+                AND s.area_id = #{areaId}
+            </if>
+            <if test="status != null">
+                AND s.status = #{status}
+            </if>
+        </where>
+        ORDER BY s.create_time DESC
+    </select>
 </mapper>

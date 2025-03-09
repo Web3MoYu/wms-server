@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum StatusEnums {
     ENABLED(1, "启用"),
 
-    DISABLED(0, "启用");
+    DISABLED(0, "禁用");
 
     @JsonValue
     @EnumValue
