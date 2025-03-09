@@ -17,6 +17,13 @@ import org.wms.msg.model.vo.NoticeVO;
 @Mapper
 public interface NoticeMapper extends BaseMapper<Notice> {
 
+    /**
+     * 分页查询公告列表
+     *
+     * @param noticeVOPage 公告分页结果
+     * @param param        查询参数
+     * @return 公告分页结果
+     */
     Page<NoticeVO> pageList(@Param("page") Page<NoticeVO> noticeVOPage, @Param("param") NoticePageDTO param);
 }
 
