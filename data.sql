@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 09/03/2025 16:19:36
+ Date: 09/03/2025 20:43:32
 */
 
 SET NAMES utf8mb4;
@@ -893,7 +893,7 @@ INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`
 INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898648671391301633', 'C区', 'C', '1898647819238727682', 1, '这是C区', '2025-03-09 16:14:53', '2025-03-09 16:14:53');
 INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898648889922928641', 'D区', 'D', '1896569293849108482', 1, '这是D区', '2025-03-09 16:15:45', '2025-03-09 16:15:45');
 INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898649182169448450', 'E区', 'E', '1898647975300390914', 1, '这是E区', '2025-03-09 16:16:55', '2025-03-09 16:16:55');
-INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898649633312980994', 'F区', 'F', '1898648071593222145', 1, '这是F区', '2025-03-09 16:18:42', '2025-03-09 16:18:42');
+INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898649633312980994', 'F区', 'F', '1898648071593222145', 1, '这是F区1', '2025-03-09 16:18:42', '2025-03-09 20:03:30');
 COMMIT;
 
 -- ----------------------------
@@ -931,8 +931,8 @@ INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, 
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648889935511555', '1898648889922928641', 'D区', '1898621821399003138', '质检员4', '13111111114', 0, NULL, '2025-03-09 16:15:45', '2025-03-09 16:15:45');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898649182182031362', '1898649182169448450', 'E区', '1898647975300390914', '负责人5', '13122232225', 1, NULL, '2025-03-09 16:16:55', '2025-03-09 16:16:55');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898649182186225666', '1898649182169448450', 'E区', '1898622012529242114', '质检员5', '13111111115', 0, NULL, '2025-03-09 16:16:55', '2025-03-09 16:16:55');
-INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898649633317175298', '1898649633312980994', 'F区', '1898648071593222145', '负责人6', '13122232227', 1, NULL, '2025-03-09 16:18:42', '2025-03-09 16:18:42');
-INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898649633321369602', '1898649633312980994', 'F区', '1898622873313693698', '质检员6', '13111111116', 0, NULL, '2025-03-09 16:18:42', '2025-03-09 16:18:42');
+INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898706202843021314', '1898649633312980994', 'F区', '1898648071593222145', '负责人6', '13122232227', 1, NULL, '2025-03-09 20:03:30', '2025-03-09 20:03:30');
+INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898706202847215618', '1898649633312980994', 'F区', '1898622873313693698', '质检员6', '13111111116', 0, NULL, '2025-03-09 20:03:30', '2025-03-09 20:03:30');
 COMMIT;
 
 -- ----------------------------
@@ -944,13 +944,11 @@ CREATE TABLE `wms_shelf` (
   `area_id` varchar(32) NOT NULL COMMENT '区域ID',
   `shelf_name` varchar(100) NOT NULL COMMENT '货架名称',
   `shelf_code` varchar(50) NOT NULL COMMENT '货架编码',
-  `row_num` int DEFAULT NULL COMMENT '行数',
-  `column_num` int DEFAULT NULL COMMENT '列数',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态：0-禁用，1-启用',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_shelf_code` (`shelf_code`),
+  UNIQUE KEY `uk_shelf_code` (`shelf_code`,`area_id`) USING BTREE,
   KEY `idx_area_id` (`area_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='货架表';
 
@@ -958,6 +956,44 @@ CREATE TABLE `wms_shelf` (
 -- Records of wms_shelf
 -- ----------------------------
 BEGIN;
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898700659026018306', '1898645979654766593', '1号', '01', 1, '2025-03-09 19:41:28', '2025-03-09 20:05:50');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898707410911625217', '1898645979654766593', '2号', '02', 1, '2025-03-09 20:08:18', '2025-03-09 20:08:18');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898711159952617473', '1898645979654766593', '3号', '03', 1, '2025-03-09 20:23:12', '2025-03-09 20:23:23');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898711268564119554', '1898645979654766593', '4号', '04', 1, '2025-03-09 20:23:37', '2025-03-09 20:23:37');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898711316639232001', '1898645979654766593', '5号', '05', 1, '2025-03-09 20:23:49', '2025-03-09 20:23:49');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898711358733266946', '1898645979654766593', '6号', '06', 1, '2025-03-09 20:23:59', '2025-03-09 20:23:59');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898711613084250114', '1898646093588840449', '1号', '01', 1, '2025-03-09 20:25:00', '2025-03-09 20:25:00');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898713048312176642', '1898646093588840449', '2号', '02', 1, '2025-03-09 20:30:38', '2025-03-09 20:30:38');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898713048362508289', '1898646093588840449', '3号', '03', 1, '2025-03-09 20:30:38', '2025-03-09 20:30:38');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898713048417034241', '1898646093588840449', '4号', '04', 1, '2025-03-09 20:30:38', '2025-03-09 20:30:38');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898713048433811458', '1898646093588840449', '5号', '05', 1, '2025-03-09 20:30:38', '2025-03-09 20:30:38');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898713048442200066', '1898646093588840449', '6号', '06', 1, '2025-03-09 20:30:38', '2025-03-09 20:30:38');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898713048458977282', '1898648671391301633', '1号', '01', 1, '2025-03-09 20:30:38', '2025-03-09 20:30:38');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714518344425474', '1898648671391301633', '2号', '02', 1, '2025-03-09 20:36:32', '2025-03-09 20:36:32');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714518344425475', '1898648671391301633', '3号', '03', 1, '2025-03-09 20:36:32', '2025-03-09 20:36:32');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714518344425476', '1898648671391301633', '4号', '04', 1, '2025-03-09 20:36:32', '2025-03-09 20:36:32');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714518348619777', '1898648671391301633', '5号', '05', 1, '2025-03-09 20:36:32', '2025-03-09 20:36:32');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714518348619778', '1898648671391301633', '6号', '06', 1, '2025-03-09 20:36:32', '2025-03-09 20:36:32');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876806422530', '1898648889922928641', '1号', '01', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876806422531', '1898648889922928641', '2号', '02', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876810616833', '1898648889922928641', '3号', '03', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876810616834', '1898648889922928641', '4号', '04', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876814811137', '1898648889922928641', '5号', '05', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876814811138', '1898648889922928641', '6号', '06', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876814811139', '1898649182169448450', '1号', '01', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876814811140', '1898649182169448450', '2号', '02', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876814811141', '1898649182169448450', '3号', '03', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876814811142', '1898649182169448450', '4号', '04', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876819005442', '1898649182169448450', '5号', '05', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898714876819005443', '1898649182169448450', '6号', '06', 1, '2025-03-09 20:37:58', '2025-03-09 20:37:58');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715064572829697', '1898649633312980994', '1号', '01', 1, '2025-03-09 20:38:42', '2025-03-09 20:38:42');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715064572829698', '1898649633312980994', '2号', '02', 1, '2025-03-09 20:38:42', '2025-03-09 20:38:42');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715064572829699', '1898649633312980994', '3号', '03', 1, '2025-03-09 20:38:42', '2025-03-09 20:38:42');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715064577024001', '1898649633312980994', '4号', '04', 1, '2025-03-09 20:38:42', '2025-03-09 20:41:59');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715064577024002', '1898649633312980994', '5号', '05', 1, '2025-03-09 20:38:42', '2025-03-09 20:42:02');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715064577024003', '1898649633312980994', '6号', '06', 1, '2025-03-09 20:38:42', '2025-03-09 20:38:42');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715968055271425', '1898645979654766593', '7号', '07', 0, '2025-03-09 20:42:18', '2025-03-09 20:42:36');
+INSERT INTO `wms_shelf` (`id`, `area_id`, `shelf_name`, `shelf_code`, `status`, `create_time`, `update_time`) VALUES ('1898715968055271426', '1898645979654766593', '8号', '08', 0, '2025-03-09 20:42:18', '2025-03-09 20:42:38');
 COMMIT;
 
 -- ----------------------------
@@ -970,13 +1006,11 @@ CREATE TABLE `wms_storage_location` (
   `shelf_id` varchar(32) NOT NULL COMMENT '货架ID',
   `location_code` varchar(50) NOT NULL COMMENT '库位编码',
   `location_name` varchar(100) NOT NULL COMMENT '库位名称',
-  `full_location_code` varchar(100) NOT NULL COMMENT '完整库位编码(如A-02-001)',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态：0-占用，1-空闲，2-禁用',
   `product_id` varchar(32) DEFAULT NULL COMMENT '当前存放的产品ID',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_full_location_code` (`full_location_code`),
   KEY `idx_area_id` (`area_id`),
   KEY `idx_shelf_id` (`shelf_id`),
   KEY `idx_product_id` (`product_id`),

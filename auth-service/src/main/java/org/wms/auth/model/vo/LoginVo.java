@@ -11,7 +11,17 @@ import java.util.List;
  */
 @Data
 public class LoginVo {
+
+    /**
+     * 用户
+     */
     User user;
+    /**
+     * 菜单树
+     */
     List<MenuTree> menuTree;
+    /**
+     * 令牌
+     */
     String token;
 }

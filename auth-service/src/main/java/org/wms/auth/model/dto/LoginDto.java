@@ -7,6 +7,13 @@ import lombok.Data;
  */
 @Data
 public class LoginDto {
+
+    /**
+     * 用户名
+     */
     String username;
+    /**
+     * 密码
+     */
     String password;
 }

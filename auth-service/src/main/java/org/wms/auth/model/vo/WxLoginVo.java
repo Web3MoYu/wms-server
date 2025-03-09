@@ -7,6 +7,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class WxLoginVo {
 
+    /**
+     * 是否绑定
+     */
     Boolean binding;
+    /**
+     * 用户信息
+     */
     LoginVo userInfo;
 }
