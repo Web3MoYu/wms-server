@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
+import org.wms.location.model.dto.AreaDto;
 import org.wms.location.model.entity.Area;
 import org.wms.location.model.enums.StatusEnums;
 import org.wms.location.model.vo.AreaVo;
@@ -55,22 +56,22 @@ public class AreaController {
     /**
      * 新增区域
      *
-     * @param area 区域信息
+     * @param areaDto 区域信息
      * @return 添加结果
      */
     @PreAuthorize("hasAuthority('location:area:add')")
     @PostMapping
-    public Result<String> addArea(@RequestBody Area area) {
+    public Result<String> addArea(@RequestBody AreaDto areaDto) {
         // 设置创建时间和更新时间
-        area.setCreateTime(LocalDateTime.now());
-        area.setUpdateTime(LocalDateTime.now());
+        areaDto.setCreateTime(LocalDateTime.now());
+        areaDto.setUpdateTime(LocalDateTime.now());
 
         // 如果状态为空，默认设置为启用
-        if (area.getStatus() == null) {
-            area.setStatus(StatusEnums.ENABLED);
+        if (areaDto.getStatus() == null) {
+            areaDto.setStatus(StatusEnums.ENABLED);
         }
 
-        boolean saved = areaService.save(area);
+        boolean saved = areaService.saveArea(areaDto);
         if (saved) {
             return Result.success(null, "添加成功");
         } else {
@@ -81,19 +82,19 @@ public class AreaController {
     /**
      * 修改区域信息
      *
-     * @param area 区域信息
+     * @param areaDto 区域信息
      * @param id   区域ID
      * @return 修改结果
      */
     @PreAuthorize("hasAuthority('location:area:update')")
     @PutMapping("/{id}")
-    public Result<String> updateArea(@RequestBody Area area, @PathVariable String id) {
+    public Result<String> updateArea(@RequestBody AreaDto areaDto, @PathVariable String id) {
         // 设置ID和更新时间
-        area.setId(id);
-        area.setUpdateTime(LocalDateTime.now());
+        areaDto.setId(id);
+        areaDto.setUpdateTime(LocalDateTime.now());
 
         // 执行更新操作
-        boolean updated = areaService.updateById(area);
+        boolean updated = areaService.updateArea(areaDto);
         if (updated) {
             return Result.success(null, "修改成功");
         } else {

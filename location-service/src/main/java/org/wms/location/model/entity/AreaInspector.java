@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.wms.location.model.enums.IsPrimaryEnums;
 
 /**
  * 区域质检员关系表
@@ -50,7 +51,7 @@ public class AreaInspector {
     /**
      * 是否主要负责人：0-否，1-是
      */
-    private Integer isPrimary;
+    private IsPrimaryEnums isPrimary;
 
     /**
      * 备注

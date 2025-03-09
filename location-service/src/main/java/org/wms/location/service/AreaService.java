@@ -1,5 +1,6 @@
 package org.wms.location.service;
 
+import org.wms.location.model.dto.AreaDto;
 import org.wms.location.model.entity.Area;
 import org.wms.location.model.enums.StatusEnums;
 import org.wms.location.model.vo.AreaVo;
@@ -42,4 +43,20 @@ public interface AreaService extends IService<Area> {
      * @return 检查结果
      */
     boolean checkAreaCode(String areaCode);
+
+    /**
+     * 新增区域
+     *
+     * @param areaDto 区域信息
+     * @return 是否新增成功
+     */
+    boolean saveArea(AreaDto areaDto);
+
+    /**
+     * 修改区域
+     *
+     * @param areaDto 区域信息
+     * @return 是否修改成功
+     */
+    boolean updateArea(AreaDto areaDto);
 }

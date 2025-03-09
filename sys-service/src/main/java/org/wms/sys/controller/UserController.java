@@ -152,4 +152,10 @@ public class UserController {
     public Result<List<User>> getAdminList() {
         return userService.getAdminList();
     }
+
+    @GetMapping("/listAll")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<User>> getAll() {
+        return Result.success(userService.list(), "查询成功");
+    }
 }
