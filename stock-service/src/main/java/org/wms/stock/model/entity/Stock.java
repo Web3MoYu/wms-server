@@ -46,7 +46,7 @@ public class Stock {
      * [
      * {
      * shelfId:,
-     * storageId:[]
+     * storageIds:[]
      * }
      * ]
      */
