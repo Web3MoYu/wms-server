@@ -50,7 +50,7 @@ public class Stock {
      * }
      * ]
      */
-    @TableField(typeHandler = org.wms.stock.handler.LocationTypeHandler.class)
+    @TableField(typeHandler = org.wms.common.handler.LocationTypeHandler.class)
     private List<Location> location;
 
     /**

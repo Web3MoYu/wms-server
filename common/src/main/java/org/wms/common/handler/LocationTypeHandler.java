@@ -1,4 +1,4 @@
-package org.wms.stock.handler;
+package org.wms.common.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

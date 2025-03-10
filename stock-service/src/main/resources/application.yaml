@@ -20,4 +20,3 @@ mybatis-plus:
       id-type: assign_id
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  type-handlers-package: org.wms.stock.handler
