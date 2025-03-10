@@ -9,7 +9,7 @@
         <result property="productId" column="product_id"/>
         <result property="productCode" column="product_code"/>
         <result property="areaId" column="area_id"/>
-        <result property="location" column="location"/>
+        <result property="location" column="location" typeHandler="org.wms.common.handler.StockLocationTypeHandler"/>
         <result property="quantity" column="quantity"/>
         <result property="availableQuantity" column="available_quantity"/>
         <result property="lockedQuantity" column="locked_quantity"/>
