@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.stock.mapper.StockMapper">
+
+    <resultMap id="BaseResultMap" type="org.wms.stock.model.entity.Stock">
+        <id property="id" column="id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productCode" column="product_code"/>
+        <result property="areaId" column="area_id"/>
+        <result property="location" column="location"/>
+        <result property="quantity" column="quantity"/>
+        <result property="availableQuantity" column="available_quantity"/>
+        <result property="lockedQuantity" column="locked_quantity"/>
+        <result property="alertStatus" column="alert_status"/>
+        <result property="batchNumber" column="batch_number"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,product_id,product_code,area_id,location,quantity,
+        available_quantity,locked_quantity,alert_status,batch_number,production_date,
+        expiry_date,create_time,update_time
+    </sql>
+</mapper>
