@@ -1,15 +1,14 @@
 package org.wms.stock.model.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.wms.common.handler.StockLocationTypeHandler;
 import org.wms.common.model.Location;
 import org.wms.stock.model.enums.AlertStatusEnums;
 
@@ -51,7 +50,7 @@ public class Stock {
      * }
      * ]
      */
-    @TableField(typeHandler = StockLocationTypeHandler.class)
+    @TableField(typeHandler = org.wms.stock.handler.LocationTypeHandler.class)
     private List<Location> location;
 
     /**
