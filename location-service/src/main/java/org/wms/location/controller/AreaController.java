@@ -1,6 +1,6 @@
 package org.wms.location.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,8 +64,8 @@ public class AreaController {
     @PostMapping
     public Result<String> addArea(@RequestBody AreaDto areaDto) {
         // 设置创建时间和更新时间
-        areaDto.setCreateTime(LocalDateTime.now());
-        areaDto.setUpdateTime(LocalDateTime.now());
+        areaDto.setCreateTime(LocalDate.now());
+        areaDto.setUpdateTime(LocalDate.now());
 
         // 如果状态为空，默认设置为启用
         if (areaDto.getStatus() == null) {
@@ -92,7 +92,7 @@ public class AreaController {
     public Result<String> updateArea(@RequestBody AreaDto areaDto, @PathVariable String id) {
         // 设置ID和更新时间
         areaDto.setId(id);
-        areaDto.setUpdateTime(LocalDateTime.now());
+        areaDto.setUpdateTime(LocalDate.now());
 
         // 执行更新操作
         boolean updated = areaService.updateArea(areaDto);

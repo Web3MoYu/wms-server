@@ -61,7 +61,7 @@ public class LocationApiController {
      * @return 区域信息
      */
     @PostMapping("/getArea/{id}")
-    public String getAreaName(@PathVariable String id) {
-        return areaService.getById(id).getAreaName();
+    public Area getArea(@PathVariable String id) {
+        return areaService.getById(id);
     }
 }

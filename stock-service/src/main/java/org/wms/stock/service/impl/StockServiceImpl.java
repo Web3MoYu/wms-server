@@ -83,7 +83,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
             // 获取区域名称
             if (StringUtils.isNotBlank(stock.getAreaId())) {
                 try {
-                    String areaName = locationClient.getAreaName(stock.getAreaId());
+                    String areaName = locationClient.getArea(stock.getAreaId()).getAreaName();
                     stockVo.setAreaName(Objects.requireNonNullElse(areaName, "未知区域"));
                 } catch (Exception e) {
                     // 记录错误日志但不中断流程

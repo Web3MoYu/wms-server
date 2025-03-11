@@ -27,5 +27,5 @@ public interface LocationClient {
      * @return 区域信息
      */
     @PostMapping("/api/location/getArea/{id}")
-    String getAreaName(@PathVariable String id);
+    Area getArea(@PathVariable String id);
 }
