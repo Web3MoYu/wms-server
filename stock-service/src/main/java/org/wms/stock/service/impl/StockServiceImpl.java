@@ -87,7 +87,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
         // 根据batchNumber和productId查询库存
         Stock one = this.lambdaQuery()
                 .eq(Stock::getProductId, stock.getProductId())
-                .eq(Stock::getProductId, stock.getProductId()).one();
+                .eq(Stock::getBatchNumber, stock.getBatchNumber()).one();
 
         // TODO 预警
         // 新增
