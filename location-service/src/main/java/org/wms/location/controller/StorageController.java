@@ -174,4 +174,20 @@ public class StorageController {
         return Result.success(list, "查询成功");
     }
 
+    /**
+     * 根据ids 查询库位列表
+     *
+     * @param ids id列表
+     * @return 库位列表信息
+     */
+    @GetMapping("/getStoragesByIds")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<Storage>> getStoragesByIds(@RequestParam List<String> ids) {
+        List<Storage> list = storageLocationService
+                .lambdaQuery()
+                .in(Storage::getId, ids)
+                .list();
+        return Result.success(list, "查询成功");
+    }
+
 }
