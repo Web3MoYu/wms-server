@@ -1,6 +1,6 @@
 package org.wms.product.cotroller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import io.micrometer.common.util.StringUtils;
@@ -64,8 +64,8 @@ public class ProductCatController {
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('product:cat:add')")
     public Result<String> add(@RequestBody ProductCat productCat) {
-        productCat.setCreateTime(LocalDateTime.now());
-        productCat.setUpdateTime(LocalDateTime.now());
+        productCat.setCreateTime(LocalDate.now());
+        productCat.setUpdateTime(LocalDate.now());
         if (StringUtils.isEmpty(productCat.getParentId())) {
             productCat.setParentId(null);
         }
@@ -85,7 +85,7 @@ public class ProductCatController {
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('product:cat:update')")
     public Result<String> update(@RequestBody ProductCat productCat, @PathVariable String id) {
-        productCat.setUpdateTime(LocalDateTime.now());
+        productCat.setUpdateTime(LocalDate.now());
         boolean update = productCatService.updateById(productCat);
         if (update) {
             return Result.success(null, "更新成功");

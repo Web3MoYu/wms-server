@@ -1,6 +1,6 @@
 package org.wms.product.model.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -45,11 +45,11 @@ public class ProductCat {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDate updateTime;
 
 }

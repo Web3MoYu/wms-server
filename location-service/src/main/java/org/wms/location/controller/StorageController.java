@@ -1,6 +1,6 @@
 package org.wms.location.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import cn.hutool.core.util.StrUtil;
@@ -89,8 +89,8 @@ public class StorageController {
     @PostMapping
     @PreAuthorize("hasAuthority('location:storage:add')")
     public Result<Boolean> add(@RequestBody Storage storage) {
-        storage.setCreateTime(LocalDateTime.now());
-        storage.setUpdateTime(LocalDateTime.now());
+        storage.setCreateTime(LocalDate.now());
+        storage.setUpdateTime(LocalDate.now());
         boolean save = storageLocationService.save(storage);
         if (save) {
             return Result.success(true, "添加库位成功");
@@ -108,7 +108,7 @@ public class StorageController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('location:storage:update')")
     public Result<Boolean> update(@PathVariable String id, @RequestBody Storage storage) {
-        storage.setUpdateTime(LocalDateTime.now());
+        storage.setUpdateTime(LocalDate.now());
         storage.setId(id);
         boolean update = storageLocationService.updateById(storage);
         if (update) {
@@ -147,8 +147,8 @@ public class StorageController {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> batchAdd(@RequestBody List<Storage> storageList) {
         storageList.forEach(item -> {
-            item.setUpdateTime(LocalDateTime.now());
-            item.setCreateTime(LocalDateTime.now());
+            item.setUpdateTime(LocalDate.now());
+            item.setCreateTime(LocalDate.now());
         });
         boolean save = storageLocationService.saveBatch(storageList);
         if (save) {

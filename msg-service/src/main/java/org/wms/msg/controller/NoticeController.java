@@ -12,7 +12,7 @@ import org.wms.msg.model.vo.NoticeVO;
 import org.wms.msg.service.NoticeService;
 import org.wms.security.util.SecurityUtil;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/msg/notice")
@@ -48,7 +48,7 @@ public class NoticeController {
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('msg:notice:update')")
     public Result<String> update(@PathVariable String id, @RequestBody Notice notice) {
-        notice.setUpdateTime(LocalDateTime.now());
+        notice.setUpdateTime(LocalDate.now());
         boolean update = noticeService.lambdaUpdate().eq(Notice::getId, id).update(notice);
         if (update) {
             return Result.success(null, "修改成功");
@@ -70,7 +70,7 @@ public class NoticeController {
 
         boolean remove = noticeService.lambdaUpdate()
                 .eq(Notice::getId, id)
-                .set(Notice::getEndTime, LocalDateTime.now())
+                .set(Notice::getEndTime, LocalDate.now())
                 .set(Notice::getStatus, NoticeStatus.DEPRECATED.getCode())
                 .update();
         if (remove) {
@@ -92,8 +92,8 @@ public class NoticeController {
     public Result<String> add(@RequestBody Notice notice) {
         String userId = SecurityUtil.getUserID();
         notice.setPublisher(userId);
-        notice.setCreateTime(LocalDateTime.now());
-        notice.setUpdateTime(LocalDateTime.now());
+        notice.setCreateTime(LocalDate.now());
+        notice.setUpdateTime(LocalDate.now());
         boolean save = noticeService.save(notice);
         if (save) {
             return Result.success(null, "添加成功");
@@ -115,7 +115,7 @@ public class NoticeController {
     public Result<String> publish(@PathVariable String id) {
         boolean update = noticeService.lambdaUpdate()
                 .eq(Notice::getId, id)
-                .set(Notice::getPublishTime, LocalDateTime.now())
+                .set(Notice::getPublishTime, LocalDate.now())
                 .set(Notice::getStatus, NoticeStatus.PUBLISHED.getCode())
                 .update();
         if (update) {

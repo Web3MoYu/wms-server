@@ -1,6 +1,6 @@
 package org.wms.location.service.impl;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +83,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
         LambdaUpdateWrapper<Area> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Area::getId, id)
                 .set(Area::getStatus, status.getCode())
-                .set(Area::getUpdateTime, LocalDateTime.now());
+                .set(Area::getUpdateTime, LocalDate.now());
 
         return update(updateWrapper);
     }
@@ -149,8 +149,8 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
             areaInspector.setIsPrimary(IsPrimaryEnums.NO);
         }
 
-        areaInspector.setCreateTime(LocalDateTime.now());
-        areaInspector.setUpdateTime(LocalDateTime.now());
+        areaInspector.setCreateTime(LocalDate.now());
+        areaInspector.setUpdateTime(LocalDate.now());
         return areaInspector;
     }
 }

@@ -1,6 +1,6 @@
 package org.wms.location.service.impl;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 import org.wms.location.mapper.ShelfMapper;
@@ -41,7 +41,7 @@ public class ShelfServiceImpl extends ServiceImpl<ShelfMapper, Shelf>
         LambdaUpdateWrapper<Shelf> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Shelf::getId, id)
                 .set(Shelf::getStatus, status)
-                .set(Shelf::getUpdateTime, LocalDateTime.now());
+                .set(Shelf::getUpdateTime, LocalDate.now());
 
         return update(updateWrapper);
     }

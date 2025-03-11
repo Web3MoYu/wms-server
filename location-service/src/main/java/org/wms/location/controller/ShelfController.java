@@ -1,6 +1,6 @@
 package org.wms.location.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,8 +64,8 @@ public class ShelfController {
     @PostMapping
     public Result<String> addShelf(@RequestBody Shelf shelf) {
         // 设置创建时间和更新时间
-        shelf.setCreateTime(LocalDateTime.now());
-        shelf.setUpdateTime(LocalDateTime.now());
+        shelf.setCreateTime(LocalDate.now());
+        shelf.setUpdateTime(LocalDate.now());
 
         // 如果状态为空，默认设置为启用
         if (shelf.getStatus() == null) {
@@ -92,7 +92,7 @@ public class ShelfController {
     public Result<String> updateShelf(@RequestBody Shelf shelf, @PathVariable String id) {
         // 设置ID和更新时间
         shelf.setId(id);
-        shelf.setUpdateTime(LocalDateTime.now());
+        shelf.setUpdateTime(LocalDate.now());
 
         // 执行更新操作
         boolean updated = shelfService.updateById(shelf);
@@ -169,8 +169,8 @@ public class ShelfController {
     @Transactional(rollbackFor = Exception.class)
     public Result<String> batchAddShelves(@RequestBody List<Shelf> shelves) {
         shelves.forEach(shelf -> {
-            shelf.setCreateTime(LocalDateTime.now());
-            shelf.setUpdateTime(LocalDateTime.now());
+            shelf.setCreateTime(LocalDate.now());
+            shelf.setUpdateTime(LocalDate.now());
         });
         boolean saved = shelfService.saveBatch(shelves);
         if (saved) {
