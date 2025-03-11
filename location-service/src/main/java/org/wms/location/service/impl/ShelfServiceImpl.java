@@ -1,9 +1,11 @@
 package org.wms.location.service.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.wms.location.mapper.ShelfMapper;
+import org.wms.location.mapper.StorageLocationMapper;
 import org.wms.location.model.entity.Shelf;
 import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.ShelfVo;
@@ -25,13 +27,16 @@ public class ShelfServiceImpl extends ServiceImpl<ShelfMapper, Shelf>
         implements ShelfService {
 
     @Resource
-    private ShelfMapper shelfMapper;
+    ShelfMapper shelfMapper;
+
+    @Resource
+    StorageLocationMapper storageMapper;
 
     @Override
     public Page<ShelfVo> pageShelfVos(int page, int pageSize, String shelfName, String areaId, Integer status) {
         // 创建分页对象
         Page<Shelf> pageParam = new Page<>(page, pageSize);
-        
+
         // 直接调用Mapper的连表查询方法
         return shelfMapper.selectShelfVoPage(pageParam, shelfName, areaId, status);
     }
@@ -60,6 +65,11 @@ public class ShelfServiceImpl extends ServiceImpl<ShelfMapper, Shelf>
                 .eq(Shelf::getAreaId, areaId)
                 .eq(Shelf::getShelfName, shelfName)
                 .exists();
+    }
+
+    @Override
+    public List<Shelf> listFreeShelves(String areaId) {
+        return storageMapper.listFreeShelves(areaId);
     }
 }
 

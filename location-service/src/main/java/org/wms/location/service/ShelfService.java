@@ -7,6 +7,8 @@ import org.wms.location.model.vo.ShelfVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author moyu
  * @description 针对表【wms_shelf(货架表)】的数据库操作Service
@@ -45,9 +47,18 @@ public interface ShelfService extends IService<Shelf> {
 
     /**
      * 检查货架名称是否存在
-     * @param areaId 区域id
+     *
+     * @param areaId    区域id
      * @param shelfName 名称
      * @return 检查结果
      */
     boolean checkShelfName(String areaId, String shelfName);
+
+    /**
+     * 获取含有空库位的货架列表
+     *
+     * @param areaId 区域id
+     * @return 货架列表集合
+     */
+    List<Shelf> listFreeShelves(String areaId);
 }

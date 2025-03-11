@@ -34,11 +34,11 @@ public class ShelfController {
     /**
      * 分页查询货架信息，包含区域名称
      *
-     * @param page 页码，默认为1
-     * @param pageSize 每页条数，默认为10
+     * @param page      页码，默认为1
+     * @param pageSize  每页条数，默认为10
      * @param shelfName 货架名称（可选，模糊查询）
-     * @param areaId 区域ID（可选）
-     * @param status 状态（可选，null表示查询所有）
+     * @param areaId    区域ID（可选）
+     * @param status    状态（可选，null表示查询所有）
      * @return 货架分页结果，包含区域名称
      */
     @PreAuthorize("hasAuthority('location:shelf:list')")
@@ -84,7 +84,7 @@ public class ShelfController {
      * 修改货架信息
      *
      * @param shelf 货架信息
-     * @param id 货架ID
+     * @param id    货架ID
      * @return 修改结果
      */
     @PreAuthorize("hasAuthority('location:shelf:update')")
@@ -158,6 +158,13 @@ public class ShelfController {
         List<Shelf> list = shelfService.lambdaQuery()
                 .eq(Shelf::getAreaId, areaId)
                 .eq(Shelf::getStatus, StatusEnums.ENABLED.getCode()).list();
+        return Result.success(list, "查询成功");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/getFreeShelves/{areaId}")
+    public Result<List<Shelf>> getFreeShelves(@PathVariable String areaId) {
+        List<Shelf> list = shelfService.listFreeShelves(areaId);
         return Result.success(list, "查询成功");
     }
 
