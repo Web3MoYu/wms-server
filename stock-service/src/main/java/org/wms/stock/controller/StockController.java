@@ -88,7 +88,6 @@ public class StockController {
     @PreAuthorize("isAuthenticated()")
     public Result<StockVo> getStock(@RequestParam String batchNumber, @RequestParam String productId) {
         StockVo stockVo = stockService.getStockByBatchAndProduct(batchNumber, productId);
-
         return Result.success(stockVo, "查询成功");
     }
 }

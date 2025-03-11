@@ -84,23 +84,48 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
 
     @Override
     public Result<String> addStock(Stock stock) {
-        stock.setCreateTime(LocalDate.now());
-        stock.setUpdateTime(LocalDate.now());
+        // 根据batchNumber和productId查询库存
+        Stock one = this.lambdaQuery()
+                .eq(Stock::getProductId, stock.getProductId())
+                .eq(Stock::getProductId, stock.getProductId()).one();
 
         // TODO 预警
+        // 新增
+        boolean success = false;
+        if (Objects.isNull(one)) {
+            stock.setCreateTime(LocalDate.now());
+            stock.setUpdateTime(LocalDate.now());
+            success = this.save(stock);
+        } else {
+            // 修改已有库存
+            // 首先将原先的状态修改为空闲
+            List<Location> list = one.getLocation();
+            for (Location location : list) {
+                boolean b = locationClient.updateStatusInStorage(location,
+                        LocationStatusEnums.FREE.getCode(), one.getProductId());
+                if (!b) {
+                    throw new BizException("新增库存失败");
+                }
+            }
+            stock.setUpdateTime(LocalDate.now());
+            stock.setId(one.getId());
+            success = this.updateById(stock);
+
+        }
         // 更新货架状态为占用
         List<Location> list = stock.getLocation();
         for (Location location : list) {
-            boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.OCCUPIED.getCode());
+            boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.OCCUPIED.getCode(), stock.getProductId());
             if (!b) {
                 throw new BizException("新增库存失败");
             }
         }
-        boolean save = this.save(stock);
-        if (save) {
-            return Result.success(null, "新增库存成功");
+
+        if (!success){
+            throw new BizException("新增库存失败");
         }
-        return Result.error(500, "新增库存失败");
+        return Result.success(null, "新增库存成功");
+
     }
 
     @Override

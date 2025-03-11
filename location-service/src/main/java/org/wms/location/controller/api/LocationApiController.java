@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.location.Area;
@@ -75,24 +76,22 @@ public class LocationApiController {
      * @return 处理结果
      */
     @PostMapping("/updateStatusInStorage")
-    public boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer type) {
-        LocationStatusEnums status = null;
+    public boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer type,
+                                         @RequestParam("productId") String productId) {
+        LambdaUpdateWrapper<Storage> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Storage::getShelfId, location.getShelfId())
+                .in(Storage::getId, location.getStorageIds());
         if (Objects.equals(type, LocationStatusEnums.DISABLED.getCode())) {
-            status = LocationStatusEnums.DISABLED;
+            wrapper.set(Storage::getStatus, LocationStatusEnums.DISABLED.getCode());
         }
         if (Objects.equals(type, LocationStatusEnums.FREE.getCode())) {
-            status = LocationStatusEnums.FREE;
+            wrapper.set(Storage::getStatus, LocationStatusEnums.FREE.getCode())
+                    .set(Storage::getProductId, null);
         }
         if (Objects.equals(type, LocationStatusEnums.OCCUPIED.getCode())) {
-            status = LocationStatusEnums.OCCUPIED;
+            wrapper.set(Storage::getStatus, LocationStatusEnums.OCCUPIED.getCode())
+                    .set(Storage::getProductId, productId);
         }
-        if (Objects.isNull(status)) {
-            return false;
-        }
-
-        return storageService.lambdaUpdate()
-                .eq(Storage::getShelfId, location.getShelfId())
-                .in(Storage::getId, location.getStorageIds())
-                .set(Storage::getStatus, status.getCode()).update();
+        return storageService.update(wrapper);
     }
 }

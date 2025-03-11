@@ -38,5 +38,6 @@ public interface LocationClient {
      * @return 处理结果
      */
     @PostMapping("/api/location/updateStatusInStorage")
-    boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer status);
+    boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer status,
+                                  @RequestParam("productId") String productId);
 }
