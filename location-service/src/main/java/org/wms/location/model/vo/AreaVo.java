@@ -2,7 +2,7 @@ package org.wms.location.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.wms.location.model.entity.Area;
+import org.wms.common.entity.location.Area;
 import org.wms.location.model.entity.AreaInspector;
 
 import java.util.List;

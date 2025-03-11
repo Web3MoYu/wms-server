@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.wms.api.client.fallback.MenuClientFallback;
-import org.wms.common.entity.MenuTree;
+import org.wms.common.entity.sys.MenuTree;
 
 import java.util.List;
 

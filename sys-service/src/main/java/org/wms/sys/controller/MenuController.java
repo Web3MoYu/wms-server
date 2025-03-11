@@ -5,8 +5,8 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.wms.common.entity.Menu;
-import org.wms.common.entity.MenuTree;
+import org.wms.common.entity.sys.Menu;
+import org.wms.common.entity.sys.MenuTree;
 import org.wms.common.model.Result;
 import org.wms.sys.service.MenuService;
 

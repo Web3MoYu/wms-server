@@ -32,7 +32,7 @@
         </if>
         order by su.update_time desc
     </select>
-    <select id="getAminList" resultType="org.wms.common.entity.User">
+    <select id="getAminList" resultType="org.wms.common.entity.sys.User">
         select su.user_id, su.real_name
         from sys_user su
                  inner join sys_user_role sur

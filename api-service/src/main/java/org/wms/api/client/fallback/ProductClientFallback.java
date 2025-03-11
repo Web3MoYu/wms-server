@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.wms.api.client.ProductClient;
-import org.wms.common.entity.Product;
+import org.wms.common.entity.product.Product;
 
 public class ProductClientFallback implements FallbackFactory<ProductClient> {
     private static final Logger log = LoggerFactory.getLogger(ProductClientFallback.class);

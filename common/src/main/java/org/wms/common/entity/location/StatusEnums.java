@@ -1,4 +1,4 @@
-package org.wms.location.model.enums;
+package org.wms.common.entity.location;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;

@@ -3,7 +3,7 @@ package org.wms.sys.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.wms.common.entity.Role;
+import org.wms.common.entity.sys.Role;
 
 @Mapper
 public interface RoleMapper extends BaseMapper<Role> {

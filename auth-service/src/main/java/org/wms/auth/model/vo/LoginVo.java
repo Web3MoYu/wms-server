@@ -1,8 +1,8 @@
 package org.wms.auth.model.vo;
 
 import lombok.Data;
-import org.wms.common.entity.MenuTree;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.MenuTree;
+import org.wms.common.entity.sys.User;
 
 import java.util.List;
 

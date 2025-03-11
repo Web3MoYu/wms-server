@@ -6,15 +6,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.location.mapper.AreaInspectorMapper;
 import org.wms.location.mapper.AreaMapper;
 import org.wms.location.model.dto.AreaDto;
-import org.wms.location.model.entity.Area;
+import org.wms.common.entity.location.Area;
 import org.wms.location.model.entity.AreaInspector;
 import org.wms.location.model.enums.IsPrimaryEnums;
-import org.wms.location.model.enums.StatusEnums;
+import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.AreaVo;
 import org.wms.location.service.AreaService;
 

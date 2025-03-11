@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.wms.product.mapper.ProductCatMapper;
 import org.wms.product.mapper.ProductMapper;
-import org.wms.common.entity.Product;
+import org.wms.common.entity.product.Product;
 import org.wms.product.model.entity.ProductCat;
 import org.wms.product.model.vo.ProductVo;
 import org.wms.product.service.ProductService;

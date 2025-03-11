@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.wms.api.client.MenuClient;
-import org.wms.common.entity.MenuTree;
+import org.wms.common.entity.sys.MenuTree;
 
 import java.util.List;
 

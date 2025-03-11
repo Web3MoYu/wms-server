@@ -1,8 +1,8 @@
 package org.wms.location.service;
 
 import org.wms.location.model.dto.AreaDto;
-import org.wms.location.model.entity.Area;
-import org.wms.location.model.enums.StatusEnums;
+import org.wms.common.entity.location.Area;
+import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.AreaVo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

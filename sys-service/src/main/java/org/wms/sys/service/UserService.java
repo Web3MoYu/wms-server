@@ -1,7 +1,7 @@
 package org.wms.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 import org.wms.common.model.Result;
 import org.wms.sys.model.vo.UserVo;
 

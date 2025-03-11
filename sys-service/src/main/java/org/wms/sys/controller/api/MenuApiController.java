@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.wms.common.entity.MenuTree;
+import org.wms.common.entity.sys.MenuTree;
 import org.wms.sys.service.MenuService;
 
 import java.util.List;

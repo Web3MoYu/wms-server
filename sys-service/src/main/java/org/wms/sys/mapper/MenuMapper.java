@@ -3,7 +3,7 @@ package org.wms.sys.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.wms.common.entity.Menu;
+import org.wms.common.entity.sys.Menu;
 import org.wms.sys.model.vo.UserRoleVo;
 
 import java.util.List;

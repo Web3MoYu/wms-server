@@ -1,7 +1,7 @@
 package org.wms.location.service;
 
 import org.wms.location.model.entity.Shelf;
-import org.wms.location.model.enums.StatusEnums;
+import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.ShelfVo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

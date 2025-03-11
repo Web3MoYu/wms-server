@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.wms.product.mapper.ProductMapper">
 
-    <resultMap id="BaseResultMap" type="org.wms.common.entity.Product">
+    <resultMap id="BaseResultMap" type="org.wms.common.entity.product.Product">
         <id property="id" column="id"/>
         <result property="productName" column="product_name"/>
         <result property="productCode" column="product_code"/>

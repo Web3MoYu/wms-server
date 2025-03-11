@@ -7,6 +7,9 @@ spring:
   cloud:
     nacos:
       server-addr: localhost:8848
+    openfeign:
+      okhttp:
+        enabled: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

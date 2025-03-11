@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.wms.api.client.UserClient;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 
 import java.util.List;
 

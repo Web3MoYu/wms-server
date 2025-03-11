@@ -1,8 +1,8 @@
 package org.wms.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.wms.common.entity.Menu;
-import org.wms.common.entity.MenuTree;
+import org.wms.common.entity.sys.Menu;
+import org.wms.common.entity.sys.MenuTree;
 
 import java.util.List;
 

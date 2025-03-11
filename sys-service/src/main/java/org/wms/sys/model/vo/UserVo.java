@@ -1,7 +1,7 @@
 package org.wms.sys.model.vo;
 
 import lombok.Data;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 
 @Data
 public class UserVo extends User {

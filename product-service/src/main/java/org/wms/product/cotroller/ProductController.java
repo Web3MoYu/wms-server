@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
-import org.wms.common.entity.Product;
+import org.wms.common.entity.product.Product;
 import org.wms.product.model.vo.ProductVo;
 import org.wms.product.service.ProductService;
 
@@ -49,7 +49,6 @@ public class ProductController {
             @RequestParam(required = false) String brand) {
 
         Page<ProductVo> result = productService.pageProductVo(page, pageSize, productName, categoryId, brand);
-        result.getRecords().forEach(System.out::println);
         return Result.success(result, "查询成功");
     }
 

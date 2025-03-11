@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wms.api.client.fallback.UserClientFallback;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 
 import java.util.List;
 

@@ -1,13 +1,13 @@
-package org.wms.location.model.entity;
+package org.wms.common.entity.location;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.wms.location.model.enums.StatusEnums;
 
 /**
  * 区域表
@@ -16,7 +16,7 @@ import org.wms.location.model.enums.StatusEnums;
  */
 @TableName(value = "wms_area")
 @Data
-public class Area {
+public class Area implements Serializable {
     /**
      * 区域ID
      */

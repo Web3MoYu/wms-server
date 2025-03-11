@@ -1,4 +1,4 @@
-package org.wms.common.entity;
+package org.wms.common.entity.sys;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

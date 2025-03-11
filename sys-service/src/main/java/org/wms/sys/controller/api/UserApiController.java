@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 import org.wms.sys.service.UserService;
 
 import java.util.List;

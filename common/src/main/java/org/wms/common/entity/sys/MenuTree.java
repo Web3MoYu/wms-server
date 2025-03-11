@@ -1,4 +1,4 @@
-package org.wms.common.entity;
+package org.wms.common.entity.sys;
 
 import lombok.Data;
 

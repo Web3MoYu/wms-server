@@ -2,7 +2,7 @@ package org.wms.sys.model.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

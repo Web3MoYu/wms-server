@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.wms.common.entity.User;
+import org.wms.common.entity.sys.User;
 import org.wms.sys.model.dto.UserDto;
 
 import java.util.List;

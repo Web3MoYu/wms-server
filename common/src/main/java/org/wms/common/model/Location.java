@@ -2,6 +2,8 @@ package org.wms.common.model;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Location {
     /**
@@ -11,5 +13,5 @@ public class Location {
     /**
      * 占用该货架的的库位id
      */
-    private String[] storageIds;
+    private List<String> storageIds;
 }

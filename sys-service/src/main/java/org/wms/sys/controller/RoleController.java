@@ -7,7 +7,7 @@ import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.wms.common.entity.Role;
+import org.wms.common.entity.sys.Role;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.sys.entity.UserRole;

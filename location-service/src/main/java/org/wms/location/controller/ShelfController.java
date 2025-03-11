@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
 import org.wms.location.model.entity.Shelf;
-import org.wms.location.model.enums.StatusEnums;
+import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.ShelfVo;
 import org.wms.location.service.ShelfService;
 

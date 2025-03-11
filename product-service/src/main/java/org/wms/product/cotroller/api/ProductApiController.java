@@ -2,7 +2,7 @@ package org.wms.product.cotroller.api;
 
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-import org.wms.common.entity.Product;
+import org.wms.common.entity.product.Product;
 import org.wms.product.service.ProductService;
 
 @RestController

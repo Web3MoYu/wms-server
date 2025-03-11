@@ -2,8 +2,8 @@ package org.wms.location.model.dto;
 
 import java.util.List;
 
-import org.wms.common.entity.User;
-import org.wms.location.model.entity.Area;
+import org.wms.common.entity.sys.User;
+import org.wms.common.entity.location.Area;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.wms.location.model.enums.StatusEnums;
+import org.wms.common.entity.location.StatusEnums;
 
 /**
  * 货架表

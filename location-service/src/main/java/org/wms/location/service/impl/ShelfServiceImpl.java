@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.wms.location.mapper.ShelfMapper;
 import org.wms.location.model.entity.Shelf;
-import org.wms.location.model.enums.StatusEnums;
+import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.ShelfVo;
 import org.wms.location.service.ShelfService;
 
