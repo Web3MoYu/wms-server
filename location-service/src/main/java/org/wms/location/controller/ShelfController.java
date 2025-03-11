@@ -161,6 +161,11 @@ public class ShelfController {
         return Result.success(list, "查询成功");
     }
 
+    /**
+     * 获取该还存在空闲库位的货架
+     *
+     * @param areaId 区域id
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/getFreeShelves/{areaId}")
     public Result<List<Shelf>> getFreeShelves(@PathVariable String areaId) {

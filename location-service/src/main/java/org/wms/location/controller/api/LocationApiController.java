@@ -1,15 +1,18 @@
 package org.wms.location.controller.api;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.location.Area;
 import org.wms.common.model.Location;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.location.model.entity.Shelf;
 import org.wms.location.model.entity.Storage;
+import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.location.service.AreaService;
 import org.wms.location.service.ShelfService;
 import org.wms.location.service.StorageLocationService;
@@ -63,5 +66,33 @@ public class LocationApiController {
     @PostMapping("/getArea/{id}")
     public Area getArea(@PathVariable String id) {
         return areaService.getById(id);
+    }
+
+    /**
+     * 更改库位状态
+     *
+     * @param location 位置
+     * @return 处理结果
+     */
+    @PostMapping("/updateStatusInStorage")
+    public boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer type) {
+        LocationStatusEnums status = null;
+        if (Objects.equals(type, LocationStatusEnums.DISABLED.getCode())) {
+            status = LocationStatusEnums.DISABLED;
+        }
+        if (Objects.equals(type, LocationStatusEnums.FREE.getCode())) {
+            status = LocationStatusEnums.FREE;
+        }
+        if (Objects.equals(type, LocationStatusEnums.OCCUPIED.getCode())) {
+            status = LocationStatusEnums.OCCUPIED;
+        }
+        if (Objects.isNull(status)) {
+            return false;
+        }
+
+        return storageService.lambdaUpdate()
+                .eq(Storage::getShelfId, location.getShelfId())
+                .in(Storage::getId, location.getStorageIds())
+                .set(Storage::getStatus, status.getCode()).update();
     }
 }

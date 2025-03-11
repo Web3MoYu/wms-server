@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.wms.api.client.ProductClient;
 import org.wms.common.model.Result;
 import org.wms.location.model.entity.Storage;
-import org.wms.location.model.enums.LocationStatusEnums;
+import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.location.model.vo.StorageVo;
 import org.wms.location.service.StorageLocationService;
 
@@ -155,6 +155,23 @@ public class StorageController {
             return Result.success(true, "批量添加库位成功");
         }
         return Result.error(500, "批量添加库位失败");
+    }
+
+    /**
+     * 按照货架id列表查找库位信息
+     *
+     * @param id id
+     * @return 结果
+     */
+    @GetMapping("/getStorageById/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<Storage>> getStorageById(@PathVariable String id) {
+        List<Storage> list = storageLocationService
+                .lambdaQuery()
+                .eq(Storage::getShelfId, id)
+                .eq(Storage::getStatus, LocationStatusEnums.FREE.getCode())
+                .list();
+        return Result.success(list, "查询成功");
     }
 
 }

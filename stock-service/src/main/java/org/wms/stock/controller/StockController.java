@@ -1,12 +1,19 @@
 package org.wms.stock.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.StockDto;
+import org.wms.stock.model.entity.Stock;
 import org.wms.stock.model.vo.StockVo;
 import org.wms.stock.service.StockService;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import jakarta.annotation.Resource;
 
@@ -29,4 +36,59 @@ public class StockController {
         return stockService.pageStocks(stockDto);
     }
 
+    /**
+     * 新增库存
+     *
+     * @param stock 库存信息
+     * @return 库存信息
+     */
+    @PostMapping("/add")
+    @PreAuthorize("hasAuthority('inventory:stock:add')")
+    @Transactional(rollbackFor = Exception.class)
+    public Result<String> addStock(@RequestBody Stock stock) {
+        return stockService.addStock(stock);
+    }
+
+    /**
+     * 修改库存信息
+     *
+     * @param stock 库存信息
+     * @return 库存信息
+     */
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('inventory:stock:update')")
+    @Transactional(rollbackFor = Exception.class)
+    public Result<String> updateStock(@RequestBody Stock stock) {
+        return stockService.updateStock(stock);
+    }
+
+    /**
+     * 模糊查找批次号
+     *
+     * @param batchNumber
+     * @return
+     */
+    @GetMapping("/getBatchNumber/{batchNumber}")
+    @PreAuthorize("isAuthenticated()")
+    public Result<Set<String>> getBatchNumber(@PathVariable String batchNumber) {
+        Set<String> list = stockService.lambdaQuery()
+                .like(Stock::getBatchNumber, batchNumber)
+                .list().stream().map(Stock::getBatchNumber).collect(Collectors.toSet());
+        return Result.success(list, "查询成功");
+    }
+
+    /**
+     * 根据批次号和商品id查找库存
+     *
+     * @param batchNumber 批次号
+     * @param productId   商品id
+     * @return 库存
+     */
+    @GetMapping("/getStockByBatchAndProduct")
+    @PreAuthorize("isAuthenticated()")
+    public Result<StockVo> getStock(@RequestParam String batchNumber, @RequestParam String productId) {
+        StockVo stockVo = stockService.getStockByBatchAndProduct(batchNumber, productId);
+
+        return Result.success(stockVo, "查询成功");
+    }
 }

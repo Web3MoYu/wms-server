@@ -33,4 +33,16 @@ public class StockDto {
      * 是否按生产日期升序排序
      */
     Boolean ascSortByProdDate;
+    /**
+     * 是否按数量生序排序
+     */
+    Boolean ascSortByQuantity;
+    /**
+     * 是否按可用数量生序排序
+     */
+    Boolean ascSortByAvailableQuantity;
+    /**
+     * 是否按锁定数量生序排序
+     */
+    Boolean ascSortByLockedQuantity;
 }

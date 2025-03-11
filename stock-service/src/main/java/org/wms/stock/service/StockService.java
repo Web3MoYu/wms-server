@@ -17,15 +17,33 @@ public interface StockService extends IService<Stock> {
     /**
      * 分页查询库存
      *
-     * @param page              当前页码
-     * @param pageSize          每页条数
-     * @param productId         商品ID
-     * @param areaId            区域ID
-     * @param shelfId           货架ID
-     * @param status            状态
-     * @param batchNumber       批次号
-     * @param ascSortByProdDate 是否按生产日期升序排序
      * @return 库存分页结果
      */
     Result<Page<StockVo>> pageStocks(StockDto dto);
+
+    /**
+     * 新增库存信息
+     *
+     * @param stock 库存
+     * @return 结果
+     */
+    Result<String> addStock(Stock stock);
+
+
+    /**
+     * 修改库存信息
+     *
+     * @param stock 库存
+     * @return 结果
+     */
+    Result<String> updateStock(Stock stock);
+
+    /**
+     * 根据 批次号 和 商品id 查询库存并转化为vo
+     *
+     * @param batchNumber 批次号
+     * @param productId   商品id
+     * @return vo
+     */
+    StockVo getStockByBatchAndProduct(String batchNumber, String productId);
 }

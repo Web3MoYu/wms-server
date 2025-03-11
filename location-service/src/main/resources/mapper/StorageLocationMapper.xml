@@ -57,4 +57,11 @@
         </where>
         ORDER BY s.create_time DESC
     </select>
+    <select id="listFreeShelves" resultType="org.wms.location.model.entity.Shelf">
+        select distinct ws.*
+        from wms_shelf ws
+                 left join wms_storage_location wsl on wsl.shelf_id = ws.id
+        where wsl.status = 1
+          and ws.area_id = #{areaId}
+    </select>
 </mapper>
