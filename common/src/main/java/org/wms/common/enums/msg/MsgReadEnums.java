@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 public enum MsgReadEnums {
-    READ(0, "未读"),
-    UNREAD(1, "已读");
+    UNREAD(0, "未读"),
+    READ(1, "已读");
 
     @JsonValue
     @EnumValue

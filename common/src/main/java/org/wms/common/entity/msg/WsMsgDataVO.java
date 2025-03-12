@@ -1,14 +1,8 @@
-package org.wms.msg.model;
+package org.wms.common.entity.msg;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * websocket推送消息
- *
- * @author 夕四
- * @date 2022-02-23 12:55
- **/
 @Data
 @NoArgsConstructor
 public class WsMsgDataVO<T> {
@@ -17,12 +11,17 @@ public class WsMsgDataVO<T> {
      */
     private T data;
     /**
-     * 标记标签 0：心跳包
+     * 消息类型
+     * 0：心跳包
+     * 1: 消息提醒
      */
     private Integer type;
 
-    public WsMsgDataVO(T data, Integer tag) {
+    private String id;
+
+    public WsMsgDataVO(T data, Integer type, String id) {
         this.data = data;
-        this.type = tag;
+        this.type = type;
+        this.id = id;
     }
 }

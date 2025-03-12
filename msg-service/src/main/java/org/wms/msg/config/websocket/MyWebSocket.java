@@ -8,7 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.wms.msg.model.WsMsgDataVO;
+import org.wms.common.entity.msg.WsMsgDataVO;
+import org.wms.common.enums.msg.MsgEnums;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @ServerEndpoint("/ws/{clientId}")
 public class MyWebSocket {
-
 
     private static final Logger log = LoggerFactory.getLogger(MyWebSocket.class);
     /**
@@ -74,14 +74,14 @@ public class MyWebSocket {
 
     @Scheduled(fixedRate = 30000) // 每 30 秒发送一次心跳
     public void sendHeartbeat() {
-        if (sessionList.isEmpty()){
+        if (sessionList.isEmpty()) {
             return;
         }
         log.info("触发心跳定时任务");
         sessionList.forEach((clientId, session) -> {
             if (session.isOpen()) {
                 try {
-                    session.getBasicRemote().sendText(JSONUtil.toJsonStr(new WsMsgDataVO<>(null, 0)));
+                    session.getBasicRemote().sendText(JSONUtil.toJsonStr(new WsMsgDataVO<>(null, MsgEnums.HEART_BEAR.getCode(), null)));
                 } catch (IOException e) {
                     log.error("心跳消息发送失败,userId:{}, {}", clientId, e.getMessage());
                 }

@@ -1,6 +1,7 @@
 package org.wms.msg.consumer;
 
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import org.wms.common.entity.msg.Msg;
 import org.wms.msg.config.websocket.MyWebSocket;
 import org.wms.common.entity.msg.WsMsgDataVO;
 
@@ -23,7 +25,10 @@ public class MsgConsumer {
     public static final String QUEUE_NAME = "msg.queue";
 
     public static final String ROUTING_KEY = "msg.receive";
+
     private static final Logger log = LoggerFactory.getLogger(MsgConsumer.class);
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Resource
     MyWebSocket webSocket;
@@ -33,8 +38,8 @@ public class MsgConsumer {
             exchange = @Exchange(name = EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
             key = ROUTING_KEY
     ))
-    public void receive(WsMsgDataVO<Boolean> message) throws IOException {
-        webSocket.sendMsg(message.getId(), JSONUtil.toJsonStr(message));
+    public void receive(WsMsgDataVO<Msg> message) throws IOException {
+        webSocket.sendMsg(message.getId(), objectMapper.writeValueAsString(message));
         MsgConsumer.log.info("消费者接收到消息：{}", JSONUtil.toJsonStr(message));
     }
 
