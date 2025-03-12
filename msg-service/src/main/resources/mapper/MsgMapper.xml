@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.msg.mapper.MsgMapper">
+
+    <resultMap id="BaseResultMap" type="org.wms.common.entity.msg.Msg">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="recipientId" column="recipient_id"/>
+        <result property="recipientName" column="recipient_name"/>
+        <result property="senderId" column="sender_id"/>
+        <result property="senderName" column="sender_name"/>
+        <result property="readStatus" column="read_status"/>
+        <result property="priority" column="priority"/>
+        <result property="relatedBizId" column="related_biz_id"/>
+        <result property="relatedBizType" column="related_biz_type"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="readTime" column="read_time"/>
+        <result property="isSystem" column="is_system"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,title,content,recipient_id,recipient_name,
+        sender_id,sender_name,read_status,priority,related_biz_id,
+        related_biz_type,send_time,read_time,is_system,create_time,
+        update_time
+    </sql>
+</mapper>
