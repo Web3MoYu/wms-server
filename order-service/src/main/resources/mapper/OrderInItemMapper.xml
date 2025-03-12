@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.order.mapper.OrderInItemMapper">
+
+    <resultMap id="BaseResultMap" type="org.wms.order.model.entity.OrderInItem">
+        <id property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productCode" column="product_code"/>
+        <result property="expectedQuantity" column="expected_quantity"/>
+        <result property="actualQuantity" column="actual_quantity"/>
+        <result property="price" column="price"/>
+        <result property="amount" column="amount"/>
+        <result property="areaId" column="area_id"/>
+        <result property="location" column="location"/>
+        <result property="batchNumber" column="batch_number"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="expiryDate" column="expiry_date"/>
+        <result property="status" column="status"/>
+        <result property="qualityStatus" column="quality_status"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_id,product_id,product_name,product_code,expected_quantity,
+        actual_quantity,price,amount,area_id,location,
+        batch_number,production_date,expiry_date,status,quality_status,
+        remark,create_time,update_time
+    </sql>
+</mapper>
