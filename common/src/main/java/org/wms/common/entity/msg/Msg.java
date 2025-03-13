@@ -119,4 +119,8 @@ public class Msg {
         this.updateTime = LocalDateTime.now();
 
     }
+
+    public Msg() {
+        
+    }
 }
