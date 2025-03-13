@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.order.mapper.OrderMapper">
+
+    <!-- 联合查询入库和出库订单 -->
+    <select id="unionQueryOrders" resultType="org.wms.order.model.vo.OrderVo">
+        (SELECT
+        i.id,
+        i.order_no as orderNo,
+        i.type as "type",
+        i.creator as "creator.userId",
+        i.approver as "approver.userId",
+        i.inspector as "inspector.userId",
+        i.total_amount as totalAmount,
+        i.total_quantity as totalQuantity,
+        i.status as "status",
+        i.quality_status as "qualityStatus",
+        i.remark,
+        i.create_time as createTime
+        FROM
+        order_in i
+        <where>
+            <if test="query.orderNo != null and query.orderNo != ''">
+                AND i.order_no LIKE CONCAT('%', #{query.orderNo}, '%')
+            </if>
+            <if test="query.inspectionStatus != null">
+                AND i.quality_status = #{query.inspectionStatus}
+            </if>
+            <if test="query.creatorId != null and query.creatorId != ''">
+                AND i.creator = #{query.creatorId}
+            </if>
+            <if test="query.approverId != null and query.approverId != ''">
+                AND i.approver = #{query.approverId}
+            </if>
+            <if test="query.inspectorId != null and query.inspectorId != ''">
+                AND i.inspector = #{query.inspectorId}
+            </if>
+            <if test="query.startTime != null">
+                AND i.create_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND i.create_time &lt;= #{query.endTime}
+            </if>
+            <if test="query.orderType != null and query.orderType == 1">
+                <!-- 只查询入库订单 -->
+            </if>
+            <if test="query.orderType != null and query.orderType != 1">
+                AND 1=0 <!-- 如果指定只查询出库订单，则入库订单不查询 -->
+            </if>
+        </where>
+        )
+
+        UNION ALL
+
+        (SELECT
+        o.id,
+        o.order_no as orderNo,
+        o.type as "type.code",
+        o.creator as "creator.userId",
+        o.approver as "approver.userId",
+        o.inspector as "inspector.userId",
+        o.total_amount as totalAmount,
+        o.total_quantity as totalQuantity,
+        o.status as "status.code",
+        o.quality_status as "qualityStatus.code",
+        o.remark,
+        o.create_time as createTime
+        FROM
+        order_out o
+        <where>
+            <if test="query.orderNo != null and query.orderNo != ''">
+                AND o.order_no LIKE CONCAT('%', #{query.orderNo}, '%')
+            </if>
+            <if test="query.inspectionStatus != null">
+                AND o.quality_status = #{query.inspectionStatus}
+            </if>
+            <if test="query.creatorId != null and query.creatorId != ''">
+                AND o.creator = #{query.creatorId}
+            </if>
+            <if test="query.approverId != null and query.approverId != ''">
+                AND o.approver = #{query.approverId}
+            </if>
+            <if test="query.inspectorId != null and query.inspectorId != ''">
+                AND o.inspector = #{query.inspectorId}
+            </if>
+            <if test="query.startTime != null">
+                AND o.create_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND o.create_time &lt;= #{query.endTime}
+            </if>
+            <if test="query.orderType != null and query.orderType != 0">
+                AND 1=0 <!-- 如果指定只查询入库订单，则出库订单不查询 -->
+            </if>
+        </where>
+        )
+
+        ORDER BY
+        <choose>
+            <when test="query.createTimeAsc != null and query.createTimeAsc">
+                createTime ASC
+            </when>
+            <otherwise>
+                createTime DESC
+            </otherwise>
+        </choose>
+
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计联合查询的总记录数 -->
+    <select id="countUnionQueryOrders" resultType="java.lang.Long">
+        SELECT
+        (
+        SELECT COUNT(*)
+        FROM order_in i
+        <where>
+            <if test="query.orderNo != null and query.orderNo != ''">
+                AND i.order_no LIKE CONCAT('%', #{query.orderNo}, '%')
+            </if>
+            <if test="query.inspectionStatus != null">
+                AND i.quality_status = #{query.inspectionStatus}
+            </if>
+            <if test="query.creatorId != null and query.creatorId != ''">
+                AND i.creator = #{query.creatorId}
+            </if>
+            <if test="query.approverId != null and query.approverId != ''">
+                AND i.approver = #{query.approverId}
+            </if>
+            <if test="query.inspectorId != null and query.inspectorId != ''">
+                AND i.inspector = #{query.inspectorId}
+            </if>
+            <if test="query.startTime != null">
+                AND i.create_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND i.create_time &lt;= #{query.endTime}
+            </if>
+            <if test="query.orderType != null and query.orderType == 0">
+                AND 1=0
+            </if>
+        </where>
+        ) +
+        (
+        SELECT COUNT(*)
+        FROM order_out o
+        <where>
+            <if test="query.orderNo != null and query.orderNo != ''">
+                AND o.order_no LIKE CONCAT('%', #{query.orderNo}, '%')
+            </if>
+            <if test="query.inspectionStatus != null">
+                AND o.quality_status = #{query.inspectionStatus}
+            </if>
+            <if test="query.creatorId != null and query.creatorId != ''">
+                AND o.creator = #{query.creatorId}
+            </if>
+            <if test="query.approverId != null and query.approverId != ''">
+                AND o.approver = #{query.approverId}
+            </if>
+            <if test="query.inspectorId != null and query.inspectorId != ''">
+                AND o.inspector = #{query.inspectorId}
+            </if>
+            <if test="query.startTime != null">
+                AND o.create_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND o.create_time &lt;= #{query.endTime}
+            </if>
+            <if test="query.orderType != null and query.orderType == 1">
+                AND 1=0
+            </if>
+        </where>
+        )
+    </select>
+</mapper> 

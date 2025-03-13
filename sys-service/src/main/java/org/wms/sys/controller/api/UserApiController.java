@@ -45,6 +45,15 @@ public class UserApiController {
         return userService.getById(userId);
     }
 
+    @GetMapping("/getUserByIds")
+    public List<User> getUserByIds(@RequestParam("userIds") List<String> userIds) {
+        log.info("getUserByIds调开始,userIds:{}", userIds);
+        return userService.lambdaQuery()
+                .select(User::getUserId, User::getPhone, User::getEmail, User::getUsername, User::getNickName, User::getRealName)
+                .in(User::getUserId, userIds)
+                .list();
+    }
+
     /**
      * 根据邮箱获取用户信息
      *
@@ -97,6 +106,7 @@ public class UserApiController {
 
     /**
      * 设置微信id
+     *
      * @param wxId
      * @param userId
      * @param avatar

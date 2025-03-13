@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum OrderType {
 
-    IN_ORDER(0, "入库"),
-    OUT_ORDER(1, "出库");
+    IN_ORDER(1, "入库"),
+    OUT_ORDER(0, "出库");
     @JsonValue
     @EnumValue
     private final Integer code;

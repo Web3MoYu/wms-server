@@ -30,6 +30,11 @@ public class UserClientFallback implements FallbackFactory<UserClient> {
             }
 
             @Override
+            public List<User> getUserByIds(List<String> userIds) {
+                return List.of();
+            }
+
+            @Override
             public User getUserByEmail(String email) {
                 log.warn("触发兜底,方法:getUserByUserEmail, email={}", email);
                 return new User();

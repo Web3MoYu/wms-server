@@ -35,6 +35,15 @@ public interface UserClient {
     User getUserById(@RequestParam("userId") String userId);
 
     /**
+     * 根据ids获取用户列表
+     *
+     * @param userIds id列表
+     * @return 用户列表
+     */
+    @GetMapping("/api/user/getUserByIds")
+    List<User> getUserByIds(@RequestParam("userIds") List<String> userIds);
+
+    /**
      * 根据邮箱获取用户信息
      *
      * @param email 邮箱
