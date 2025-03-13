@@ -3,7 +3,7 @@ package org.wms.common.entity.msg;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import org.wms.common.enums.msg.*;
@@ -80,12 +80,12 @@ public class Msg {
     /**
      * 发送时间
      */
-    private LocalDate sendTime;
+    private LocalDateTime sendTime;
 
     /**
      * 阅读时间
      */
-    private LocalDate readTime;
+    private LocalDateTime readTime;
 
     /**
      * 是否系统通知：0-否，1-是
@@ -95,10 +95,28 @@ public class Msg {
     /**
      * 创建时间
      */
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private LocalDate updateTime;
+    private LocalDateTime updateTime;
+
+    public Msg(MsgTypeEnums type, String title, String content,
+               String recipientId, String recipientName, String senderId,
+               String senderName, MsgPriorityEnums priority, String bizId, MsgBizEnums bizType) {
+        this.type = type;
+        this.title = title;
+        this.content = content;
+        this.recipientId = recipientId;
+        this.recipientName = recipientName;
+        this.senderId = senderId;
+        this.senderName = senderName;
+        this.priority = priority;
+        this.relatedBizId = bizId;
+        this.relatedBizType = bizType;
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
+
+    }
 }
