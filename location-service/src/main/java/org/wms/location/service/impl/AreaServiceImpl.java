@@ -96,7 +96,6 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean saveArea(AreaDto areaDto) {
         // 保存区域信息
         boolean areaSaved = this.save(areaDto);
@@ -109,7 +108,6 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area>
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean updateArea(AreaDto areaDto) {
         // 删除质检员
         LambdaQueryWrapper<AreaInspector> wrapper = new LambdaQueryWrapper<>();

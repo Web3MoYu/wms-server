@@ -3,8 +3,8 @@ package org.wms.stock.controller;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +50,7 @@ public class StockController {
      */
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('inventory:stock:add')")
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public Result<String> addStock(@RequestBody Stock stock) {
         return stockService.addStock(stock);
     }
@@ -63,7 +63,6 @@ public class StockController {
      */
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('inventory:stock:update')")
-    @Transactional(rollbackFor = Exception.class)
     public Result<String> updateStock(@RequestBody Stock stock) {
         return stockService.updateStock(stock);
     }

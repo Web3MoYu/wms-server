@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +63,7 @@ public class AreaController {
      */
     @PreAuthorize("hasAuthority('location:area:add')")
     @PostMapping
+    @Transactional(rollbackFor = Exception.class)
     public Result<String> addArea(@RequestBody AreaDto areaDto) {
         // 设置创建时间和更新时间
         areaDto.setCreateTime(LocalDate.now());
@@ -89,6 +91,7 @@ public class AreaController {
      */
     @PreAuthorize("hasAuthority('location:area:update')")
     @PutMapping("/{id}")
+    @Transactional(rollbackFor = Exception.class)
     public Result<String> updateArea(@RequestBody AreaDto areaDto, @PathVariable String id) {
         // 设置ID和更新时间
         areaDto.setId(id);

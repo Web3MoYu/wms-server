@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wms.common.entity.location.Area;
-import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.model.Location;
 import org.wms.common.model.vo.LocationVo;
 
