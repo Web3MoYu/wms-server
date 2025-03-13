@@ -198,4 +198,19 @@ public class UserController {
     public Result<List<User>> getAll() {
         return Result.success(userService.list(), "查询成功");
     }
+
+    /**
+     * 根据姓名模糊查询
+     *
+     * @param realName 姓名
+     * @return 用户列表
+     */
+    @GetMapping("/getListByRealName")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<User>> getOne(@RequestParam String realName) {
+        List<User> list = userService.lambdaQuery()
+                .select(User::getUserId, User::getRealName)
+                .like(User::getRealName, realName).list();
+        return Result.success(list, "查询成功");
+    }
 }

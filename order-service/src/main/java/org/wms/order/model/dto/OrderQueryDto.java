@@ -1,5 +1,6 @@
 package org.wms.order.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,9 @@ public class OrderQueryDto {
     private String inspectorId;         // 质检人员ID
 
     // 时间范围
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;    // 开始时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;      // 结束时间
 
     // 排序参数
