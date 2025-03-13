@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
 import org.wms.common.entity.product.Product;
+import org.wms.common.utils.IdGenerate;
 import org.wms.product.model.vo.ProductVo;
 import org.wms.product.service.ProductService;
 
@@ -28,6 +29,9 @@ public class ProductController {
 
     @Resource
     private ProductService productService;
+
+    @Resource
+    private IdGenerate idGenerate;
 
     /**
      * 分页查询产品信息，包含分类全称
@@ -130,6 +134,12 @@ public class ProductController {
         List<Product> list = productService.lambdaQuery()
                 .like(Product::getProductName, productName).list();
         return Result.success(list, "查询成功");
+    }
+
+    @GetMapping("/batchNumber")
+    @PreAuthorize("isAuthenticated()")
+    public Result<String> getBatchNumber() {
+        return Result.success(idGenerate.generateBatchNo(), "生成成功");
     }
 
 }

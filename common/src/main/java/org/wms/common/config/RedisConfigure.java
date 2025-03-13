@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.wms.common.utils.IdGenerate;
 
 /**
  * 配置redis序列化
@@ -26,5 +27,10 @@ public class RedisConfigure {
         template.setHashValueSerializer(RedisSerializer.string());
         template.afterPropertiesSet();
         return template;
+    }
+
+    @Bean
+    public IdGenerate idGenerator() {
+        return new IdGenerate();
     }
 }

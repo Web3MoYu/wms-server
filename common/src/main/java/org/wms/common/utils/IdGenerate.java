@@ -5,18 +5,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.wms.common.enums.order.OrderType;
-import org.wms.order.model.enums.OrderType;
 
 import jakarta.annotation.Resource;
 
 /**
  * 订单编号生成工具类
  */
-@Component
-public class IdGenerateUtils {
+@ConditionalOnClass(RedisTemplate.class)
+public class IdGenerate {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
