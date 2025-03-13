@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.order.model.enums.OrderInType;
 import org.wms.order.model.enums.OrderStatusEnums;
-import org.wms.order.model.enums.OrderType;
+import org.wms.common.enums.order.OrderType;
 import org.wms.order.model.enums.QualityStatusEnums;
 
 /**
