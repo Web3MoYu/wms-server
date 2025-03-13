@@ -1,5 +1,6 @@
 package org.wms.order.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.common.entity.sys.User;
 import org.wms.order.model.enums.OrderStatusEnums;
@@ -7,7 +8,7 @@ import org.wms.order.model.enums.OrderType;
 import org.wms.order.model.enums.QualityStatusEnums;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class OrderVo {
@@ -63,6 +64,7 @@ public class OrderVo {
     /**
      * 创建时间
      */
-    private LocalDate createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime;
 
 }

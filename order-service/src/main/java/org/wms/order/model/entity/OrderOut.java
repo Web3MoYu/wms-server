@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.order.model.enums.OrderOutType;
 import org.wms.order.model.enums.OrderStatusEnums;
@@ -59,12 +60,14 @@ public class OrderOut {
     /**
      * 预计出库时间
      */
-    private LocalDate expectedTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime expectedTime;
 
     /**
      * 实际出库时间
      */
-    private LocalDate actualTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime actualTime;
 
     /**
      * 总金额
@@ -109,11 +112,13 @@ public class OrderOut {
     /**
      * 创建时间
      */
-    private LocalDate createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private LocalDate updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updateTime;
 
 }
