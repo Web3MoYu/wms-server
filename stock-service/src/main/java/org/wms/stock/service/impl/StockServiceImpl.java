@@ -146,6 +146,9 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
                 .eq(Stock::getBatchNumber, batchNumber)
                 .eq(Stock::getProductId, productId)
                 .one();
+        if(Objects.isNull(one)){
+            return null;
+        }
         return convertToStockVo(one);
     }
 

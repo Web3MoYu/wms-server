@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.wms.common.entity.product.Product;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.stock.model.entity.Stock;
@@ -73,10 +74,11 @@ public class StockController {
      * @param batchNumber
      * @return
      */
-    @GetMapping("/getBatchNumber/{batchNumber}")
+    @GetMapping("/getBatchNumber/{code}/{batchNumber}")
     @PreAuthorize("isAuthenticated()")
-    public Result<Set<String>> getBatchNumber(@PathVariable String batchNumber) {
+    public Result<Set<String>> getBatchNumber(@PathVariable String batchNumber, @PathVariable String code) {
         Set<String> list = stockService.lambdaQuery()
+                .eq(Stock::getProductCode, code)
                 .like(Stock::getBatchNumber, batchNumber)
                 .list().stream().map(Stock::getBatchNumber).collect(Collectors.toSet());
         return Result.success(list, "查询成功");
