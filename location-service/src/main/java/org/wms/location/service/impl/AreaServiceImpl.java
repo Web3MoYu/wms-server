@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.location.mapper.AreaInspectorMapper;

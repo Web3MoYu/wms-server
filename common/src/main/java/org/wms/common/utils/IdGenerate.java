@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 import org.wms.common.enums.order.OrderType;
 
 import jakarta.annotation.Resource;
