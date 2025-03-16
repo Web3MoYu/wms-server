@@ -1,26 +1,42 @@
 package org.wms.order.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
+import cn.hutool.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.wms.api.client.ProductClient;
+import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.entity.product.Product;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.order.OrderType;
+import org.wms.common.enums.stock.AlertStatusEnums;
+import org.wms.common.enums.stock.Stock;
+import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
-import org.wms.order.mapper.OrderMapper;
+import org.wms.common.utils.IdGenerate;
+import org.wms.order.mapper.*;
+import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
+import org.wms.order.model.entity.OrderIn;
+import org.wms.order.model.entity.OrderInItem;
+import org.wms.order.model.entity.OrderOut;
+import org.wms.order.model.entity.OrderOutItem;
+import org.wms.order.model.enums.OrderInType;
+import org.wms.order.model.enums.OrderItemStatus;
+import org.wms.order.model.enums.OrderStatusEnums;
+import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.OrderVo;
 import org.wms.order.service.OrderService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import jakarta.annotation.Resource;
+import org.wms.security.util.SecurityUtil;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -28,10 +44,31 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Resource
-    private UserClient userClient;
+    UserClient userClient;
 
     @Resource
-    private OrderMapper orderMapper;
+    OrderMapper orderMapper;
+
+    @Resource
+    OrderInMapper orderInMapper;
+
+    @Resource
+    OrderInItemMapper orderInItemMapper;
+
+    @Resource
+    ProductClient productClient;
+
+    @Resource
+    StockClient stockClient;
+
+    @Resource
+    OrderOutMapper orderOutMapper;
+
+    @Resource
+    OrderOutItemMapper orderOutItemMapper;
+
+    @Resource
+    IdGenerate idGenerate;
 
     @Override
     public Result<Page<OrderVo>> pageOrder(OrderQueryDto queryDto) {
@@ -122,5 +159,95 @@ public class OrderServiceImpl implements OrderService {
         page.setRecords(orders);
 
         return Result.success(page, "查询成功");
+    }
+
+    @Override
+    public Result<String> addOrderIn(OrderDto<OrderIn, OrderInItem> order) {
+        String userID = SecurityUtil.getUserID();
+        // 设置订单属性
+        OrderIn orderIn = order.getOrder();
+        orderIn.setCreator(userID);
+        orderIn.setOrderNo(idGenerate.generateOrderNo(orderIn.getType()));
+        orderIn.setType(OrderType.IN_ORDER);
+        orderIn.setOrderType(OrderInType.PURCHASE);
+        orderIn.setStatus(OrderStatusEnums.PENDING_REVIEW);
+        orderIn.setQualityStatus(QualityStatusEnums.NOT_INSPECTED);
+        orderIn.setCreateTime(LocalDateTime.now());
+        orderIn.setUpdateTime(LocalDateTime.now());
+        // 插入订单
+        int insert = orderInMapper.insert(orderIn);
+        if (insert <= 0) {
+            throw new BizException(303, "插入订单失败");
+        }
+        List<OrderInItem> orderItem = order.getOrderItems();
+        // 设置入库订单详细信息
+        orderItem.forEach((item) -> {
+            item.setOrderId(orderIn.getId());
+            item.setStatus(OrderItemStatus.NOT_STARTED);
+            item.setQualityStatus(QualityStatusEnums.NOT_INSPECTED);
+            item.setCreateTime(LocalDateTime.now());
+            item.setUpdateTime(LocalDateTime.now());
+        });
+        // 更新商品信息
+        orderItem.forEach((item) -> {
+            String productCode = item.getProductCode();
+            String productId = item.getProductId();
+            Product productById = productClient.getProductById(productId);
+            if (StrUtil.isEmpty(productId)) {
+                Product product = order.getProducts().get(productCode);
+                product.setUpdateTime(LocalDateTime.now());
+                product.setCreateTime(LocalDateTime.now());
+                productClient.createProduct(product);
+                productById = product;
+            }
+            item.setProductId(productById.getId());
+            // TODO 库存信息的修改是在质检员审核完毕之后才修改的
+//            Stock stock = stockClient.checkStockByCodeAndBatch(productCode, batchNumber);
+//            if (Objects.isNull(stock)) {
+//                stock = new Stock();
+//                stock.setProductId(productById.getId());
+//                stock.setProductCode(productCode);
+//                stock.setQuantity(item.getActualQuantity());
+//                stock.setAvailableQuantity(item.getActualQuantity());
+//                if (stock.getQuantity() < productById.getMinStock()) {
+//                    stock.setAlertStatus(AlertStatusEnums.LOW);
+//                }
+//                if (stock.getQuantity() > productById.getMaxStock()) {
+//                    stock.setAlertStatus(AlertStatusEnums.HIGH);
+//                }
+//                stock.setBatchNumber(batchNumber);
+//                stock.setProductionDate(item.getProductionDate());
+//                stock.setCreateTime(LocalDate.now());
+//                stock.setUpdateTime(LocalDate.now());
+//                boolean b = stockClient.addStock(stock);
+//                if (!b) {
+//                    throw new BizException("添加库存失败");
+//                }
+//            } else {
+//                stock.setUpdateTime(LocalDate.now());
+//                stock.setQuantity(stock.getQuantity() + item.getActualQuantity());
+//                stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getActualQuantity());
+//                if (stock.getQuantity() < productById.getMinStock()) {
+//                    stock.setAlertStatus(AlertStatusEnums.LOW);
+//                }
+//                if (stock.getQuantity() > productById.getMaxStock()) {
+//                    stock.setAlertStatus(AlertStatusEnums.HIGH);
+//                }
+//                boolean b = stockClient.updateStock(stock);
+//                if (!b) {
+//                    throw new BizException("更新库存失败");
+//                }
+//            }
+        });
+        // 插入订单详情
+        orderInItemMapper.insert(orderItem, orderItem.size());
+        // TODO 发消息提醒
+
+        return Result.success(null, "插入成功");
+    }
+
+    @Override
+    public Result<String> addOrderOut(OrderDto<OrderOut, OrderOutItem> order) {
+        return null;
     }
 }

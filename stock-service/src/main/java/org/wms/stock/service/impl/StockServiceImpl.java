@@ -19,7 +19,7 @@ import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.stock.mapper.StockMapper;
 import org.wms.stock.model.dto.StockDto;
-import org.wms.stock.model.entity.Stock;
+import org.wms.common.enums.stock.Stock;
 import org.wms.stock.model.vo.StockVo;
 import org.wms.stock.service.StockService;
 

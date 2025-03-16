@@ -1,6 +1,6 @@
 package org.wms.product.cotroller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -94,8 +94,8 @@ public class ProductController {
     @PreAuthorize("hasAuthority('product:add')")
     @PostMapping
     public Result<Boolean> addProduct(@RequestBody Product product) {
-        product.setCreateTime(LocalDate.now());
-        product.setUpdateTime(LocalDate.now());
+        product.setCreateTime(LocalDateTime.now());
+        product.setUpdateTime(LocalDateTime.now());
         boolean result = productService.save(product);
         if (result) {
             return Result.success(null, "新增成功");
@@ -112,7 +112,7 @@ public class ProductController {
     @PreAuthorize("hasAuthority('product:update')")
     @PutMapping("/{id}")
     public Result<Boolean> updateProduct(@RequestBody Product product, @PathVariable String id) {
-        product.setUpdateTime(LocalDate.now());
+        product.setUpdateTime(LocalDateTime.now());
         boolean result = productService.lambdaUpdate()
                 .eq(Product::getId, id)
                 .update(product);

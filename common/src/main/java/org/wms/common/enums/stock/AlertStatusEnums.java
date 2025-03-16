@@ -1,4 +1,4 @@
-package org.wms.stock.model.enums;
+package org.wms.common.enums.stock;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;

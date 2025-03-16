@@ -3,7 +3,7 @@ package org.wms.stock.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.StockDto;
-import org.wms.stock.model.entity.Stock;
+import org.wms.common.enums.stock.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.stock.model.vo.StockVo;
 

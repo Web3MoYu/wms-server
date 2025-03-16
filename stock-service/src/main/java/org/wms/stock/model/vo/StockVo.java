@@ -1,7 +1,7 @@
 package org.wms.stock.model.vo;
 
 import org.wms.common.model.vo.LocationVo;
-import org.wms.stock.model.entity.Stock;
+import org.wms.common.enums.stock.Stock;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -93,8 +94,8 @@ public class OrderInItem {
     /**
      * 生产日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime productionDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate productionDate;
 
     /**
      * 过期日期

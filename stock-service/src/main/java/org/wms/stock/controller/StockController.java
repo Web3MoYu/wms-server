@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.wms.common.entity.product.Product;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.StockDto;
-import org.wms.stock.model.entity.Stock;
+import org.wms.common.enums.stock.Stock;
 import org.wms.stock.model.vo.StockVo;
 import org.wms.stock.service.StockService;
 

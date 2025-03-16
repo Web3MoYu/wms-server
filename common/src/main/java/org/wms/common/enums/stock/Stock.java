@@ -1,4 +1,4 @@
-package org.wms.stock.model.entity;
+package org.wms.common.enums.stock;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,7 +10,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.common.model.Location;
-import org.wms.stock.model.enums.AlertStatusEnums;
 
 /**
  * 库存表
