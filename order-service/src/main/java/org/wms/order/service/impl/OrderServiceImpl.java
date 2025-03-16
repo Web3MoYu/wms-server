@@ -6,12 +6,20 @@ import java.util.*;
 import cn.hutool.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.wms.api.client.ProductClient;
 import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.constant.MQConstant;
+import org.wms.common.entity.msg.Msg;
+import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.product.Product;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.msg.MsgBizEnums;
+import org.wms.common.enums.msg.MsgEnums;
+import org.wms.common.enums.msg.MsgPriorityEnums;
+import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.enums.order.OrderType;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
@@ -54,6 +62,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     ProductClient productClient;
+
+    @Resource
+    RabbitTemplate rabbitTemplate;
 
     @Resource
     StockClient stockClient;
@@ -239,7 +250,13 @@ public class OrderServiceImpl implements OrderService {
         // 插入订单详情
         orderInItemMapper.insert(orderItem, orderItem.size());
         // TODO 发消息提醒
-
+        // 构建消息
+        User from = userClient.getUserById(orderIn.getCreator());
+        User to = userClient.getUserById(orderIn.getApprover());
+        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "审批通知", "你有一笔订单需要审批", to.getUserId(),
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(), MsgBizEnums.INBOUND_ORDER);
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
         return Result.success(null, "插入成功");
     }
 

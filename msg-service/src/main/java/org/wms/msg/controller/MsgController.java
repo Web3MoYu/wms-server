@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.wms.common.constant.MQConstant;
 import org.wms.common.entity.msg.Msg;
 import org.wms.common.enums.msg.MsgReadEnums;
 import org.wms.common.enums.msg.MsgTypeEnums;
@@ -51,7 +52,7 @@ public class MsgController {
         msg.setType(MsgTypeEnums.OTHER);
         msg.setTitle("测试发送");
         msg.setContent("你有一条订单需要审批");
-        rabbitTemplate.convertAndSend(MsgConsumer.EXCHANGE_NAME, MsgConsumer.ROUTING_KEY,
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), id));
         return "发送成功";
     }

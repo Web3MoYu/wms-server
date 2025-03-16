@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.common.enums.msg.*;
 
@@ -80,11 +81,13 @@ public class Msg {
     /**
      * 发送时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime sendTime;
 
     /**
      * 阅读时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime readTime;
 
     /**
@@ -95,11 +98,13 @@ public class Msg {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     public Msg(MsgTypeEnums type, String title, String content,
@@ -121,6 +126,6 @@ public class Msg {
     }
 
     public Msg() {
-        
+
     }
 }
