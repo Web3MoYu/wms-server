@@ -3,15 +3,14 @@ package org.wms.msg.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.msg.Msg;
 import org.wms.common.enums.msg.MsgReadEnums;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
+import org.wms.msg.model.dto.MsgPageDto;
 import org.wms.msg.service.MsgService;
 import org.wms.security.util.SecurityUtil;
 
@@ -25,9 +24,6 @@ public class MsgController {
 
     @Resource
     MsgService msgService;
-
-    @Resource
-    RabbitTemplate rabbitTemplate;
 
     /**
      * 统计当前用户是否含有未读的消息
@@ -48,38 +44,24 @@ public class MsgController {
     /**
      * 分页查询消息
      *
-     * @param senderId   发送者ID
-     * @param type       消息类型
-     * @param title      消息标题
-     * @param readStatus 阅读状态
-     * @param priority   优先级
      */
-    @GetMapping("/page")
+    @PostMapping("/page")
     @PreAuthorize("isAuthenticated()")
-    public Result<Page<Msg>> page(
-            String senderId,
-            String type,
-            String title,
-            Integer readStatus,
-            Integer priority,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer pageSize) {
+    public Result<Page<Msg>> page(@RequestBody MsgPageDto dto) {
 
         String userId = SecurityUtil.getUserID();
         Page<Msg> pageResult = msgService.lambdaQuery()
                 .eq(Msg::getRecipientId, userId)
-                .eq(StringUtils.hasText(senderId), Msg::getSenderId, senderId)
-                .eq(StringUtils.hasText(type), Msg::getType, type)
-                .like(StringUtils.hasText(title), Msg::getTitle, title)
-                .eq(readStatus != null, Msg::getReadStatus, readStatus)
-                .eq(priority != null, Msg::getPriority, priority)
-                .ge(startTime != null, Msg::getSendTime, startTime)
-                .le(endTime != null, Msg::getSendTime, endTime)
+                .eq(StringUtils.hasText(dto.getSenderId()), Msg::getSenderId, dto.getSenderId())
+                .eq(StringUtils.hasText(dto.getType()), Msg::getType, dto.getType())
+                .like(StringUtils.hasText(dto.getTitle()), Msg::getTitle, dto.getTitle())
+                .eq(dto.getReadStatus() != null, Msg::getReadStatus, dto.getReadStatus())
+                .eq(dto.getPriority() != null, Msg::getPriority, dto.getPriority())
+                .ge(dto.getStartTime() != null, Msg::getSendTime, dto.getStartTime())
+                .le(dto.getEndTime() != null, Msg::getSendTime, dto.getEndTime())
                 .orderByAsc(Msg::getReadStatus)
                 .orderByDesc(Msg::getSendTime)
-                .page(new Page<>(page, pageSize));
+                .page(new Page<>(dto.getPage(), dto.getPageSize()));
 
         return Result.success(pageResult, "查询成功");
     }
