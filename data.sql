@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 12/03/2025 22:23:49
+ Date: 16/03/2025 23:26:43
 */
 
 SET NAMES utf8mb4;
@@ -51,6 +51,17 @@ CREATE TABLE `notif_msg` (
 -- Records of notif_msg
 -- ----------------------------
 BEGIN;
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901260650958168066', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 0, 0, 'OR20250316000016', 1, '2025-03-16 21:13:58', NULL, 1, '2025-03-16 21:13:58', '2025-03-16 21:13:58');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901260906638766082', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 1, 0, 'OR20250316000017', 1, '2025-03-16 21:14:57', '2025-03-16 23:19:50', 1, '2025-03-16 21:14:58', '2025-03-16 21:14:58');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901261572346089473', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 0, 0, 'OR20250316000018', 1, '2025-03-16 21:17:36', '2025-03-16 21:58:23', 1, '2025-03-16 21:17:36', '2025-03-16 21:17:37');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901262266201432065', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 1, 0, 'OR20250316000019', 1, '2025-03-16 21:20:22', '2025-03-16 23:19:42', 1, '2025-03-16 21:20:22', '2025-03-16 21:20:22');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901262412079325186', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 1, 0, 'OR20250316000020', 1, '2025-03-16 21:20:57', '2025-03-16 23:19:33', 1, '2025-03-16 21:20:57', '2025-03-16 21:20:57');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901262793828098050', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 1, 0, 'OR20250316000021', 1, '2025-03-16 21:22:28', '2025-03-16 23:19:28', 1, '2025-03-16 21:22:28', '2025-03-16 21:22:28');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901263906639859713', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 1, 0, 'OR20250316000022', 1, '2025-03-16 21:26:54', '2025-03-16 23:17:22', 1, '2025-03-16 21:26:54', '2025-03-16 21:26:54');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901264036545843202', 3, '审批通知', '你有一笔订单需要审批', '1898621397732356097', '质检员1', '1896450516030771201', '张三', 0, 0, 'OR20250316000023', 1, '2025-03-16 21:27:25', NULL, 1, '2025-03-16 21:27:25', '2025-03-16 21:27:25');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901292501055737857', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 0, 0, 'OR20250316000024', 1, '2025-03-16 23:20:31', NULL, 1, '2025-03-16 23:20:31', '2025-03-16 23:20:31');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901292666646859778', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 0, 0, 'OR20250316000025', 1, '2025-03-16 23:21:11', NULL, 1, '2025-03-16 23:21:11', '2025-03-16 23:21:11');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1901292782229295105', 3, '审批通知', '你有一笔订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', '张三', 0, 0, 'OR20250316000026', 1, '2025-03-16 23:21:38', NULL, 1, '2025-03-16 23:21:38', '2025-03-16 23:21:38');
 COMMIT;
 
 -- ----------------------------
@@ -120,6 +131,17 @@ CREATE TABLE `order_in` (
 -- Records of order_in
 -- ----------------------------
 BEGIN;
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901256687328329729', 'OR20250316000016', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-17 00:00:00', NULL, 229028.00, 2, 0, 0, '', '2025-03-16 20:58:13', '2025-03-16 20:58:13');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901260875722555394', 'OR20250316000017', 1, 1, '1896450516030771201', '1896569037967204353', '1896569037967204353', '2025-03-18 00:00:00', NULL, 114514.00, 1, 0, 0, '', '2025-03-16 21:14:51', '2025-03-16 21:14:51');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901261536392638465', 'OR20250316000018', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-16 21:17:25', NULL, 114514.00, 1, 0, 0, '', '2025-03-16 21:17:29', '2025-03-16 21:17:29');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901262247603990530', 'OR20250316000019', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-24 00:00:00', NULL, 114514.00, 1, 0, 0, '', '2025-03-16 21:20:18', '2025-03-16 21:20:18');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901262411731300353', 'OR20250316000020', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-24 00:00:00', NULL, 3199.00, 1, 0, 0, '', '2025-03-16 21:20:57', '2025-03-16 21:20:57');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901262793488461825', 'OR20250316000021', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-16 00:00:00', NULL, 114514.00, 1, 0, 0, '', '2025-03-16 21:22:28', '2025-03-16 21:22:28');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901263906006626306', 'OR20250316000022', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-23 00:00:00', NULL, 222.00, 1, 0, 0, '', '2025-03-16 21:26:54', '2025-03-16 21:26:54');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901264036248154113', 'OR20250316000023', 1, 1, '1896450516030771201', '1898621397732356097', '1896569037967204353', '2025-03-30 00:00:00', NULL, 333.00, 1, 0, 0, '', '2025-03-16 21:27:25', '2025-03-16 21:27:25');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901292500430876673', 'OR20250316000024', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-23 00:00:00', NULL, 6899.00, 1, 0, 0, '', '2025-03-16 23:20:31', '2025-03-16 23:20:31');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901292666336571393', 'OR20250316000025', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-16 23:20:58', NULL, 2599.00, 1, 0, 0, '', '2025-03-16 23:21:11', '2025-03-16 23:21:11');
+INSERT INTO `order_in` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901292781944172545', 'OR20250316000026', 1, 1, '1896450516030771201', '1896569037967204353', '1898621397732356097', '2025-03-21 00:00:00', NULL, 4499.00, 1, 0, 0, '', '2025-03-16 23:21:38', '2025-03-16 23:21:38');
 COMMIT;
 
 -- ----------------------------
@@ -134,11 +156,11 @@ CREATE TABLE `order_in_item` (
   `product_code` varchar(50) NOT NULL COMMENT '产品编码',
   `expected_quantity` int NOT NULL COMMENT '预期数量',
   `actual_quantity` int DEFAULT '0' COMMENT '实际数量',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '单价',
-  `amount` decimal(12,2) DEFAULT NULL COMMENT '金额',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
+  `price` decimal(10,2) NOT NULL COMMENT '单价',
+  `amount` decimal(12,2) NOT NULL COMMENT '金额',
+  `area_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区域ID',
   `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
-  `batch_number` varchar(100) DEFAULT NULL COMMENT '批次号',
+  `batch_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '批次号',
   `production_date` date DEFAULT NULL COMMENT '生产日期',
   `expiry_date` date DEFAULT NULL COMMENT '过期日期',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态：0-待开始，1-部分完成，2-已完成',
@@ -155,6 +177,17 @@ CREATE TABLE `order_in_item` (
 -- Records of order_in_item
 -- ----------------------------
 BEGIN;
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901256688284631041', '1901256687328329729', '1897311533005512706', 'test1', 'test1', 2, 0, 114514.00, 229028.00, '', '[]', '2025031600000034', '2025-03-03', NULL, 0, 0, '', '2025-03-16 20:58:13', '2025-03-16 20:58:13');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901260875999379457', '1901260875722555394', '1897311533005512706', 'test1', 'test1', 1, 0, 114514.00, 114514.00, '', '[]', '2025031600000035', '2025-03-24', NULL, 0, 0, '', '2025-03-16 21:14:51', '2025-03-16 21:14:51');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901261537747398657', '1901261536392638465', '1897311533005512706', 'test1', 'test1', 1, 0, 114514.00, 114514.00, '', '[]', '2025031600000036', '2025-03-20', NULL, 0, 0, '', '2025-03-16 21:17:29', '2025-03-16 21:17:29');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901262247780151297', '1901262247603990530', '1897311533005512706', 'test1', 'test1', 1, 0, 114514.00, 114514.00, '', '[]', '2025031600000037', '2025-03-03', NULL, 0, 0, '', '2025-03-16 21:20:18', '2025-03-16 21:20:18');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901262411899072514', '1901262411731300353', '1897314226491072514', 'Apple Watch', 'Apple-01', 1, 0, 3199.00, 3199.00, '', '[]', '2025031600000038', '2025-03-26', NULL, 0, 0, '', '2025-03-16 21:20:57', '2025-03-16 21:20:57');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901262793631068161', '1901262793488461825', '1897311533005512706', 'test1', 'test1', 1, 0, 114514.00, 114514.00, '', '[]', '2025031600000039', '2025-03-23', NULL, 0, 0, '', '2025-03-16 21:22:28', '2025-03-16 21:22:28');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901263906224730114', '1901263906006626306', '1901150656145268737', 'test1', 'test2', 1, 0, 222.00, 222.00, '', '[]', '2025031600000040', '2025-03-26', NULL, 0, 0, '', '2025-03-16 21:26:54', '2025-03-16 21:26:54');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901264036390760450', '1901264036248154113', '1901150656321429505', 'test3', 'test3', 1, 0, 333.00, 333.00, '', '[]', '2025031600000041', '2025-03-16', NULL, 0, 0, '', '2025-03-16 21:27:25', '2025-03-16 21:27:25');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901292500678340609', '1901292500430876673', '1897314424227340290', 'iPhone 15', 'Apple-02', 1, 0, 6899.00, 6899.00, '', '[]', '2025031600000042', '2025-03-24', NULL, 0, 0, '', '2025-03-16 23:20:31', '2025-03-16 23:20:31');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901292666487566338', '1901292666336571393', '1897315963788566529', 'Galaxy Ring', 'Sansung-02', 1, 0, 2599.00, 2599.00, '', '[]', '2025031600000043', '2025-03-02', NULL, 0, 0, '', '2025-03-16 23:21:11', '2025-03-16 23:21:11');
+INSERT INTO `order_in_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `expiry_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1901292782070001665', '1901292781944172545', '10', '小米手机', 'XIAOMI-04', 1, 0, 4499.00, 4499.00, '', '[]', '2025031600000044', '2025-03-23', NULL, 0, 0, '', '2025-03-16 23:21:38', '2025-03-16 23:21:38');
 COMMIT;
 
 -- ----------------------------
@@ -191,6 +224,7 @@ CREATE TABLE `order_out` (
 -- Records of order_out
 -- ----------------------------
 BEGIN;
+INSERT INTO `order_out` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `delivery_address`, `contact_name`, `contact_phone`, `remark`, `create_time`, `update_time`) VALUES ('2', '222222', 0, 1, '1895108523139411969', '1896450516030771201', '1896569293849108482', '2025-03-13 13:57:50', '2025-03-11 13:57:54', 222.22, 22, 0, 0, '背景', '呜呜呜呜呜', '11111111', NULL, '2025-03-12 14:01:33', '2025-03-12 14:01:38');
 COMMIT;
 
 -- ----------------------------
@@ -239,8 +273,8 @@ CREATE TABLE `product` (
   `model` varchar(100) DEFAULT NULL COMMENT '型号',
   `spec` varchar(200) DEFAULT NULL COMMENT '规格',
   `price` decimal(10,2) DEFAULT NULL COMMENT '价格',
-  `min_stock` int DEFAULT '0' COMMENT '最小库存（预警阈值）',
-  `max_stock` int DEFAULT '999999' COMMENT '最大库存',
+  `min_stock` int DEFAULT '4' COMMENT '最小库存（预警阈值）',
+  `max_stock` int DEFAULT '1000' COMMENT '最大库存',
   `description` text COMMENT '描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -265,6 +299,9 @@ INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `bra
 INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `brand`, `model`, `spec`, `price`, `min_stock`, `max_stock`, `description`, `create_time`, `update_time`) VALUES ('1897315128870412290', 'MacBook', 'Apple-03', '1896968763237601282', 'Apple', 'Macbook air', '256', 11999.00, 0, 999, '这是一台MacBook Air笔记本', '2025-03-05 23:55:52', '2025-03-05 23:55:52');
 INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `brand`, `model`, `spec`, `price`, `min_stock`, `max_stock`, `description`, `create_time`, `update_time`) VALUES ('1897315660058042369', 'Galaxy', 'Sansung-01', '1897217199603421185', '三星', 'Galaxy S25 Ultra', '12+512', 9699.00, 0, 999, '三星手机', '2025-03-05 23:57:58', '2025-03-05 23:57:58');
 INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `brand`, `model`, `spec`, `price`, `min_stock`, `max_stock`, `description`, `create_time`, `update_time`) VALUES ('1897315963788566529', 'Galaxy Ring', 'Sansung-02', '1897309641751896066', '三星', 'Galaxy Ring', '10号（直径19.8毫米）', 2599.00, 0, 999, NULL, '2025-03-05 23:59:11', '2025-03-05 23:59:11');
+INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `brand`, `model`, `spec`, `price`, `min_stock`, `max_stock`, `description`, `create_time`, `update_time`) VALUES ('1901150656145268737', 'test1', 'test2', '1897216435166351362', 'test2', 'test2', 'test2', 222.00, 0, 999, 'test2', '2025-03-16 13:56:52', '2025-03-16 13:56:52');
+INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `brand`, `model`, `spec`, `price`, `min_stock`, `max_stock`, `description`, `create_time`, `update_time`) VALUES ('1901150656321429505', 'test3', 'test3', '1897309348356136962', 'test3', 'test3', 'test3', 333.00, 0, 999, 'test3', '2025-03-16 13:56:52', '2025-03-16 13:56:52');
+INSERT INTO `product` (`id`, `product_name`, `product_code`, `category_id`, `brand`, `model`, `spec`, `price`, `min_stock`, `max_stock`, `description`, `create_time`, `update_time`) VALUES ('1901154713333276673', 'tttt', 'tttt', '1896968296944242689', 'tttt', 'tttt', 'tttt', 3199.00, 0, 999, '', '2025-03-16 14:13:00', '2025-03-16 14:13:00');
 COMMIT;
 
 -- ----------------------------
@@ -427,8 +464,9 @@ CREATE TABLE `stock` (
 -- Records of stock
 -- ----------------------------
 BEGIN;
-INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1899515924861112321', '10', 'XIAOMI-04', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898772262124433410\"]}]', 4, 4, 0, 0, '202503120143', '2025-03-12', '2025-03-12 00:00:00', '2025-03-12 00:00:00');
-INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1899517082635857921', '10', 'XIAOMI-04', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898770317204676609\"]}, {\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1898787743397023746\", \"1898787743397023747\"]}]', 3, 3, 0, 0, '202503120145', '2025-03-12', '2025-03-12 00:00:00', '2025-03-12 00:00:00');
+INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1899515924861112321', '10', 'XIAOMI-04', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898772262124433410\"]}]', 4, 4, 0, 1, '202503120143', '2025-03-12', '2025-03-12 00:00:00', '2025-03-16 00:00:00');
+INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1899517082635857921', '10', 'XIAOMI-04', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898770317204676609\"]}, {\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1898787743397023746\", \"1898787743397023747\"]}]', 7, 7, 0, 0, '202503120145', '2025-03-12', '2025-03-12 00:00:00', '2025-03-16 00:00:00');
+INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1901113345416245250', '1897312189133070338', 'XIAOMI-03', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898787361241403393\"]}]', 12, 12, 0, 0, '20250312', '2025-03-16', '2025-03-16 00:00:00', '2025-03-16 00:00:00');
 COMMIT;
 
 -- ----------------------------
@@ -623,7 +661,7 @@ CREATE TABLE `sys_menu` (
 -- Records of sys_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('1', '0', '系统管理', 'sys:system:index', 'system', '/sys', 'sys', '1', 0, 'SettingFilled', NULL, 3);
+INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('1', '0', '系统管理', 'sys:system:index', 'system', '/sys', 'sys', '1', 0, 'SettingFilled', NULL, 4);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('10', '3', '编辑角色', 'sys:role:update', NULL, NULL, NULL, NULL, 2, '', '角色管理', 3);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('11', '4', '新增菜单', 'sys:menu:add', NULL, NULL, NULL, NULL, 2, '', '菜单管理', 1);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('12', '4', '删除菜单', 'sys:menu:delete', NULL, NULL, NULL, NULL, 2, '', '菜单管理', 2);
@@ -678,6 +716,7 @@ INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_u
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('1899799309673476098', '1899799080110829570', '查询订单', 'order:in-out:list', NULL, NULL, NULL, NULL, 2, NULL, NULL, 2);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('1899799411314044930', '1899799080110829570', '修改订单信息', 'order:in-out:update', NULL, NULL, NULL, NULL, 2, NULL, NULL, 3);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('1899799758292037634', '1899799080110829570', '撤销订单', 'order:in-out:cancel', NULL, NULL, NULL, NULL, 2, NULL, NULL, 4);
+INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('1901276512964567041', '0', '消息列表', 'msg:index', NULL, '/msg', 'msg', '/msg/MsgManager', 0, 'MessageOutlined', NULL, 3);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('2', '1', '用户管理', 'sys:user:index', 'sysUserList', '/sys/userIndex', 'userIndex', 'sys/user/UserManager', 1, 'TeamOutlined', '系统管理', 1);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('3', '1', '角色管理', 'sys:role:index', 'sysRoleList', '/sys/roleIndex', 'roleIndex', 'sys/role/RoleManager', 1, 'CommentOutlined', '系统管理', 2);
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `title`, `code`, `name`, `menu_url`, `route_path`, `component_path`, `type`, `icon`, `parent_name`, `order_num`) VALUES ('4', '1', '菜单管理', 'sys:menu:index', 'sysMenuList', '/sys/menuIndex', 'menuIndex', 'sys/menu/MenuManager', 1, 'FolderOutlined', '系统管理', 3);
@@ -727,113 +766,116 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1895322990009069570', '1', '1894983839904628738');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476554', '1', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118440144898', '10', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118444339202', '11', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118444339203', '12', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118444339204', '13', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816263', '1', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588428484610', '10', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588436873217', '11', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588436873218', '12', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588436873219', '13', '1');
 INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1895012693696311298', '14', '2');
 INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1895322990004875266', '14', '1894983839904628738');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383472103425', '14', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118444339205', '14', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118444339206', '15', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588436873220', '14', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714647674881', '14', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588441067521', '15', '1');
 INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1895322990004875267', '16', '1894983839904628738');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118444339207', '16', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533505', '17', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533506', '18', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383472103426', '1896112867624316929', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670850', '1896112867624316929', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383472103427', '1896450719001530369', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533507', '1896450719001530369', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383472103428', '1896574154749648897', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533508', '1896574154749648897', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383472103429', '1896574239608807426', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533509', '1896574239608807426', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383476297730', '1896574312614862850', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533510', '1896574312614862850', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383476297731', '1896578355911335938', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118448533511', '1896578355911335938', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383476297732', '1896933229702303745', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670851', '1896933229702303745', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383476297733', '1896933596880064513', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476548', '1896933596880064513', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383476297734', '1896934922678587394', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476549', '1896934922678587394', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383480492033', '1896935484505608194', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727810', '1896935484505608194', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383480492034', '1896935554269466625', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727811', '1896935554269466625', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383480492035', '1896935634133209089', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727812', '1896935634133209089', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383480492036', '1896935702085128193', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727813', '1896935702085128193', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383480492037', '1896935962220056577', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727814', '1896935962220056577', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383480492038', '1896936053794295809', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727815', '1896936053794295809', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383484686338', '1896936142247972865', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727816', '1896936142247972865', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383484686339', '1896936200251002882', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118452727817', '1896936200251002882', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383484686340', '1898318008138002434', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670852', '1898318008138002434', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880641', '1898318297842774018', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476550', '1898318297842774018', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880642', '1898318743814729730', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476551', '1898318743814729730', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880643', '1898319154214793218', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476552', '1898319154214793218', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880644', '1898319369038655489', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922114', '1898319369038655489', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880645', '1898319450349432833', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922115', '1898319450349432833', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880646', '1898319502652403713', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922116', '1898319502652403713', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383488880647', '1898319640343015425', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922117', '1898319640343015425', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074945', '1898320147279179778', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922118', '1898320147279179778', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074946', '1898320212148285441', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922119', '1898320212148285441', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074947', '1898320300824260609', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118456922120', '1898320300824260609', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074948', '1898320375264768001', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118461116417', '1898320375264768001', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074949', '1898320540847501313', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118477893634', '1898320540847501313', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074950', '1898320597013426178', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118477893635', '1898320597013426178', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074951', '1898320660913647617', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118482087938', '1898320660913647617', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383493074952', '1898320714181308417', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118482087939', '1898320714181308417', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383497269249', '1898742323941711874', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670853', '1898742323941711874', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383497269250', '1898742877954744321', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476553', '1898742877954744321', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383497269251', '1898743020414279682', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282244', '1898743020414279682', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383497269252', '1898743112613470210', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282245', '1898743112613470210', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383497269253', '1898743207987748866', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282246', '1898743207987748866', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899692383497269254', '1898743347016343553', '1896569176085635074');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282247', '1898743347016343553', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670854', '1899793881640120322', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670855', '1899799080110829570', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670856', '1899799244787593218', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670857', '1899799309673476098', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118494670858', '1899799411314044930', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118498865153', '1899799758292037634', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588441067522', '16', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588441067523', '17', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588445261826', '18', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816264', '1896112867624316929', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035012', '1896112867624316929', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588445261827', '1896450719001530369', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063490', '1896450719001530369', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588445261828', '1896574154749648897', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063491', '1896574154749648897', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588445261829', '1896574239608807426', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063492', '1896574239608807426', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588445261830', '1896574312614862850', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063493', '1896574312614862850', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588449456129', '1896578355911335938', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063494', '1896578355911335938', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588483010561', '1896933229702303745', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035013', '1896933229702303745', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621959', '1896933596880064513', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840710', '1896933596880064513', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816257', '1896934922678587394', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840711', '1896934922678587394', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588449456130', '1896935484505608194', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063495', '1896935484505608194', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588449456131', '1896935554269466625', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063496', '1896935554269466625', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588453650433', '1896935634133209089', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063497', '1896935634133209089', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844737', '1896935702085128193', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063498', '1896935702085128193', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844738', '1896935962220056577', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714656063499', '1896935962220056577', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844739', '1896936053794295809', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452097', '1896936053794295809', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844740', '1896936142247972865', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452098', '1896936142247972865', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844741', '1896936200251002882', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452099', '1896936200251002882', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588483010562', '1898318008138002434', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035014', '1898318008138002434', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816258', '1898318297842774018', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840712', '1898318297842774018', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816259', '1898318743814729730', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035009', '1898318743814729730', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816260', '1898319154214793218', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035010', '1898319154214793218', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844742', '1898319369038655489', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452100', '1898319369038655489', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588457844743', '1898319450349432833', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452101', '1898319450349432833', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588462039042', '1898319502652403713', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452102', '1898319502652403713', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588462039043', '1898319640343015425', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452103', '1898319640343015425', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588462039044', '1898320147279179778', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714664452104', '1898320147279179778', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588462039045', '1898320212148285441', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646401', '1898320212148285441', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588462039046', '1898320300824260609', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646402', '1898320300824260609', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588462039047', '1898320375264768001', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646403', '1898320375264768001', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233345', '1898320540847501313', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646404', '1898320540847501313', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233346', '1898320597013426178', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646405', '1898320597013426178', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233347', '1898320660913647617', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646406', '1898320660913647617', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233348', '1898320714181308417', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714668646407', '1898320714181308417', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588483010563', '1898742323941711874', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035015', '1898742323941711874', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816261', '1898742877954744321', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035011', '1898742877954744321', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427651', '1898743020414279682', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840706', '1898743020414279682', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427652', '1898743112613470210', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840707', '1898743112613470210', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427653', '1898743207987748866', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840708', '1898743207987748866', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427654', '1898743347016343553', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714672840709', '1898743347016343553', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588483010564', '1899793881640120322', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588478816262', '1899799080110829570', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427655', '1899799244787593218', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621953', '1899799309673476098', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621954', '1899799411314044930', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621955', '1899799758292037634', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588483010565', '1901276512964567041', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276714677035016', '1901276512964567041', '1896569176085635074');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276734348320769', '1901276512964567041', '1898621150062899201');
 INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1895322990004875268', '2', '1894983839904628738');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282248', '2', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476546', '3', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118490476547', '4', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118482087940', '5', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118482087941', '6', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282241', '7', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282242', '8', '1');
-INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1899800118486282243', '9', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621956', '2', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621957', '3', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588474621958', '4', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233349', '5', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233350', '6', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588466233351', '7', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427649', '8', '1');
+INSERT INTO `sys_role_menu` (`role_menu_id`, `menu_id`, `role_id`) VALUES ('1901276588470427650', '9', '1');
 COMMIT;
 
 -- ----------------------------
@@ -925,12 +967,13 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of undo_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `undo_log` (`id`, `branch_id`, `xid`, `context`, `rollback_info`, `log_status`, `log_created`, `log_modified`, `ext`) VALUES (6, 6900143677880856619, '192.168.31.112:8099:6900143677880856584', 'serializer=jackson&compressorType=NONE', 0x7B7D, 1, '2025-03-16 03:48:21', '2025-03-16 03:48:21', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1089,7 +1132,7 @@ CREATE TABLE `wms_storage_location` (
 BEGIN;
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898770317204676609', '1898645979654766593', '1898700659026018306', '001', 'A-01-001', 0, '10', '2025-03-10 00:18:16', '2025-03-10 00:19:34');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898772262124433410', '1898645979654766593', '1898700659026018306', '002', 'A-01-002', 0, '10', '2025-03-10 00:25:59', '2025-03-10 01:25:46');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787361241403393', '1898645979654766593', '1898700659026018306', '003', 'A-01-003', 1, '', '2025-03-10 01:25:59', '2025-03-10 01:25:59');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787361241403393', '1898645979654766593', '1898700659026018306', '003', 'A-01-003', 0, '1897312189133070338', '2025-03-10 01:25:59', '2025-03-10 01:25:59');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787401099874306', '1898645979654766593', '1898700659026018306', '004', 'A-01-004', 1, '', '2025-03-10 01:26:09', '2025-03-10 01:26:09');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023746', '1898645979654766593', '1898707410911625217', '001', 'A-02-001', 0, '10', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023747', '1898645979654766593', '1898707410911625217', '002', 'A-02-002', 0, '10', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
