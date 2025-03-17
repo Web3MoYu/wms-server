@@ -1,9 +1,13 @@
 package org.wms.order.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import cn.hutool.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,7 +28,11 @@ import org.wms.common.enums.order.OrderType;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.utils.IdGenerate;
-import org.wms.order.mapper.*;
+import org.wms.order.mapper.OrderInItemMapper;
+import org.wms.order.mapper.OrderInMapper;
+import org.wms.order.mapper.OrderMapper;
+import org.wms.order.mapper.OrderOutItemMapper;
+import org.wms.order.mapper.OrderOutMapper;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
 import org.wms.order.model.entity.OrderIn;
@@ -35,13 +43,16 @@ import org.wms.order.model.enums.OrderInType;
 import org.wms.order.model.enums.OrderItemStatus;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
+import org.wms.order.model.vo.OrderDetailVo;
 import org.wms.order.model.vo.OrderVo;
 import org.wms.order.service.OrderService;
+import org.wms.security.util.SecurityUtil;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
-import org.wms.security.util.SecurityUtil;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -52,6 +63,9 @@ public class OrderServiceImpl implements OrderService {
     UserClient userClient;
 
     @Resource
+    ProductClient productClient;
+
+    @Resource
     OrderMapper orderMapper;
 
     @Resource
@@ -59,9 +73,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     OrderInItemMapper orderInItemMapper;
-
-    @Resource
-    ProductClient productClient;
 
     @Resource
     RabbitTemplate rabbitTemplate;
@@ -263,5 +274,39 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result<String> addOrderOut(OrderDto<OrderOut, OrderOutItem> order) {
         return null;
+    }
+
+    @Override
+    public Result<List<OrderDetailVo<OrderInItem>>> inDetail(String id) {
+        // 获取items
+        LambdaQueryWrapper<OrderInItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderInItem::getOrderId, id);
+        List<OrderInItem> orderInItems = orderInItemMapper.selectList(wrapper);
+        // 封装vo
+        List<OrderDetailVo<OrderInItem>> collect = orderInItems.stream().map((item) -> {
+            OrderDetailVo<OrderInItem> vo = new OrderDetailVo<>();
+            vo.setOrderItems(item);
+            Product product = productClient.getProductById(item.getProductId());
+            vo.setProduct(product);
+            return vo;
+        }).toList();
+        return Result.success(collect, "查询成功");
+    }
+
+    @Override
+    public Result<List<OrderDetailVo<OrderOutItem>>> outDetail(String id) {
+        // 获取items
+        LambdaQueryWrapper<OrderOutItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderOutItem::getOrderId, id);
+        List<OrderOutItem> orderOutItems = orderOutItemMapper.selectList(wrapper);
+        // 封装vo
+        List<OrderDetailVo<OrderOutItem>> collect = orderOutItems.stream().map((item) -> {
+            OrderDetailVo<OrderOutItem> vo = new OrderDetailVo<>();
+            vo.setOrderItems(item);
+            Product product = productClient.getProductById(item.getProductId());
+            vo.setProduct(product);
+            return vo;
+        }).toList();
+        return Result.success(collect, "查询成功");
     }
 }

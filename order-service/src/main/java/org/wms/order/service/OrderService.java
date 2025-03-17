@@ -1,6 +1,7 @@
 package org.wms.order.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
@@ -8,9 +9,13 @@ import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
+import org.wms.order.model.vo.OrderDetailVo;
 import org.wms.order.model.vo.OrderVo;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 public interface OrderService {
+
     /**
      * 分页查询订单信息
      *
@@ -34,4 +39,20 @@ public interface OrderService {
      * @return 添加结果
      */
     Result<String> addOrderOut(OrderDto<OrderOut, OrderOutItem> order);
+
+    /**
+     * 查询入库订单详情
+     *
+     * @param id 订单ID
+     * @return 入库订单详情
+     */
+    Result<List<OrderDetailVo<OrderInItem>>> inDetail(String id);
+
+    /**
+     * 查询出库订单详情
+     *
+     * @param id 订单ID
+     * @return 出库订单详情
+     */
+    Result<List<OrderDetailVo<OrderOutItem>>> outDetail(String id);
 }
