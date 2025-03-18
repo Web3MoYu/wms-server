@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.common.model.Location;
-import org.wms.order.model.enums.OrderItemStatus;
+import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 
 /**
@@ -104,9 +104,9 @@ public class OrderInItem {
     private LocalDateTime expiryDate;
 
     /**
-     * 状态：0-待开始，1-部分完成，2-已完成,-1-已取消,-2-审批拒绝
+     * 状态：0-待审核，1-审批通过，2-入库中，3-已完成，-1-已取消 -2-审批拒绝
      */
-    private OrderItemStatus status;
+    private OrderStatusEnums status;
 
     /**
      * 质检状态：0-未质检，1-质检通过，2-质检不通过

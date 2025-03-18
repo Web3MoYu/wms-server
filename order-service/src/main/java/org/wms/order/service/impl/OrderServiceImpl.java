@@ -41,7 +41,6 @@ import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.enums.OrderInType;
-import org.wms.order.model.enums.OrderItemStatus;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
@@ -203,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
         // 设置入库订单详细信息
         orderItem.forEach((item) -> {
             item.setOrderId(orderIn.getId());
-            item.setStatus(OrderItemStatus.NOT_STARTED);
+            item.setStatus(OrderStatusEnums.PENDING_REVIEW);
             item.setQualityStatus(QualityStatusEnums.NOT_INSPECTED);
             item.setCreateTime(LocalDateTime.now());
             item.setUpdateTime(LocalDateTime.now());
@@ -312,43 +311,43 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Result<String> cancel(Integer type, String id, String remark) {
+    public Result<String> updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums) {
         if (OrderType.IN_ORDER.getCode().equals(type)) {
             // 入库订单取消
             LambdaUpdateWrapper<OrderIn> wrapper = new LambdaUpdateWrapper<>();
             wrapper.eq(OrderIn::getId, id)
-                    .set(OrderIn::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderIn::getStatus, statusEnums.getCode())
                     .set(OrderIn::getRemark, remark)
                     .set(OrderIn::getUpdateTime, LocalDateTime.now());
             int update = orderInMapper.update(wrapper);
             // 订单详情取消
             LambdaUpdateWrapper<OrderInItem> itemWrapper = new LambdaUpdateWrapper<>();
             itemWrapper.eq(OrderInItem::getOrderId, id)
-                    .set(OrderInItem::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderInItem::getStatus, statusEnums.getCode())
                     .set(OrderInItem::getRemark, remark)
                     .set(OrderInItem::getUpdateTime, LocalDateTime.now());
             int update1 = orderInItemMapper.update(itemWrapper);
             if (update <= 0 || update1 <= 0) {
-                throw new BizException(303, "取消订单失败");
+                throw new BizException(303, "失败");
             }
         } else {
             // 出库订单取消
             LambdaUpdateWrapper<OrderOut> wrapper = new LambdaUpdateWrapper<>();
             wrapper.eq(OrderOut::getId, id)
-                    .set(OrderOut::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderOut::getStatus, statusEnums.getCode())
                     .set(OrderOut::getRemark, remark)
                     .set(OrderOut::getUpdateTime, LocalDateTime.now());
             int update = orderOutMapper.update(wrapper);
             LambdaUpdateWrapper<OrderOutItem> itemWrapper = new LambdaUpdateWrapper<>();
             itemWrapper.eq(OrderOutItem::getOrderId, id)
-                    .set(OrderOutItem::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderOutItem::getStatus, statusEnums.getCode())
                     .set(OrderOutItem::getRemark, remark)
                     .set(OrderOutItem::getUpdateTime, LocalDateTime.now());
             int update1 = orderOutItemMapper.update(itemWrapper);
             if (update <= 0 || update1 <= 0) {
-                throw new BizException(303, "取消订单失败");
+                throw new BizException(303, "失败");
             }
         }
-        return Result.success(null, "取消成功");
+        return Result.success(null, "成功");
     }
 }

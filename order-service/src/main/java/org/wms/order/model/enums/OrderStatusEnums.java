@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum OrderStatusEnums {
     PENDING_REVIEW(0, "待审核"),
-    APPROVED(1, "已审核"),
-    PARTIALLY_COMPLETED(2, "部分完成"),
+    APPROVED(1, "审批通过"),
+    IN_PROGRESS(2, "入库中"),
     COMPLETED(3, "已完成"),
     CANCELED(-1, "已取消"),
     REJECT(-2, "审批拒绝");

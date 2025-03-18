@@ -9,6 +9,7 @@ import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
+import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
 import org.wms.order.model.vo.OrderVo;
 
@@ -62,5 +63,5 @@ public interface OrderService {
      * @param id 订单ID
      * @return 取消结果
      */
-    Result<String> cancel(Integer type, String id, String remark);
+    Result<String> updateStatus(Integer type, String id, String remark, OrderStatusEnums status);
 }
