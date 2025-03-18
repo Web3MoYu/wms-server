@@ -55,4 +55,12 @@ public interface OrderService {
      * @return 出库订单详情
      */
     Result<List<OrderDetailVo<OrderOutItem>>> outDetail(String id);
+
+    /**
+     * 取消订单
+     *
+     * @param id 订单ID
+     * @return 取消结果
+     */
+    Result<String> cancel(Integer type, String id, String remark);
 }

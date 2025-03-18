@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -308,5 +309,46 @@ public class OrderServiceImpl implements OrderService {
             return vo;
         }).toList();
         return Result.success(collect, "查询成功");
+    }
+
+    @Override
+    public Result<String> cancel(Integer type, String id, String remark) {
+        if (OrderType.IN_ORDER.getCode().equals(type)) {
+            // 入库订单取消
+            LambdaUpdateWrapper<OrderIn> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(OrderIn::getId, id)
+                    .set(OrderIn::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderIn::getRemark, remark)
+                    .set(OrderIn::getUpdateTime, LocalDateTime.now());
+            int update = orderInMapper.update(wrapper);
+            // 订单详情取消
+            LambdaUpdateWrapper<OrderInItem> itemWrapper = new LambdaUpdateWrapper<>();
+            itemWrapper.eq(OrderInItem::getOrderId, id)
+                    .set(OrderInItem::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderInItem::getRemark, remark)
+                    .set(OrderInItem::getUpdateTime, LocalDateTime.now());
+            int update1 = orderInItemMapper.update(itemWrapper);
+            if (update <= 0 || update1 <= 0) {
+                throw new BizException(303, "取消订单失败");
+            }
+        } else {
+            // 出库订单取消
+            LambdaUpdateWrapper<OrderOut> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(OrderOut::getId, id)
+                    .set(OrderOut::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderOut::getRemark, remark)
+                    .set(OrderOut::getUpdateTime, LocalDateTime.now());
+            int update = orderOutMapper.update(wrapper);
+            LambdaUpdateWrapper<OrderOutItem> itemWrapper = new LambdaUpdateWrapper<>();
+            itemWrapper.eq(OrderOutItem::getOrderId, id)
+                    .set(OrderOutItem::getStatus, OrderStatusEnums.CANCELED.getCode())
+                    .set(OrderOutItem::getRemark, remark)
+                    .set(OrderOutItem::getUpdateTime, LocalDateTime.now());
+            int update1 = orderOutItemMapper.update(itemWrapper);
+            if (update <= 0 || update1 <= 0) {
+                throw new BizException(303, "取消订单失败");
+            }
+        }
+        return Result.success(null, "取消成功");
     }
 }

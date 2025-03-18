@@ -4,12 +4,7 @@ import java.util.List;
 
 import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
@@ -99,5 +94,20 @@ public class OrderController {
     @PreAuthorize("hasAuthority('order:in-out:add')")
     public Result<String> addOrderOut(@RequestBody OrderDto<OrderOut, OrderOutItem> order) {
         return orderService.addOrderOut(order);
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param id     订单ID
+     * @param type   订单类型
+     * @param remark 备注
+     * @return 取消结果
+     */
+    @DeleteMapping("/cancel/{type}/{id}")
+    @PreAuthorize("hasAuthority('order:in-out:cancel')")
+    @GlobalTransactional
+    public Result<String> cancel(@PathVariable("id") String id, @PathVariable Integer type, @RequestParam("remark") String remark) {
+        return orderService.cancel(type, id, remark);
     }
 }
