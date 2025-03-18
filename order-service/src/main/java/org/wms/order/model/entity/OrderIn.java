@@ -80,7 +80,7 @@ public class OrderIn {
     private Integer totalQuantity;
 
     /**
-     * 状态：0-待审核，1-已审核，2-部分完成，3-已完成，-1-已取消
+     * 状态：0-待审核，1-已审核，2-部分完成，3-已完成，-1-已取消 -2-审批拒绝
      */
     private OrderStatusEnums status;
 

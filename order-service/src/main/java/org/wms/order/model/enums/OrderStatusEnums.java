@@ -10,7 +10,8 @@ public enum OrderStatusEnums {
     APPROVED(1, "已审核"),
     PARTIALLY_COMPLETED(2, "部分完成"),
     COMPLETED(3, "已完成"),
-    CANCELED(-1, "已取消");
+    CANCELED(-1, "已取消"),
+    REJECT(-2, "审批拒绝");
 
     @JsonValue
     @EnumValue
