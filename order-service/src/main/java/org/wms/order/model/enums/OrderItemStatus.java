@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum OrderItemStatus {
     NOT_STARTED(0, "待开始"),
     PARTIALLY_COMPLETED(1, "部分完成"),
-    COMPLETED(2, "已完成");
+    COMPLETED(2, "已完成"),
+    CANCELED(-1, "已取消");
+
     @JsonValue
     @EnumValue
     private final Integer code;

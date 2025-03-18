@@ -91,7 +91,7 @@ public class OrderOutItem {
     private String batchNumber;
 
     /**
-     * 状态：状态：0-待开始，1-部分完成，2-已完成
+     * 状态：0-待开始，1-部分完成，2-已完成,-1-已取消
      */
     private OrderItemStatus status;
 

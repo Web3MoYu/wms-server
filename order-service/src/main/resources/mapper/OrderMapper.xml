@@ -35,6 +35,9 @@
             <if test="query.inspectorId != null and query.inspectorId != ''">
                 AND i.inspector = #{query.inspectorId}
             </if>
+            <if test="query.status != null">
+                AND i.status = #{query.status}
+            </if>
             <if test="query.startTime != null">
                 AND i.create_time &gt;= #{query.startTime}
             </if>
@@ -83,6 +86,9 @@
             <if test="query.inspectorId != null and query.inspectorId != ''">
                 AND o.inspector = #{query.inspectorId}
             </if>
+            <if test="query.status != null">
+                AND o.status = #{query.status}
+            </if>
             <if test="query.startTime != null">
                 AND o.create_time &gt;= #{query.startTime}
             </if>
@@ -130,6 +136,9 @@
             <if test="query.inspectorId != null and query.inspectorId != ''">
                 AND i.inspector = #{query.inspectorId}
             </if>
+            <if test="query.status != null">
+                AND i.status = #{query.status}
+            </if>
             <if test="query.startTime != null">
                 AND i.create_time &gt;= #{query.startTime}
             </if>
@@ -159,6 +168,9 @@
             </if>
             <if test="query.inspectorId != null and query.inspectorId != ''">
                 AND o.inspector = #{query.inspectorId}
+            </if>
+            <if test="query.status != null">
+                AND o.status = #{query.status}
             </if>
             <if test="query.startTime != null">
                 AND o.create_time &gt;= #{query.startTime}
