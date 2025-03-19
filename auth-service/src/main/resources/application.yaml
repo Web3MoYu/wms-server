@@ -1,5 +1,10 @@
 server:
   port: 8001
+  max-http-request-header-size: 40KB
+  tomcat:
+    max-http-response-header-size: 40KB
+  netty:
+    max-initial-line-length: 40KB
 
 spring:
   application:
@@ -9,7 +14,7 @@ spring:
       server-addr: localhost:8848
     openfeign:
       okhttp:
-        enabled: true
+        enabled:
 
 feign:
   sentinel:

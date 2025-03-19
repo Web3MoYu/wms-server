@@ -1,5 +1,8 @@
 server:
   port: 8080
+  max-http-request-header-size: 40KB
+  tomcat:
+    max-http-response-header-size: 40KB
 
 spring:
   application:
@@ -9,6 +12,10 @@ spring:
       server-addr: localhost:8848
 
     gateway:
+      httpclient:
+        max-initial-line-length: 40KB
+        max-header-size: 40KB
+
       routes:
         - id: auth-service # 路由规则id，自定义，唯一
           uri: lb://auth-service # 路由的目标服务，lb代表负载均衡，会从注册中心拉取服务列表
