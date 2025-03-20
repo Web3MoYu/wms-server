@@ -75,9 +75,24 @@ public class StockController {
      */
     @GetMapping("/getBatchNumber/{code}/{batchNumber}")
     @PreAuthorize("isAuthenticated()")
-    public Result<Set<String>> getBatchNumber(@PathVariable String batchNumber, @PathVariable String code) {
+    public Result<Set<String>> getBatchNumberByCode(@PathVariable String batchNumber, @PathVariable String code) {
         Set<String> list = stockService.lambdaQuery()
                 .eq(Stock::getProductCode, code)
+                .like(Stock::getBatchNumber, batchNumber)
+                .list().stream().map(Stock::getBatchNumber).collect(Collectors.toSet());
+        return Result.success(list, "查询成功");
+    }
+
+    /**
+     * 模糊查找批次号
+     *
+     * @param batchNumber 批次号
+     * @return 查询结果
+     */
+    @GetMapping("/getBatchNumber/{batchNumber}")
+    @PreAuthorize("isAuthenticated()")
+    public Result<Set<String>> getBatchNumber(@PathVariable String batchNumber) {
+        Set<String> list = stockService.lambdaQuery()
                 .like(Stock::getBatchNumber, batchNumber)
                 .list().stream().map(Stock::getBatchNumber).collect(Collectors.toSet());
         return Result.success(list, "查询成功");
