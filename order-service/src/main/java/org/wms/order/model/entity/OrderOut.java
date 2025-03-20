@@ -85,7 +85,7 @@ public class OrderOut {
     private OrderStatusEnums status;
 
     /**
-     * 质检状态：质检状态：0-未质检，1-质检通过，2-质检不通过
+     * 质检状态：质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常
      */
     private QualityStatusEnums qualityStatus;
 
