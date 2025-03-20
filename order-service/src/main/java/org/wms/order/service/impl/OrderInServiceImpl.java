@@ -1,11 +1,13 @@
 package org.wms.order.service.impl;
 
+import cn.hutool.core.stream.CollectorUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
 import org.wms.api.client.ProductClient;
 import org.wms.api.client.UserClient;
@@ -23,6 +25,7 @@ import org.wms.common.enums.order.OrderType;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.common.utils.JsonUtils;
 import org.wms.order.mapper.OrderInItemMapper;
@@ -40,7 +43,11 @@ import org.springframework.stereotype.Service;
 import org.wms.security.util.SecurityUtil;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author moyu
@@ -173,6 +180,15 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
             vo.setOrderItems(item);
             Product product = productClient.getProductById(item.getProductId());
             vo.setProduct(product);
+            if (StringUtils.hasLength(item.getAreaId())) {
+                String areaName = locationClient.getArea(item.getAreaId()).getAreaName();
+                vo.setAreaName(areaName);
+            }
+            if (Objects.nonNull(item.getLocation()) && !item.getLocation().isEmpty()) {
+                Set<LocationVo> set = item.getLocation().stream().map(it -> locationClient.getLocations(it))
+                        .collect(Collectors.toSet());
+                vo.setLocationName(set);
+            }
             return vo;
         }).toList();
         return Result.success(collect, "查询成功");

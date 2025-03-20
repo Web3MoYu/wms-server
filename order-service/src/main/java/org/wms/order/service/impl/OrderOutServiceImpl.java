@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.springframework.util.StringUtils;
+import org.wms.api.client.LocationClient;
 import org.wms.api.client.ProductClient;
 import org.wms.common.entity.product.Product;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.LocationVo;
 import org.wms.order.mapper.OrderOutItemMapper;
 import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author moyu
@@ -35,6 +41,9 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
     @Resource
     ProductClient productClient;
 
+    @Resource
+    LocationClient locationClient;
+
     @Override
     public Result<List<OrderDetailVo<OrderOutItem>>> outDetail(String id) {
         // 获取items
@@ -46,6 +55,15 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
             OrderDetailVo<OrderOutItem> vo = new OrderDetailVo<>();
             vo.setOrderItems(item);
             Product product = productClient.getProductById(item.getProductId());
+            if (StringUtils.hasLength(item.getAreaId())) {
+                String areaName = locationClient.getArea(item.getAreaId()).getAreaName();
+                vo.setAreaName(areaName);
+            }
+            if (Objects.nonNull(item.getLocation()) && !item.getLocation().isEmpty()) {
+                Set<LocationVo> set = item.getLocation().stream().map(it -> locationClient.getLocations(it))
+                        .collect(Collectors.toSet());
+                vo.setLocationName(set);
+            }
             vo.setProduct(product);
             return vo;
         }).toList();
