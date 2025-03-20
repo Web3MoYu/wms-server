@@ -3,6 +3,7 @@ package org.wms.order.service;
 import java.util.List;
 
 import org.wms.common.model.Result;
+import org.wms.order.model.dto.ApprovalDto;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
 import org.wms.order.model.entity.OrderIn;
@@ -64,4 +65,14 @@ public interface OrderService {
      * @return 取消结果
      */
     Result<String> updateStatus(Integer type, String id, String remark, OrderStatusEnums status);
+
+    /**
+     * 审批订单
+     *
+     * @param type 订单类型
+     * @param id   订单ID
+     * @param dto  审批信息
+     * @return 审批结果
+     */
+    Result<String> approvalInBound(String id, List<ApprovalDto> dto);
 }

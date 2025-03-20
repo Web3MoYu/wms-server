@@ -1,5 +1,8 @@
 package org.wms.order.controller;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,19 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.enums.order.OrderType;
 import org.wms.common.model.Result;
+import org.wms.order.model.dto.ApprovalDto;
 import org.wms.order.model.dto.OrderQueryDto;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderVo;
 import org.wms.order.service.OrderInService;
 import org.wms.order.service.OrderOutService;
 import org.wms.order.service.OrderService;
+import org.wms.security.util.SecurityUtil;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import jakarta.annotation.Resource;
-import org.wms.security.util.SecurityUtil;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/order/approval")
@@ -61,7 +63,39 @@ public class ApprovalController {
     @PutMapping("/reject/{type}/{id}")
     @PreAuthorize("hasAuthority('order:in-out:approval')")
     @GlobalTransactional
-    public Result<String> reject(@PathVariable("id") String id, @PathVariable Integer type, @RequestParam("remark") String remark) {
+    public Result<String> reject(@PathVariable("id") String id, @PathVariable Integer type,
+                                 @RequestParam("remark") String remark) {
+        if (checkAuth(id, type)) {
+            return Result.error(402, "权限不足");
+        }
+        return orderService.updateStatus(type, id, remark, OrderStatusEnums.REJECT);
+    }
+
+    /**
+     * 审批入库订单
+     *
+     * @param dto 审批信息
+     * @param id  订单ID
+     * @return 审批结果
+     */
+    @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('order:in-out:approval')")
+    @GlobalTransactional
+    public Result<String> approve(@RequestBody List<ApprovalDto> dto, @PathVariable String id) {
+        if (checkAuth(id, OrderType.IN_ORDER.getCode())) {
+            return Result.error(402, "权限不足");
+        }
+        return orderService.approvalInBound(id, dto);
+    }
+
+    /**
+     * 检查权限
+     *
+     * @param id   订单ID
+     * @param type 订单类型
+     * @return 是否有权限
+     */
+    private boolean checkAuth(String id, Integer type) {
         String dbId = null;
         String userID = SecurityUtil.getUserID();
         if (Objects.equals(type, OrderType.IN_ORDER.getCode())) {
@@ -69,9 +103,6 @@ public class ApprovalController {
         } else {
             dbId = orderOutService.getById(id).getApprover();
         }
-        if (Objects.isNull(dbId) || !dbId.equals(userID)) {
-            return Result.error(402,"权限不足");
-        }
-        return orderService.updateStatus(type, id, remark, OrderStatusEnums.REJECT);
+        return Objects.isNull(dbId) || !dbId.equals(userID);
     }
 }

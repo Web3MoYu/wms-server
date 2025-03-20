@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import org.wms.api.client.LocationClient;
 import org.wms.api.client.ProductClient;
 import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
@@ -21,19 +21,23 @@ import org.wms.common.entity.msg.Msg;
 import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.product.Product;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.enums.msg.MsgBizEnums;
 import org.wms.common.enums.msg.MsgEnums;
 import org.wms.common.enums.msg.MsgPriorityEnums;
 import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.enums.order.OrderType;
 import org.wms.common.exception.BizException;
+import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.common.utils.IdGenerate;
+import org.wms.common.utils.JsonUtils;
 import org.wms.order.mapper.OrderInItemMapper;
 import org.wms.order.mapper.OrderInMapper;
 import org.wms.order.mapper.OrderMapper;
 import org.wms.order.mapper.OrderOutItemMapper;
 import org.wms.order.mapper.OrderOutMapper;
+import org.wms.order.model.dto.ApprovalDto;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
 import org.wms.order.model.entity.OrderIn;
@@ -49,6 +53,7 @@ import org.wms.order.service.OrderService;
 import org.wms.security.util.SecurityUtil;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.util.StrUtil;
@@ -88,6 +93,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     IdGenerate idGenerate;
+
+    @Resource
+    LocationClient locationClient;
 
     @Override
     public Result<Page<OrderVo>> pageOrder(OrderQueryDto queryDto) {
@@ -221,42 +229,43 @@ public class OrderServiceImpl implements OrderService {
             }
             item.setProductId(productById.getId());
             // TODO 库存信息的修改是在质检员审核完毕之后才修改的
-//            Stock stock = stockClient.checkStockByCodeAndBatch(productCode, batchNumber);
-//            if (Objects.isNull(stock)) {
-//                stock = new Stock();
-//                stock.setProductId(productById.getId());
-//                stock.setProductCode(productCode);
-//                stock.setQuantity(item.getActualQuantity());
-//                stock.setAvailableQuantity(item.getActualQuantity());
-//                if (stock.getQuantity() < productById.getMinStock()) {
-//                    stock.setAlertStatus(AlertStatusEnums.LOW);
-//                }
-//                if (stock.getQuantity() > productById.getMaxStock()) {
-//                    stock.setAlertStatus(AlertStatusEnums.HIGH);
-//                }
-//                stock.setBatchNumber(batchNumber);
-//                stock.setProductionDate(item.getProductionDate());
-//                stock.setCreateTime(LocalDate.now());
-//                stock.setUpdateTime(LocalDate.now());
-//                boolean b = stockClient.addStock(stock);
-//                if (!b) {
-//                    throw new BizException("添加库存失败");
-//                }
-//            } else {
-//                stock.setUpdateTime(LocalDate.now());
-//                stock.setQuantity(stock.getQuantity() + item.getActualQuantity());
-//                stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getActualQuantity());
-//                if (stock.getQuantity() < productById.getMinStock()) {
-//                    stock.setAlertStatus(AlertStatusEnums.LOW);
-//                }
-//                if (stock.getQuantity() > productById.getMaxStock()) {
-//                    stock.setAlertStatus(AlertStatusEnums.HIGH);
-//                }
-//                boolean b = stockClient.updateStock(stock);
-//                if (!b) {
-//                    throw new BizException("更新库存失败");
-//                }
-//            }
+            // Stock stock = stockClient.checkStockByCodeAndBatch(productCode, batchNumber);
+            // if (Objects.isNull(stock)) {
+            // stock = new Stock();
+            // stock.setProductId(productById.getId());
+            // stock.setProductCode(productCode);
+            // stock.setQuantity(item.getActualQuantity());
+            // stock.setAvailableQuantity(item.getActualQuantity());
+            // if (stock.getQuantity() < productById.getMinStock()) {
+            // stock.setAlertStatus(AlertStatusEnums.LOW);
+            // }
+            // if (stock.getQuantity() > productById.getMaxStock()) {
+            // stock.setAlertStatus(AlertStatusEnums.HIGH);
+            // }
+            // stock.setBatchNumber(batchNumber);
+            // stock.setProductionDate(item.getProductionDate());
+            // stock.setCreateTime(LocalDate.now());
+            // stock.setUpdateTime(LocalDate.now());
+            // boolean b = stockClient.addStock(stock);
+            // if (!b) {
+            // throw new BizException("添加库存失败");
+            // }
+            // } else {
+            // stock.setUpdateTime(LocalDate.now());
+            // stock.setQuantity(stock.getQuantity() + item.getActualQuantity());
+            // stock.setAvailableQuantity(stock.getAvailableQuantity() +
+            // item.getActualQuantity());
+            // if (stock.getQuantity() < productById.getMinStock()) {
+            // stock.setAlertStatus(AlertStatusEnums.LOW);
+            // }
+            // if (stock.getQuantity() > productById.getMaxStock()) {
+            // stock.setAlertStatus(AlertStatusEnums.HIGH);
+            // }
+            // boolean b = stockClient.updateStock(stock);
+            // if (!b) {
+            // throw new BizException("更新库存失败");
+            // }
+            // }
         });
         // 插入订单详情
         orderInItemMapper.insert(orderItem, orderItem.size());
@@ -265,7 +274,8 @@ public class OrderServiceImpl implements OrderService {
         User from = userClient.getUserById(orderIn.getCreator());
         User to = userClient.getUserById(orderIn.getApprover());
         Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "审批通知", "你有一笔订单需要审批", to.getUserId(),
-                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(), MsgBizEnums.INBOUND_ORDER);
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(),
+                MsgBizEnums.INBOUND_ORDER);
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
         return Result.success(null, "插入成功");
@@ -313,14 +323,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result<String> updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums) {
         if (OrderType.IN_ORDER.getCode().equals(type)) {
-            // 入库订单取消
+            // 入库订单
             LambdaUpdateWrapper<OrderIn> wrapper = new LambdaUpdateWrapper<>();
             wrapper.eq(OrderIn::getId, id)
                     .set(OrderIn::getStatus, statusEnums.getCode())
                     .set(OrderIn::getRemark, remark)
                     .set(OrderIn::getUpdateTime, LocalDateTime.now());
             int update = orderInMapper.update(wrapper);
-            // 订单详情取消
+            // 订单详情
             LambdaUpdateWrapper<OrderInItem> itemWrapper = new LambdaUpdateWrapper<>();
             itemWrapper.eq(OrderInItem::getOrderId, id)
                     .set(OrderInItem::getStatus, statusEnums.getCode())
@@ -331,7 +341,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new BizException(303, "失败");
             }
         } else {
-            // 出库订单取消
+            // 出库订单
             LambdaUpdateWrapper<OrderOut> wrapper = new LambdaUpdateWrapper<>();
             wrapper.eq(OrderOut::getId, id)
                     .set(OrderOut::getStatus, statusEnums.getCode())
@@ -350,4 +360,42 @@ public class OrderServiceImpl implements OrderService {
         }
         return Result.success(null, "成功");
     }
+
+    @Override
+    public Result<String> approvalInBound(String id, List<ApprovalDto> dto) {
+
+        dto.forEach((item) -> {
+            String areaId = item.getAreaId();
+            List<Location> location = item.getLocation();
+            String detailId = item.getId();
+            // 修改订单详情的区域id和位置
+            LambdaUpdateWrapper<OrderInItem> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(OrderInItem::getId, detailId)
+                    .set(OrderInItem::getAreaId, areaId)
+                    .set(OrderInItem::getLocation, JsonUtils.toJson(location))
+                    .set(OrderInItem::getUpdateTime, LocalDateTime.now());
+            int update = orderInItemMapper.update(wrapper);
+            if (update <= 0) {
+                throw new BizException(303, "审批失败");
+            }
+            // 修改库位状态
+            location.forEach((i) -> {
+                boolean b = locationClient.updateStatusInStorage(i,
+                        LocationStatusEnums.OCCUPIED.getCode(), item.getProductId());
+                if (!b) {
+                    throw new BizException(303, "审批失败");
+                }
+            });
+        });
+
+        // 修改订单状态和详情状态
+        Result<String> updateStatus = updateStatus(OrderType.IN_ORDER.getCode(), id, "审批通过",
+                OrderStatusEnums.APPROVED);
+        if (updateStatus.getCode() != 200) {
+            throw new BizException(303, "审批失败");
+        }
+        // 修改
+        return Result.success(null, "审批成功");
+    }
+
 }
