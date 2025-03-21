@@ -8,8 +8,6 @@
         <id property="id" column="id"/>
         <result property="inspectionId" column="inspection_id"/>
         <result property="productId" column="product_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productCode" column="product_code"/>
         <result property="batchNumber" column="batch_number"/>
         <result property="areaId" column="area_id"/>
         <result property="location" column="location"/>

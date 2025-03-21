@@ -36,16 +36,6 @@ public class InspectionItem {
     private String productId;
 
     /**
-     * 产品名称
-     */
-    private String productName;
-
-    /**
-     * 产品编码
-     */
-    private String productCode;
-
-    /**
      * 批次号
      */
     private String batchNumber;
