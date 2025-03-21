@@ -1,4 +1,4 @@
-package org.wms.common.enums.stock;
+package org.wms.common.entity.stock;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.wms.common.enums.stock.AlertStatusEnums;
 import org.wms.common.model.Location;
 
 /**

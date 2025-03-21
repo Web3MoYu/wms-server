@@ -1,7 +1,7 @@
 package org.wms.stock.controller.api;
 
 import org.springframework.web.bind.annotation.*;
-import org.wms.common.enums.stock.Stock;
+import org.wms.common.entity.stock.Stock;
 import org.wms.stock.service.StockService;
 
 import jakarta.annotation.Resource;

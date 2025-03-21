@@ -2,7 +2,7 @@ package org.wms.api.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import org.wms.common.enums.stock.Stock;
+import org.wms.common.entity.stock.Stock;
 
 @FeignClient(value = "stock-service", contextId = "stock")
 public interface StockClient {
