@@ -1,6 +1,5 @@
 package org.wms.order.controller.api;
 
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,8 @@ import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.service.OrderInItemService;
 import org.wms.order.service.OrderOutItemService;
+
+import jakarta.annotation.Resource;
 
 @RestController
 @RequestMapping("/api/order")
@@ -21,6 +22,12 @@ public class OrderApiController {
     @Resource
     OrderOutItemService orderOutItemService;
 
+    /**
+     * 更新产品信息
+     *
+     * @param product 产品信息
+     * @return 是否成功
+     */
     @PutMapping("/product")
     public boolean updateProduct(@RequestBody Product product) {
         // 更新入库订单

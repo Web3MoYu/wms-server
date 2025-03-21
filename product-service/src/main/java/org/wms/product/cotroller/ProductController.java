@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.wms.common.model.Result;
 import org.wms.common.entity.product.Product;
+import org.wms.common.model.Result;
 import org.wms.common.utils.IdGenerate;
 import org.wms.product.model.vo.ProductVo;
 import org.wms.product.service.ProductService;
@@ -131,6 +131,11 @@ public class ProductController {
         return Result.success(list, "查询成功");
     }
 
+    /**
+     * 生成批次号
+     *
+     * @return 批次号
+     */
     @GetMapping("/batchNumber")
     @PreAuthorize("isAuthenticated()")
     public Result<String> getBatchNumber() {

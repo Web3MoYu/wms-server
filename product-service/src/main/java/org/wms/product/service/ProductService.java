@@ -25,5 +25,12 @@ public interface ProductService extends IService<Product> {
      */
     Page<ProductVo> pageProductVo(int page, int pageSize, String productName, String categoryId, String brand);
 
+    /**
+     * 更新产品信息
+     *
+     * @param product 产品信息
+     * @param id      产品ID
+     * @return 是否成功
+     */
     Result<Boolean> updateProduct(Product product, String id);
 }
