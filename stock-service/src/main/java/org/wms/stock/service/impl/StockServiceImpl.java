@@ -55,20 +55,23 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
                 .eq(StringUtils.isNotBlank(dto.getAreaId()), Stock::getAreaId, dto.getAreaId())
                 .eq(Objects.nonNull(dto.getStatus()), Stock::getAlertStatus, dto.getStatus())
                 .like(StringUtils.isNotBlank(dto.getBatchNumber()), Stock::getBatchNumber, dto.getBatchNumber());
-        if (Objects.isNull(dto.getAscSortByProdDate()) || dto.getAscSortByProdDate()) {
+        if (Objects.nonNull(dto.getAscSortByProdDate()) && dto.getAscSortByProdDate()) {
             wrapper.orderByAsc(Stock::getProductionDate);
-        } else {
+        }
+        if (Objects.nonNull(dto.getAscSortByProdDate()) && !dto.getAscSortByProdDate()) {
             wrapper.orderByDesc(Stock::getProductionDate);
         }
-        if (Objects.isNull(dto.getAscSortByAvailableQuantity()) || dto.getAscSortByAvailableQuantity()) {
+        if (Objects.nonNull(dto.getAscSortByAvailableQuantity()) && dto.getAscSortByAvailableQuantity()) {
             wrapper.orderByAsc(Stock::getAvailableQuantity);
-        } else {
+        }
+        if (Objects.nonNull(dto.getAscSortByAvailableQuantity()) && !dto.getAscSortByAvailableQuantity()) {
             wrapper.orderByDesc(Stock::getAvailableQuantity);
         }
-        if (Objects.isNull(dto.getAscSortByLockedQuantity()) || dto.getAscSortByLockedQuantity()) {
-            wrapper.orderByAsc(Stock::getLockedQuantity);
-        } else {
-            wrapper.orderByDesc(Stock::getLockedQuantity);
+        if (Objects.nonNull(dto.getAscSortByQuantity()) && dto.getAscSortByQuantity()) {
+            wrapper.orderByAsc(Stock::getQuantity);
+        }
+        if (Objects.nonNull(dto.getAscSortByQuantity()) && !dto.getAscSortByQuantity()) {
+            wrapper.orderByDesc(Stock::getQuantity);
         }
 
 
@@ -121,7 +124,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
             }
         }
 
-        if (!success){
+        if (!success) {
             throw new BizException("新增库存失败");
         }
         return Result.success(null, "新增库存成功");
@@ -146,7 +149,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
                 .eq(Stock::getBatchNumber, batchNumber)
                 .eq(Stock::getProductId, productId)
                 .one();
-        if(Objects.isNull(one)){
+        if (Objects.isNull(one)) {
             return null;
         }
         return convertToStockVo(one);
