@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -109,7 +110,9 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
             String productId = item.getProductId();
             Product productById = productClient.getProductById(productId);
             if (StrUtil.isEmpty(productId)) {
+                long id = IdWorker.getId();
                 Product product = order.getProducts().get(productCode);
+                product.setId(String.valueOf(id));
                 product.setUpdateTime(LocalDateTime.now());
                 product.setCreateTime(LocalDateTime.now());
                 productClient.createProduct(product);
