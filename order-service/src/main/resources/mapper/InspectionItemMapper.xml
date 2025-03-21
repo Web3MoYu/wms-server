@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.order.mapper.InspectionItemMapper">
+
+    <resultMap id="BaseResultMap" type="org.wms.order.model.entity.InspectionItem">
+        <id property="id" column="id"/>
+        <result property="inspectionId" column="inspection_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productCode" column="product_code"/>
+        <result property="batchNumber" column="batch_number"/>
+        <result property="areaId" column="area_id"/>
+        <result property="location" column="location"/>
+        <result property="inspectionQuantity" column="inspection_quantity"/>
+        <result property="qualifiedQuantity" column="qualified_quantity"/>
+        <result property="unqualifiedQuantity" column="unqualified_quantity"/>
+        <result property="qualityStatus" column="quality_status"/>
+        <result property="reason" column="reason"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,inspection_id,product_id,product_name,product_code,batch_number,
+        area_id,location,inspection_quantity,qualified_quantity,unqualified_quantity,
+        quality_status,reason,remark,create_time,update_time
+    </sql>
+</mapper>
