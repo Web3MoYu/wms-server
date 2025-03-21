@@ -1,9 +1,14 @@
 package org.wms.product.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.wms.api.client.OrderClient;
+import org.wms.api.client.StockClient;
+import org.wms.common.exception.BizException;
+import org.wms.common.model.Result;
 import org.wms.product.mapper.ProductCatMapper;
 import org.wms.product.mapper.ProductMapper;
 import org.wms.common.entity.product.Product;
@@ -28,6 +33,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
     @Resource
     ProductMapper productMapper;
+
+    @Resource
+    StockClient stockClient;
+
+    @Resource
+    OrderClient orderClient;
 
     @Resource
     ProductCatMapper productCatMapper;
@@ -64,6 +75,23 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
 
         // 使用自定义查询方法获取带分类全称的产品列表
         return productMapper.selectProductVoPage(pageParam, queryWrapper);
+    }
+
+    @Override
+    public Result<Boolean> updateProduct(Product product, String id) {
+        product.setUpdateTime(LocalDateTime.now());
+        boolean productUpdate = this.lambdaUpdate()
+                .eq(Product::getId, id)
+                .update(product);
+        product.setId(id);
+        // 更新订单和库存的信息
+        boolean order = orderClient.updateProduct(product);
+        boolean stock = stockClient.updateProductCode(product);
+        if (productUpdate && order && stock) {
+            throw new BizException(303, "更新失败");
+        }
+
+        return Result.success(null, "更新失败");
     }
 
     /**

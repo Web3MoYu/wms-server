@@ -1,6 +1,7 @@
 package org.wms.product.service;
 
 import org.wms.common.entity.product.Product;
+import org.wms.common.model.Result;
 import org.wms.product.model.vo.ProductVo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,4 +25,5 @@ public interface ProductService extends IService<Product> {
      */
     Page<ProductVo> pageProductVo(int page, int pageSize, String productName, String categoryId, String brand);
 
+    Result<Boolean> updateProduct(Product product, String id);
 }

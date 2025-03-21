@@ -3,6 +3,7 @@ package org.wms.product.cotroller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -111,15 +112,9 @@ public class ProductController {
      */
     @PreAuthorize("hasAuthority('product:update')")
     @PutMapping("/{id}")
+    @GlobalTransactional
     public Result<Boolean> updateProduct(@RequestBody Product product, @PathVariable String id) {
-        product.setUpdateTime(LocalDateTime.now());
-        boolean result = productService.lambdaUpdate()
-                .eq(Product::getId, id)
-                .update(product);
-        if (result) {
-            return Result.success(null, "更新成功");
-        }
-        return Result.error(500, "更新失败");
+        return productService.updateProduct(product, id);
     }
 
     /**

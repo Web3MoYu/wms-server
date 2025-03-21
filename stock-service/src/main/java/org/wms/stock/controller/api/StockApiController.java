@@ -1,6 +1,7 @@
 package org.wms.stock.controller.api;
 
 import org.springframework.web.bind.annotation.*;
+import org.wms.common.entity.product.Product;
 import org.wms.common.entity.stock.Stock;
 import org.wms.stock.service.StockService;
 
@@ -41,6 +42,13 @@ public class StockApiController {
     @PostMapping("/add")
     public boolean addStock(@RequestBody Stock stock) {
         return stockService.save(stock);
+    }
+
+    @PutMapping("/product")
+    public boolean updateProductCode(@RequestBody Product product) {
+        return stockService.lambdaUpdate()
+                .eq(Stock::getProductId, product.getId())
+                .set(Stock::getProductCode, product.getProductCode()).update();
     }
 
 }

@@ -2,6 +2,7 @@ package org.wms.api.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+import org.wms.common.entity.product.Product;
 import org.wms.common.entity.stock.Stock;
 
 @FeignClient(value = "stock-service", contextId = "stock")
@@ -28,4 +29,7 @@ public interface StockClient {
 
     @PostMapping("/api/stock/add")
     boolean addStock(@RequestBody Stock stock);
+
+    @PutMapping("/api/stock/product")
+    boolean updateProductCode(@RequestBody Product product);
 }
