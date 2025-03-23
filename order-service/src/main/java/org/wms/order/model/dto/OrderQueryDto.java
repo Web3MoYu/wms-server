@@ -20,7 +20,7 @@ public class OrderQueryDto {
     private String creatorId;           // 创建人ID
     private String approverId;          // 审核人id
     private String inspectorId;         // 质检人员ID
-    private Integer status; //状态：0-待审核，1-已审核，2-入库中，3-已完成，-1-已取消 -2-审批拒绝
+    private Integer status; //状态：0-待审核，1-已审核，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝
 
     // 时间范围
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

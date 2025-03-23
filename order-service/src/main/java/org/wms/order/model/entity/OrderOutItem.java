@@ -91,7 +91,7 @@ public class OrderOutItem {
     private String batchNumber;
 
     /**
-     * 状态：0-待审核，1-审批通过，2-入库中，3-已完成，-1-已取消 -2-审批拒绝
+     * 状态：0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝
      */
     private OrderStatusEnums status;
 
