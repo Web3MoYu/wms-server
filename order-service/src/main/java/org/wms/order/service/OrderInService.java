@@ -21,7 +21,7 @@ public interface OrderInService extends IService<OrderIn> {
 
     /**
      * 添加入库订单
-     * 
+     *
      * @param order 入库订单
      * @return 结果
      */
@@ -29,7 +29,7 @@ public interface OrderInService extends IService<OrderIn> {
 
     /**
      * 查询入库订单详情
-     * 
+     *
      * @param id 入库订单ID
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface OrderInService extends IService<OrderIn> {
 
     /**
      * 更新订单状态
-     * 
+     *
      * @param type        订单类型
      * @param id          订单ID
      * @param remark      备注
@@ -47,10 +47,11 @@ public interface OrderInService extends IService<OrderIn> {
 
     /**
      * 审批入库订单
-     * 
-     * @param id  入库订单ID
-     * @param dto 审批信息
+     *
+     * @param id        入库订单ID
+     * @param dto       审批信息
+     * @param inspector 质检人员
      * @return 结果
      */
-    Result<String> approve(String id, List<ApprovalDto> dto);
+    Result<String> approve(String id, List<ApprovalDto> dto, String inspector);
 }

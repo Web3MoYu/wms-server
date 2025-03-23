@@ -77,6 +77,9 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
     @Resource
     LocationClient locationClient;
 
+    @Resource
+    OrderInMapper orderInMapper;
+
     @Override
     public Result<String> addOrder(OrderDto<OrderIn, OrderInItem> order) {
         String userID = SecurityUtil.getUserID();
@@ -219,7 +222,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
     }
 
     @Override
-    public Result<String> approve(String id, List<ApprovalDto> dto) {
+    public Result<String> approve(String id, List<ApprovalDto> dto, String inspector) {
         dto.forEach((item) -> {
             String areaId = item.getAreaId();
             List<Location> location = item.getLocation();
@@ -243,7 +246,13 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
                 }
             });
         });
-
+        LambdaUpdateWrapper<OrderIn> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(OrderIn::getId, id)
+                .set(OrderIn::getInspector, inspector);
+        int update = orderInMapper.update(wrapper);
+        if (update <= 0) {
+            throw new BizException(303, "审批失败");
+        }
         // 修改订单状态和详情状态
         updateStatus(OrderType.IN_ORDER.getCode(), id, "审批通过",
                 OrderStatusEnums.APPROVED);

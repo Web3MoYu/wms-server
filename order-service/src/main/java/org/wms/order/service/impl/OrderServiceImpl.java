@@ -80,8 +80,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Result<String> approvalInBound(String id, List<ApprovalDto> dto) {
-        return orderInService.approve(id, dto);
+    public Result<String> approvalInBound(String id, List<ApprovalDto> dto, String inspector) {
+        return orderInService.approve(id, dto, inspector);
     }
 
     @Override

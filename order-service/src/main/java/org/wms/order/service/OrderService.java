@@ -69,10 +69,10 @@ public interface OrderService {
     /**
      * 审批订单
      *
-     * @param type 订单类型
-     * @param id   订单ID
-     * @param dto  审批信息
+     * @param inspector 质检人员
+     * @param id        订单ID
+     * @param dto       审批信息
      * @return 审批结果
      */
-    Result<String> approvalInBound(String id, List<ApprovalDto> dto);
+    Result<String> approvalInBound(String id, List<ApprovalDto> dto, String inspector);
 }
