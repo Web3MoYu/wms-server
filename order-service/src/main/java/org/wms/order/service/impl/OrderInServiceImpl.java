@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.apache.ibatis.executor.BatchResult;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -308,7 +307,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 生成消息
         User from = userClient.getUserById(orderIn.getApprover());
         User to = userClient.getUserById(orderIn.getInspector());
-        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "质检通知", "你有一笔质检订单", to.getUserId(),
+        Msg msg = new Msg(MsgTypeEnums.QUALITY_CHECK, "质检通知", "你有一笔质检订单", to.getUserId(),
                 to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, inspection.getInspectionNo(),
                 MsgBizEnums.QUALITY_CHECK);
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,

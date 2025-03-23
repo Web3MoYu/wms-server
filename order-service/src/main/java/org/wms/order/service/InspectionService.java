@@ -2,6 +2,7 @@ package org.wms.order.service;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.vo.InspectionVo;
@@ -21,5 +22,5 @@ public interface InspectionService extends IService<Inspection> {
      * @param dto 查询条件
      * @return 结果
      */
-    List<InspectionVo> pageList(InspectionDto dto);
+    Page<InspectionVo> pageList(InspectionDto dto);
 }

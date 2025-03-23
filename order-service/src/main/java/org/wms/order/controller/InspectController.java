@@ -2,6 +2,7 @@ package org.wms.order.controller;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class InspectController {
      */
     @PostMapping("/page")
     @PreAuthorize("hasAuthority('order:inspect:list')")
-    public Result<List<InspectionVo>> pageList(@RequestBody InspectionDto dto) {
+    public Result<Page<InspectionVo>> pageList(@RequestBody InspectionDto dto) {
         return Result.success(inspectService.pageList(dto), "查询成功");
     }
 }

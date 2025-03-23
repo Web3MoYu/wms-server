@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.UserClient;
 import org.wms.common.entity.sys.User;
+import org.wms.common.model.Result;
 import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.vo.InspectionVo;
+import org.wms.order.model.vo.OrderVo;
 import org.wms.order.service.InspectionService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,7 +35,7 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
     private UserClient userClient;
 
     @Override
-    public List<InspectionVo> pageList(InspectionDto dto) {
+    public Page<InspectionVo> pageList(InspectionDto dto) {
         // 构建查询条件
         LambdaQueryWrapper<Inspection> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -87,7 +89,7 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         Page<Inspection> pageResult = this.page(page, queryWrapper);
 
         // 将查询结果转换为VO对象
-        return pageResult.getRecords().stream().map(item -> {
+        List<InspectionVo> list = pageResult.getRecords().stream().map(item -> {
             InspectionVo vo = new InspectionVo();
             // 复制基本属性
             BeanUtils.copyProperties(item, vo);
@@ -99,7 +101,10 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
             }
 
             return vo;
-        }).collect(Collectors.toList());
+        }).toList();
+        Page<InspectionVo> res = new Page<>(pageResult.getCurrent(), pageResult.getSize(), pageResult.getTotal());
+        res.setRecords(list);
+        return res;
     }
 }
 
