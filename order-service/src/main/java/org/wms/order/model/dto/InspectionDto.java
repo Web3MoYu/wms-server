@@ -32,7 +32,7 @@ public class InspectionDto {
     private LocalDateTime endTime;      // 结束时间
 
     /**
-     * 质检状态：1-通过，2-不通过，3-部分异常,为null查询全部
+     * 质检状态：0-未质检，1-通过，2-不通过，3-部分异常,为null查询全部
      */
     private Integer status;
 

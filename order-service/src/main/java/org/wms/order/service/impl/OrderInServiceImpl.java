@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.apache.ibatis.executor.BatchResult;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ import org.wms.common.entity.msg.Msg;
 import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.product.Product;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.inspect.InspectType;
 import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.enums.msg.MsgBizEnums;
 import org.wms.common.enums.msg.MsgEnums;
@@ -30,10 +32,14 @@ import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.common.utils.JsonUtils;
+import org.wms.order.mapper.InspectionItemMapper;
+import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.mapper.OrderInItemMapper;
 import org.wms.order.mapper.OrderInMapper;
 import org.wms.order.model.dto.ApprovalDto;
 import org.wms.order.model.dto.OrderDto;
+import org.wms.order.model.entity.Inspection;
+import org.wms.order.model.entity.InspectionItem;
 import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.enums.OrderInType;
@@ -79,6 +85,12 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
 
     @Resource
     OrderInMapper orderInMapper;
+
+    @Resource
+    InspectionMapper inspectionMapper;
+
+    @Resource
+    InspectionItemMapper inspectionItemMapper;
 
     @Override
     public Result<String> addOrder(OrderDto<OrderIn, OrderInItem> order) {
@@ -166,7 +178,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 构建消息
         User from = userClient.getUserById(orderIn.getCreator());
         User to = userClient.getUserById(orderIn.getApprover());
-        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "审批通知", "你有一笔订单需要审批", to.getUserId(),
+        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "订单通知", "你有一笔订单需要审批", to.getUserId(),
                 to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(),
                 MsgBizEnums.INBOUND_ORDER);
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
@@ -256,7 +268,51 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 修改订单状态和详情状态
         updateStatus(OrderType.IN_ORDER.getCode(), id, "审批通过",
                 OrderStatusEnums.APPROVED);
-        // 修改
+
+        // 增加质检信息
+        OrderIn orderIn = this.lambdaQuery().eq(OrderIn::getId, id).one();
+        LambdaUpdateWrapper<OrderInItem> itemWrapper = new LambdaUpdateWrapper<>();
+        itemWrapper.eq(OrderInItem::getOrderId, id);
+        List<OrderInItem> inItems = orderInItemMapper.selectList(itemWrapper);
+        // 生成质检信息
+        Inspection inspection = new Inspection();
+        inspection.setInspectionNo(idGenerate.generateInspectionNo(InspectType.INBOUND_INSPECT));
+        inspection.setInspectionType(InspectType.INBOUND_INSPECT);
+        inspection.setRelatedOrderId(orderIn.getId());
+        inspection.setRelatedOrderNo(orderIn.getOrderNo());
+        inspection.setInspector(orderIn.getInspector());
+        inspection.setStatus(QualityStatusEnums.NOT_INSPECTED);
+        inspection.setCreateTime(LocalDateTime.now());
+        inspection.setUpdateTime(LocalDateTime.now());
+        // 插入质检信息
+        int insert = inspectionMapper.insert(inspection);
+        if (insert <= 0) {
+            throw new BizException(303, "插入质检信息失败");
+        }
+        // 生成质检详情信息
+        List<InspectionItem> list = inItems.stream().map((item) -> {
+            InspectionItem inspectionItem = new InspectionItem();
+            inspectionItem.setInspectionId(inspection.getId());
+            inspectionItem.setProductId(item.getProductId());
+            inspectionItem.setBatchNumber(item.getBatchNumber());
+            inspectionItem.setAreaId(item.getAreaId());
+            inspectionItem.setLocation(item.getLocation());
+            inspectionItem.setInspectionQuantity(item.getExpectedQuantity());
+            inspectionItem.setCreateTime(LocalDateTime.now());
+            inspectionItem.setUpdateTime(LocalDateTime.now());
+            return inspectionItem;
+        }).toList();
+        // 插入质检详情信息
+        inspectionItemMapper.insert(list);
+
+        // 生成消息
+        User from = userClient.getUserById(orderIn.getApprover());
+        User to = userClient.getUserById(orderIn.getInspector());
+        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "质检通知", "你有一笔质检订单", to.getUserId(),
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, inspection.getInspectionNo(),
+                MsgBizEnums.QUALITY_CHECK);
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
         return Result.success(null, "审批成功");
     }
 }

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.wms.common.enums.inspect.InspectType;
 import org.wms.common.enums.order.OrderType;
 
 import jakarta.annotation.Resource;
@@ -24,6 +25,13 @@ public class IdGenerate {
     private static final Map<Integer, String> ORDER_PREFIX = Map.of(
             0, "IR", // 入库订单 Inbound Receipt
             1, "OR"  // 出库订单 Outbound Receipt
+    );
+
+    // 质检类型前缀
+    private static final Map<Integer, String> INSPECT_PREFIX = Map.of(
+            1, "QI", // 入库质检 Quality Inspection Inbound
+            2, "QO", // 出库质检 Quality Inspection Outbound
+            3, "QS"  // 库存质检 Quality Inspection Stock
     );
 
     // 日期格式
@@ -76,5 +84,31 @@ public class IdGenerate {
         String sequenceStr = String.format("%08d", sequence);
 
         return date + sequenceStr;
+    }
+    
+    /**
+     * 生成质检编号
+     * 格式：前缀 + 日期 + 6位序列号
+     * 例如：QI2025031000001（入库质检）
+     *      QO2025031000001（出库质检）
+     *      QS2025031000001（库存质检）
+     *
+     * @param inspectType 质检类型
+     * @return 质检编号
+     */
+    public String generateInspectionNo(InspectType inspectType) {
+        String prefix = INSPECT_PREFIX.getOrDefault(inspectType.getCode(), "QX"); // 默认其他类型
+        String date = LocalDate.now().format(DATE_FORMATTER);
+        String key = "inspect:no:" + prefix + ":" + date;
+
+        // 使用Redis获取自增序列号
+        Long sequence = redisTemplate.opsForValue().increment(key);
+        // 设置过期时间（2天）
+        redisTemplate.expire(key, 2, TimeUnit.DAYS);
+
+        // 格式化为6位序列号，不足补0
+        String sequenceStr = String.format("%06d", sequence);
+
+        return prefix + date + sequenceStr;
     }
 } 
