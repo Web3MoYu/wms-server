@@ -33,4 +33,12 @@ public interface ProductService extends IService<Product> {
      * @return 是否成功
      */
     Result<Boolean> updateProduct(Product product, String id);
+
+    /**
+     * 根据id获取产品信息
+     *
+     * @param id 产品id
+     * @return 产品信息
+     */
+    ProductVo getProductById(String id);
 }

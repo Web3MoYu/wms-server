@@ -142,4 +142,16 @@ public class ProductController {
         return Result.success(idGenerate.generateBatchNo(), "生成成功");
     }
 
+    /**
+     * 根据id获取产品信息
+     *
+     * @param id 产品id
+     * @return 产品信息
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public Result<ProductVo> getProductById(@PathVariable String id) {
+        return Result.success(productService.getProductById(id), "查询成功");
+    }
+
 }

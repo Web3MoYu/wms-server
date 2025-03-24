@@ -26,6 +26,14 @@ public interface ProductMapper extends BaseMapper<Product> {
      * @return 包含分类全称的产品信息分页结果
      */
     Page<ProductVo> selectProductVoPage(Page<Product> page, @Param("ew") Wrapper<Product> wrapper);
+
+    /**
+     * 根据id获取产品信息
+     *
+     * @param id 产品id
+     * @return 产品信息
+     */
+    ProductVo selectProductById(String id);
 }
 
 

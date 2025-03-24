@@ -94,6 +94,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product>
         return Result.success(null, "更新失败");
     }
 
+    @Override
+    public ProductVo getProductById(String id) {
+        return productMapper.selectProductById(id);
+    }
+
     /**
      * 获取指定分类及其所有子分类的ID列表
      *
