@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum QualityStatusEnums {
     NOT_INSPECTED(0, "未质检"),
-    PASSED(1, "质检通过"),
-    FAILED(2, "质检不通过"),
+    PASSED(1, "通过"),
+    FAILED(2, "不通过"),
     PARTIALLY_EXCEPTIONAL(3, "部分异常");
 
     @JsonValue

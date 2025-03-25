@@ -71,7 +71,7 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
     }
 
     @Override
-    public void updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums) {
+    public void updateStatus(String id, String remark, OrderStatusEnums statusEnums) {
         // 出库订单
         LambdaUpdateWrapper<OrderOut> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(OrderOut::getId, id)

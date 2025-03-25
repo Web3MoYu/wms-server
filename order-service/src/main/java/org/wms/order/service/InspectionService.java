@@ -1,12 +1,14 @@
 package org.wms.order.service;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.wms.common.model.Result;
+import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.entity.Inspection;
+import org.wms.order.model.entity.OrderInItem;
+import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -18,9 +20,25 @@ public interface InspectionService extends IService<Inspection> {
 
     /**
      * 查询入库订单列表
-     * 
+     *
      * @param dto 查询条件
      * @return 结果
      */
     Page<InspectionVo> pageList(InspectionDto dto);
+
+    /**
+     * 入库质检
+     * 
+     * @param dto
+     * @return
+     */
+    Result<String> inBoundCheck(InBoundInspectDto dto);
+
+    /**
+     * 入库质检详情
+     * 
+     * @param id
+     * @return
+     */
+    Result<InspectionDetailVo<OrderInItem>> inDetail(String id);
 }

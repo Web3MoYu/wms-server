@@ -212,7 +212,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
     }
 
     @Override
-    public void updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums) {
+    public void updateStatus(String id, String remark, OrderStatusEnums statusEnums) {
         // 入库订单
         LambdaUpdateWrapper<OrderIn> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(OrderIn::getId, id)
@@ -265,7 +265,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
             throw new BizException(303, "审批失败");
         }
         // 修改订单状态和详情状态
-        updateStatus(OrderType.IN_ORDER.getCode(), id, "审批通过",
+        updateStatus(id, "审批通过",
                 OrderStatusEnums.APPROVED);
 
         // 增加质检信息

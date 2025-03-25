@@ -76,7 +76,7 @@ public class LocationApiController {
      */
     @PostMapping("/updateStatusInStorage")
     public boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer type,
-                                         @RequestParam("productId") String productId) {
+                                         @RequestParam(value = "productId", required = false) String productId) {
         LambdaUpdateWrapper<Storage> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(Storage::getShelfId, location.getShelfId())
                 .in(Storage::getId, location.getStorageIds());

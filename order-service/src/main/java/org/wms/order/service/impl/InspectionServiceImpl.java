@@ -1,19 +1,34 @@
 package org.wms.order.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.wms.api.client.LocationClient;
 import org.wms.api.client.UserClient;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.location.LocationStatusEnums;
+import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
+import org.wms.order.mapper.InspectionItemMapper;
 import org.wms.order.mapper.InspectionMapper;
+import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
+import org.wms.order.model.dto.ItemInspect;
 import org.wms.order.model.entity.Inspection;
+import org.wms.order.model.entity.InspectionItem;
+import org.wms.order.model.entity.OrderIn;
+import org.wms.order.model.entity.OrderInItem;
+import org.wms.order.model.enums.InspectItemStatus;
+import org.wms.order.model.enums.OrderStatusEnums;
+import org.wms.order.model.enums.QualityStatusEnums;
+import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
-import org.wms.order.model.vo.OrderVo;
+import org.wms.order.model.vo.OrderDetailVo;
 import org.wms.order.service.InspectionService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,6 +36,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import jakarta.annotation.Resource;
+import org.wms.order.service.OrderInItemService;
+import org.wms.order.service.OrderInService;
 
 /**
  * @author moyu
@@ -33,6 +50,18 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
 
     @Resource
     private UserClient userClient;
+
+    @Resource
+    private OrderInService orderInService;
+
+    @Resource
+    private OrderInItemService orderInItemService;
+
+    @Resource
+    private InspectionItemMapper inspectionItemMapper;
+
+    @Resource
+    private LocationClient locationClient;
 
     @Override
     public Page<InspectionVo> pageList(InspectionDto dto) {
@@ -106,8 +135,136 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         res.setRecords(list);
         return res;
     }
+
+    @Override
+    public Result<String> inBoundCheck(InBoundInspectDto dto) {
+        int status = 0;
+        List<ItemInspect> list = dto.getItemInspects();
+        if (list == null || list.isEmpty()) {
+            throw new BizException(500, "参数不合法");
+        }
+        // 判断是全失败、全成功、还是部分成功
+        for (ItemInspect item : list) {
+            if (item.isApproval()) {
+                status++;
+            }
+        }
+        // 获取质检订单
+        Inspection one = this.lambdaQuery().eq(Inspection::getInspectionNo, dto.getInspectionNo()).one();
+        // 修改状态
+        // 全成功
+        if (status == list.size()) {
+            // 修改质检状态
+            boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(), QualityStatusEnums.PASSED);
+            // 订单状态
+            orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
+            // 订单质检状态
+            boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
+                    .set(OrderIn::getQualityStatus, QualityStatusEnums.PASSED.getCode()).update();
+            if (!update || !update1) {
+                throw new BizException(303, "修改质检状态失败");
+            }
+        } else if (status == 0) {
+            boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(), QualityStatusEnums.FAILED);
+            orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.COMPLETED);
+            // 订单质检状态
+            boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
+                    .set(OrderIn::getQualityStatus, QualityStatusEnums.FAILED.getCode()).update();
+            // 全失败
+            if (!update || !update1) {
+                throw new BizException(303, "修改质检状态失败");
+            }
+        } else {
+            boolean update = this.updateInspectionStatus(dto.getRemark(),
+                    dto.getInspectionNo(), QualityStatusEnums.PARTIALLY_EXCEPTIONAL);
+            orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
+            // 订单质检状态
+            boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
+                    .set(OrderIn::getQualityStatus, QualityStatusEnums.PARTIALLY_EXCEPTIONAL.getCode()).update();
+            if (!update || !update1) {
+                throw new BizException(303, "修改质检状态失败");
+            }
+        }
+        // 遍历订单详情，修改状态
+        list.forEach(item -> {
+            // 通过
+            boolean r1;
+            boolean r2;
+            if (item.isApproval()) {
+                // 修改质检详情状态
+                r1 = this.inspectionItemMapper.updateItemStatusAndCount(item.getRemark(), item.getItemId(),
+                        InspectItemStatus.QUALIFIED.getCode(), item.getCount());
+
+                // 修改订单详情状态
+                r2 = orderInItemService.lambdaUpdate()
+                        .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
+                        .eq(OrderInItem::getProductId, item.getProductId())
+                        .set(OrderInItem::getRemark, item.getRemark())
+                        .set(OrderInItem::getActualQuantity, item.getCount())
+                        .set(OrderInItem::getQualityStatus, QualityStatusEnums.PASSED).update();
+
+            } else {
+                r1 = this.inspectionItemMapper.updateItemStatusAndCount(item.getRemark(), item.getItemId(),
+                        InspectItemStatus.UNQUALIFIED.getCode(), item.getCount());
+                // 修改订单详情状态
+                r2 = orderInItemService.lambdaUpdate()
+                        .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
+                        .eq(OrderInItem::getProductId, item.getProductId())
+                        .set(OrderInItem::getActualQuantity, item.getCount())
+                        .set(OrderInItem::getRemark, item.getRemark())
+                        .set(OrderInItem::getQualityStatus, QualityStatusEnums.FAILED).update();
+                // 将库位释放
+                // 查询库位信息
+                InspectionItem inspectionItem = inspectionItemMapper.selectById(item.getItemId());
+                if (inspectionItem == null || inspectionItem.getLocation() == null || inspectionItem.getLocation().isEmpty()) {
+                    throw new BizException(500, "业务异常");
+                }
+                inspectionItem.getLocation().forEach(location -> {
+                    boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(), null);
+                    if (!b) {
+                        throw new BizException(303, "修改库位信息失败");
+                    }
+                });
+            }
+            if (!r1 || !r2) {
+                throw new BizException(303, "修改详情状态失败");
+            }
+        });
+        return Result.success(null, "质检成功");
+    }
+
+    @Override
+    public Result<InspectionDetailVo<OrderInItem>> inDetail(String id) {
+        Inspection one = this.lambdaQuery().eq(Inspection::getId, id).one();
+        Result<List<OrderDetailVo<OrderInItem>>> result = orderInService.inDetail(one.getRelatedOrderId());
+        if (result.getCode() != 200) {
+            throw new BizException(303, "查询出错");
+        }
+        List<OrderDetailVo<OrderInItem>> data = result.getData();
+        // 查询质检详情
+        LambdaQueryWrapper<InspectionItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(InspectionItem::getInspectionId, one.getId());
+        List<InspectionItem> inspectionItems = inspectionItemMapper.selectList(wrapper);
+        // 封装vo
+        InspectionDetailVo<OrderInItem> vo = new InspectionDetailVo<>();
+        vo.setOrderDetail(data);
+        vo.setInspectionItems(inspectionItems);
+        return Result.success(vo, "查询成功");
+    }
+
+    /**
+     * 修改质检状态
+     *
+     * @param remark
+     * @param inspectionNo
+     * @param status
+     * @return
+     */
+    private boolean updateInspectionStatus(String remark, String inspectionNo, QualityStatusEnums status) {
+        return this.lambdaUpdate().eq(Inspection::getInspectionNo, inspectionNo)
+                .set(Inspection::getStatus, status.getCode())
+                .set(Inspection::getInspectionTime, LocalDateTime.now())
+                .set(Inspection::getUpdateTime, LocalDateTime.now())
+                .set(Inspection::getRemark, remark).update();
+    }
 }
-
-
-
-

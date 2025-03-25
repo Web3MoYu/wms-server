@@ -18,7 +18,7 @@ public interface OrderOutService extends IService<OrderOut> {
 
     /**
      * 查询出库订单详情
-     * 
+     *
      * @param id 出库订单ID
      * @return 结果
      */
@@ -26,11 +26,11 @@ public interface OrderOutService extends IService<OrderOut> {
 
     /**
      * 更新订单状态
-     * 
+     *
      * @param type        订单类型
      * @param id          订单ID
      * @param remark      备注
      * @param statusEnums 状态
      */
-    void updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums);
+    void updateStatus(String id, String remark, OrderStatusEnums statusEnums);
 }

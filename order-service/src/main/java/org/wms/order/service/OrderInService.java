@@ -43,7 +43,7 @@ public interface OrderInService extends IService<OrderIn> {
      * @param remark      备注
      * @param statusEnums 状态
      */
-    void updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums);
+    void updateStatus(String id, String remark, OrderStatusEnums statusEnums);
 
     /**
      * 审批入库订单

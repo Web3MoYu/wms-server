@@ -72,9 +72,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result<String> updateStatus(Integer type, String id, String remark, OrderStatusEnums statusEnums) {
         if (OrderType.IN_ORDER.getCode().equals(type)) {
-            orderInService.updateStatus(type, id, remark, statusEnums);
+            orderInService.updateStatus(id, remark, statusEnums);
         } else {
-            orderOutService.updateStatus(type, id, remark, statusEnums);
+            orderOutService.updateStatus(id, remark, statusEnums);
         }
         return Result.success(null, "成功");
     }
