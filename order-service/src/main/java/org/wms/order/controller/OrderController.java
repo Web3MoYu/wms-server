@@ -87,6 +87,19 @@ public class OrderController {
     }
 
     /**
+     * 入库的收货
+     *
+     * @param id 订单id
+     * @return 收货结果
+     */
+    @PutMapping("/receive/{id}")
+    @PreAuthorize("isAuthenticated()")
+    @GlobalTransactional
+    public Result<String> receiveGoods(@PathVariable String id) {
+        return orderService.receiveGoods(id);
+    }
+
+    /**
      * 添加出库订单
      *
      * @param order 订单

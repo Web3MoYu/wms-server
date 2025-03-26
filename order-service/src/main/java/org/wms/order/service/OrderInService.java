@@ -38,7 +38,6 @@ public interface OrderInService extends IService<OrderIn> {
     /**
      * 更新订单状态
      *
-     * @param type        订单类型
      * @param id          订单ID
      * @param remark      备注
      * @param statusEnums 状态
@@ -54,4 +53,12 @@ public interface OrderInService extends IService<OrderIn> {
      * @return 结果
      */
     Result<String> approve(String id, List<ApprovalDto> dto, String inspector);
+
+    /**
+     * 入库的收货
+     *
+     * @param id 订单id
+     * @return 收货结果
+     */
+    Result<String> receiveGoods(String id);
 }

@@ -267,7 +267,11 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 修改订单状态和详情状态
         updateStatus(id, "审批通过",
                 OrderStatusEnums.APPROVED);
+        return Result.success(null, "审批成功");
+    }
 
+    @Override
+    public Result<String> receiveGoods(String id) {
         // 增加质检信息
         OrderIn orderIn = this.lambdaQuery().eq(OrderIn::getId, id).one();
         LambdaUpdateWrapper<OrderInItem> itemWrapper = new LambdaUpdateWrapper<>();
@@ -304,6 +308,13 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 插入质检详情信息
         inspectionItemMapper.insert(list);
 
+        // 修改实际到达时间
+        boolean update = this.lambdaUpdate().eq(OrderIn::getId, id)
+                .set(OrderIn::getActualTime, LocalDateTime.now()).update();
+        if (!update) {
+            throw new BizException(303, "修改到达时间失败");
+        }
+
         // 生成消息
         User from = userClient.getUserById(orderIn.getApprover());
         User to = userClient.getUserById(orderIn.getInspector());
@@ -312,7 +323,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
                 MsgBizEnums.QUALITY_CHECK);
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
-        return Result.success(null, "审批成功");
+        return Result.success(null, "收货成功");
     }
 }
 

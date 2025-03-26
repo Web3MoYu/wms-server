@@ -75,4 +75,12 @@ public interface OrderService {
      * @return 审批结果
      */
     Result<String> approvalInBound(String id, List<ApprovalDto> dto, String inspector);
+
+    /**
+     * 入库的收货
+     *
+     * @param id 订单id
+     * @return 收货结果
+     */
+    Result<String> receiveGoods(String id);
 }

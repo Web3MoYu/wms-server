@@ -85,6 +85,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Result<String> receiveGoods(String id) {
+        return orderInService.receiveGoods(id);
+    }
+
+    @Override
     public Result<Page<OrderVo>> pageOrder(OrderQueryDto queryDto) {
         // 参数校验
         if (queryDto == null) {
