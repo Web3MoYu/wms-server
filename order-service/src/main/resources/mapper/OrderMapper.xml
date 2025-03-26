@@ -16,7 +16,9 @@
         i.status as "status",
         i.quality_status as "qualityStatus",
         i.remark,
-        i.create_time as createTime
+        i.create_time as createTime,
+        i.expected_time as expectedTime,
+        i.actual_time as actualTime
         FROM
         order_in i
         <where>
@@ -67,7 +69,9 @@
         o.status as "status.code",
         o.quality_status as "qualityStatus.code",
         o.remark,
-        o.create_time as createTime
+        o.create_time as createTime,
+        o.expected_time as expectedTime,
+        o.actual_time as actualTime
         FROM
         order_out o
         <where>
