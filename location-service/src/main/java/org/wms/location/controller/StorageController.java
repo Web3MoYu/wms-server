@@ -207,8 +207,8 @@ public class StorageController {
                 .eq(Storage::getShelfId, id)
                 .and(wrapper -> wrapper
                         .eq(Storage::getStatus, LocationStatusEnums.FREE.getCode())
-                        .or()
-                        .in(Storage::getId, finalStorages))
+                        .or(!finalStorages.isEmpty())
+                        .in(!finalStorages.isEmpty(), Storage::getId, finalStorages))
                 .list();
         return Result.success(list, "查询成功");
     }
