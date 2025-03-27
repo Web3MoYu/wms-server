@@ -1,7 +1,7 @@
 package org.wms.order.model.vo;
 
 import lombok.Data;
-import org.wms.order.model.entity.InspectionItem;
+import org.wms.common.entity.order.InspectionItem;
 
 import java.util.List;
 

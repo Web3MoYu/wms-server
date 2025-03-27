@@ -1,4 +1,4 @@
-package org.wms.order.model.entity;
+package org.wms.common.entity.order;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.wms.common.enums.order.InspectItemStatus;
 import org.wms.common.model.Location;
-import org.wms.order.model.enums.InspectItemStatus;
 
 /**
  * 质检明细表

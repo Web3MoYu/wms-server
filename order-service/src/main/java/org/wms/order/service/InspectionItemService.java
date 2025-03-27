@@ -1,6 +1,6 @@
 package org.wms.order.service;
 
-import org.wms.order.model.entity.InspectionItem;
+import org.wms.common.entity.order.InspectionItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

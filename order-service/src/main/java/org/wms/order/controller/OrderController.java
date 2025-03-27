@@ -10,6 +10,7 @@ import org.wms.common.enums.order.OrderType;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
+import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.entity.OrderOut;
@@ -134,5 +135,18 @@ public class OrderController {
             return Result.error(402, "权限不足");
         }
         return orderService.updateStatus(type, id, remark, OrderStatusEnums.CANCELED);
+    }
+
+    /**
+     * 上架
+     *
+     * @param dto 参数
+     * @return 上架结果
+     */
+    @PutMapping("/stockIn")
+    @PreAuthorize("isAuthenticated()")
+    @GlobalTransactional
+    public Result<String> stockIn(@RequestBody List<StockInDto> dto) {
+        return null;
     }
 }

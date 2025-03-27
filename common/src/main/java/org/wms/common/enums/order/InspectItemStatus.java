@@ -1,4 +1,4 @@
-package org.wms.order.model.enums;
+package org.wms.common.enums.order;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;

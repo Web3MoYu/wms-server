@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.wms.order.mapper.InspectionItemMapper">
 
-    <resultMap id="BaseResultMap" type="org.wms.order.model.entity.InspectionItem">
+    <resultMap id="BaseResultMap" type="org.wms.common.entity.order.InspectionItem">
         <id property="id" column="id"/>
         <result property="inspectionId" column="inspection_id"/>
         <result property="productId" column="product_id"/>

@@ -1,7 +1,10 @@
 package org.wms.location.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,7 +15,10 @@ import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.wms.api.client.InspectClient;
 import org.wms.api.client.ProductClient;
+import org.wms.common.entity.order.InspectionItem;
+import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.location.model.entity.Storage;
 import org.wms.common.enums.location.LocationStatusEnums;
@@ -28,6 +34,9 @@ public class StorageController {
 
     @Resource
     private ProductClient productClient;
+
+    @Resource
+    private InspectClient inspectClient;
 
     /**
      * 分页查询库位信息
@@ -170,6 +179,36 @@ public class StorageController {
                 .lambdaQuery()
                 .eq(Storage::getShelfId, id)
                 .eq(Storage::getStatus, LocationStatusEnums.FREE.getCode())
+                .list();
+        return Result.success(list, "查询成功");
+    }
+
+
+    /**
+     * 按照货架id和产品id查找库位信息
+     *
+     * @param id id
+     * @return 结果
+     */
+    @GetMapping("/getStorageByIdAndItemId/{id}/{itemId}")
+    @PreAuthorize("isAuthenticated()")
+    public Result<List<Storage>> getStorageByIdAndItemId(@PathVariable String id, @PathVariable String itemId) {
+        InspectionItem itemById = inspectClient.getItemById(itemId);
+        List<Location> locations = itemById.getLocation();
+        List<String> storages = new ArrayList<>();
+        for (Location locationItem : locations) {
+            if (locationItem.getShelfId().equals(id)) {
+                storages = locationItem.getStorageIds();
+            }
+        }
+        List<String> finalStorages = storages;
+        List<Storage> list = storageLocationService
+                .lambdaQuery()
+                .eq(Storage::getShelfId, id)
+                .and(wrapper -> wrapper
+                        .eq(Storage::getStatus, LocationStatusEnums.FREE.getCode())
+                        .or()
+                        .in(Storage::getId, finalStorages))
                 .list();
         return Result.success(list, "查询成功");
     }

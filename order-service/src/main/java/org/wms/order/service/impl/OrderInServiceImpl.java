@@ -38,7 +38,7 @@ import org.wms.order.mapper.OrderInMapper;
 import org.wms.order.model.dto.ApprovalDto;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.entity.Inspection;
-import org.wms.order.model.entity.InspectionItem;
+import org.wms.common.entity.order.InspectionItem;
 import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.enums.OrderInType;

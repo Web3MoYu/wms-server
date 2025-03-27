@@ -18,10 +18,10 @@ import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.dto.ItemInspect;
 import org.wms.order.model.entity.Inspection;
-import org.wms.order.model.entity.InspectionItem;
+import org.wms.common.entity.order.InspectionItem;
 import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
-import org.wms.order.model.enums.InspectItemStatus;
+import org.wms.common.enums.order.InspectItemStatus;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.InspectionDetailVo;
@@ -126,7 +126,7 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 User user = userClient.getUserById(item.getInspector());
                 vo.setInspectorInfo(user);
             }
-
+            vo.setOrderStatus(orderInService.lambdaQuery().eq(OrderIn::getId, item.getRelatedOrderId()).one().getStatus());
             return vo;
         }).toList();
         Page<InspectionVo> res = new Page<>(pageResult.getCurrent(), pageResult.getSize(), pageResult.getTotal());

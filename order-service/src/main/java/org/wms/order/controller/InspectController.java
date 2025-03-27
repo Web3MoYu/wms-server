@@ -2,12 +2,7 @@ package org.wms.order.controller;
 
 import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.InBoundInspectDto;
@@ -58,8 +53,8 @@ public class InspectController {
     /**
      * 入库质检
      *
-     * @param dto
-     * @return
+     * @param dto 质检参数
+     * @return 质检结果
      */
     @PostMapping("/inBoundCheck")
     @PreAuthorize("isAuthenticated()")

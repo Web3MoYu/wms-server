@@ -1,7 +1,7 @@
 package org.wms.order.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.wms.order.model.entity.InspectionItem;
+import org.wms.common.entity.order.InspectionItem;
 import org.wms.order.service.InspectionItemService;
 import org.wms.order.mapper.InspectionItemMapper;
 import org.springframework.stereotype.Service;
