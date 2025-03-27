@@ -9,6 +9,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.common.enums.order.InspectItemStatus;
+import org.wms.common.enums.order.ReceiveStatus;
 import org.wms.common.model.Location;
 
 /**
@@ -75,6 +76,11 @@ public class InspectionItem {
      * 质检结果：1-合格，2-不合格
      */
     private InspectItemStatus qualityStatus;
+
+    /**
+     * 上架状态：0-未开始，1-已完成,2-进行中
+     */
+    private ReceiveStatus receiveStatus;
 
     /**
      * 异常原因

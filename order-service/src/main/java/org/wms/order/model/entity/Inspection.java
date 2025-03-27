@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.wms.common.enums.inspect.InspectType;
+import org.wms.common.enums.order.ReceiveStatus;
 import org.wms.order.model.enums.QualityStatusEnums;
 
 /**
@@ -59,6 +60,11 @@ public class Inspection {
      * 质检状态：0-未质检，1-通过，2-不通过，3-部分异常
      */
     private QualityStatusEnums status;
+
+    /**
+     * 上架状态：0-未开始，1-已完成,2-进行中
+     */
+    private ReceiveStatus receiveStatus;
 
     /**
      * 备注

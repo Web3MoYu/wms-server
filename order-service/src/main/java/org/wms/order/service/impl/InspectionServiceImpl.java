@@ -98,6 +98,9 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         if (dto.getStatus() != null) {
             queryWrapper.eq(Inspection::getStatus, dto.getStatus());
         }
+        if (dto.getReceiveStatus() != null) {
+            queryWrapper.eq(Inspection::getReceiveStatus, dto.getReceiveStatus());
+        }
 
         // 排序：创建时间升序或降序
         if (dto.getCreateTimeAsc() != null) {

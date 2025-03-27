@@ -22,6 +22,8 @@ public class InspectionDto {
     // 订单编号，模糊搜索
     private String relatedOrderNo;
 
+    private Integer receiveStatus;// 上架状态：0-未开始，1-进行中，2-已完成，null表示全部
+
     // 质检员
     private String inspector;
 
