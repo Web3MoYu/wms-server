@@ -38,6 +38,9 @@ public class OrderController {
     @Resource
     OrderOutService orderOutService;
 
+    @Resource
+    InspectionService inspectionService;
+
     /**
      * 分页查询订单信息
      *
@@ -138,15 +141,28 @@ public class OrderController {
     }
 
     /**
-     * 上架
+     * 确认上架
      *
      * @param dto 参数
      * @return 上架结果
      */
-    @PutMapping("/stockIn")
+    @PutMapping("/stockAll/{inspectNo}")
     @PreAuthorize("isAuthenticated()")
     @GlobalTransactional
-    public Result<String> stockIn(@RequestBody List<StockInDto> dto) {
+    public Result<String> stockAll(@PathVariable String inspectNo) {
         return null;
+    }
+
+    /**
+     * 上架单个商品
+     *
+     * @param dto 商品信息
+     * @return 上架结果
+     */
+    @PutMapping("/stockOne")
+    @PreAuthorize("isAuthenticated()")
+    @GlobalTransactional
+    public Result<String> stockOne(@RequestBody StockInDto dto) {
+        return inspectionService.stockOne(dto);
     }
 }

@@ -242,7 +242,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
             LambdaUpdateWrapper<OrderInItem> wrapper = new LambdaUpdateWrapper<>();
             wrapper.eq(OrderInItem::getId, detailId)
                     .set(OrderInItem::getAreaId, areaId)
-                    .set(OrderInItem::getLocation, JsonUtils.toJson(location))
+                    .set(OrderInItem::getLocation, JsonUtils.toJsonString(location))
                     .set(OrderInItem::getUpdateTime, LocalDateTime.now());
             int update = orderInItemMapper.update(wrapper);
             if (update <= 0) {

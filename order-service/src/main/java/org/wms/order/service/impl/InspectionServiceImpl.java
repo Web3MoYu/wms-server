@@ -3,6 +3,7 @@ package org.wms.order.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -10,13 +11,16 @@ import org.wms.api.client.LocationClient;
 import org.wms.api.client.UserClient;
 import org.wms.common.entity.sys.User;
 import org.wms.common.enums.location.LocationStatusEnums;
+import org.wms.common.enums.order.ReceiveStatus;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
+import org.wms.common.utils.JsonUtils;
 import org.wms.order.mapper.InspectionItemMapper;
 import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.dto.ItemInspect;
+import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.common.entity.order.InspectionItem;
 import org.wms.order.model.entity.OrderIn;
@@ -251,6 +255,51 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         vo.setOrderDetail(data);
         vo.setInspectionItems(inspectionItems);
         return Result.success(vo, "查询成功");
+    }
+
+    @Override
+    public Result<String> stockOne(StockInDto dto) {
+        // 获取原有的信息
+        InspectionItem item = inspectionItemMapper.selectById(dto.getItemId());
+        // 释放原先的库位
+        item.getLocation().forEach((location) -> {
+            boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(), null);
+            if (!b) {
+                throw new BizException("释放库位信息失败");
+            }
+        });
+        // 修改当前质检详情状态和位置信息
+        LambdaUpdateWrapper<InspectionItem> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(InspectionItem::getId, dto.getItemId())
+                .set(InspectionItem::getLocation, JsonUtils.toJsonString(dto.getLocations()))
+                .set(InspectionItem::getReceiveStatus, ReceiveStatus.DONE);
+        int update1 = inspectionItemMapper.update(wrapper);
+        if (update1 != 1) {
+            throw new BizException("修改质检详情状态和位置信息失败");
+        }
+        // 修改订单详情位置信息
+        boolean update2 = orderInItemService.lambdaUpdate()
+                .eq(OrderInItem::getProductId, item.getProductId())
+                .eq(OrderInItem::getBatchNumber, item.getBatchNumber())
+                .set(OrderInItem::getLocation, JsonUtils.toJsonString(dto.getLocations()))
+                .update();
+        if (!update2) {
+            throw new BizException("修改订单详情位置信息失败");
+        }
+        // 占用库位
+        dto.getLocations().forEach(location -> {
+            boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.OCCUPIED.getCode(), dto.getProductId());
+            if (!b) {
+                throw new BizException("占用库位信息失败");
+            }
+        });
+        // 修改质检订单状态信息
+        boolean update = this.lambdaUpdate().eq(Inspection::getId, item.getInspectionId())
+                .set(Inspection::getReceiveStatus, ReceiveStatus.PENDING.getCode()).update();
+        if (!update) {
+            throw new BizException("修改质检状态信息失败");
+        }
+        return Result.success(null, "上架成功");
     }
 
     /**

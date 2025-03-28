@@ -3,6 +3,7 @@ package org.wms.order.service;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
+import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.vo.InspectionDetailVo;
@@ -28,17 +29,25 @@ public interface InspectionService extends IService<Inspection> {
 
     /**
      * 入库质检
-     * 
-     * @param dto
-     * @return
+     *
+     * @param dto 质检条件
+     * @return 质检结果
      */
     Result<String> inBoundCheck(InBoundInspectDto dto);
 
     /**
      * 入库质检详情
-     * 
+     *
      * @param id
-     * @return
+     * @return 详细信息
      */
     Result<InspectionDetailVo<OrderInItem>> inDetail(String id);
+
+    /**
+     * 上架单个商品
+     *
+     * @param dto 商品信息
+     * @return 上架结果
+     */
+    Result<String> stockOne(StockInDto dto);
 }

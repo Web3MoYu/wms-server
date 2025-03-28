@@ -38,5 +38,5 @@ public interface LocationClient {
      */
     @PostMapping("/api/location/updateStatusInStorage")
     boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer status,
-                                  @RequestParam("productId") String productId);
+                                  @RequestParam(value = "productId", required = false) String productId);
 }

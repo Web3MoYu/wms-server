@@ -3,27 +3,33 @@ package org.wms.location.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import jakarta.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.wms.api.client.InspectClient;
 import org.wms.api.client.ProductClient;
 import org.wms.common.entity.order.InspectionItem;
+import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.location.model.entity.Storage;
-import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.location.model.vo.StorageVo;
 import org.wms.location.service.StorageLocationService;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import cn.hutool.core.util.StrUtil;
+import jakarta.annotation.Resource;
 
 @RestController
 @RequestMapping("/location/storage")

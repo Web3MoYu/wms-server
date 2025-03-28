@@ -12,7 +12,7 @@ public class JsonUtils {
      * @param obj 对象
      * @return json字符串
      */
-    public static String toJson(Object obj) {
+    public static String toJsonString(Object obj) {
         try {
             return mapper.writeValueAsString(obj);
         } catch (Exception e) {
