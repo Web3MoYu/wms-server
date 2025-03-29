@@ -2,7 +2,9 @@ package org.wms.product.cotroller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
+import cn.hutool.core.util.StrUtil;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,7 +52,7 @@ public class ProductCatController {
     public Result<Boolean> checkCategoryCode(@PathVariable String parent, @PathVariable String categoryCode) {
         boolean exists = productCatService.lambdaQuery()
                 .eq(ProductCat::getCategoryCode, categoryCode)
-                .eq(ProductCat::getParentId, parent)
+                .eq(!StrUtil.equals(parent, "null"), ProductCat::getParentId, parent)
                 .exists();
         return Result.success(exists, "检查成功");
     }
