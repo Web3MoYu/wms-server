@@ -3,6 +3,7 @@ package org.wms.sys.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
+import org.wms.common.utils.JWTUtils;
+import org.wms.common.utils.RedisUtils;
 import org.wms.common.utils.UploadUtils;
 import org.wms.sys.mapper.UserMapper;
 import org.wms.sys.mapper.UserRoleMapper;
@@ -38,6 +41,9 @@ public class UserController {
 
     @Resource
     UserMapper userMapper;
+
+    @Resource
+    RedisTemplate<String, Object> redisTemplate;
 
 
     /**
@@ -174,6 +180,8 @@ public class UserController {
         userRoleMapper.deleteUserRoleById(userId);
         //删除角色
         userService.removeById(userId);
+        redisTemplate.delete(RedisUtils.TOKEN_KEY + userId);
+        redisTemplate.delete(RedisUtils.PERMISSIONS_KEY + userId);
         return Result.success(null, "删除成功");
     }
 
