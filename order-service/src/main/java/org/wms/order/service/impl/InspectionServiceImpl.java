@@ -276,6 +276,8 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
     public Result<String> stockOne(StockInDto dto) {
         // 获取原有的信息
         InspectionItem item = inspectionItemMapper.selectById(dto.getItemId());
+        // 获取质检信息
+        Inspection inspection = this.getById(item.getInspectionId());
         // 释放原先的库位
         item.getLocation().forEach((location) -> {
             boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(), null);
@@ -294,6 +296,7 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         }
         // 修改订单详情位置信息
         boolean update2 = orderInItemService.lambdaUpdate()
+                .eq(OrderInItem::getOrderId, inspection.getRelatedOrderId())
                 .eq(OrderInItem::getProductId, item.getProductId())
                 .eq(OrderInItem::getBatchNumber, item.getBatchNumber())
                 .set(OrderInItem::getLocation, JsonUtils.toJsonString(dto.getLocations()))
@@ -326,8 +329,21 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         boolean update = this.lambdaUpdate().eq(Inspection::getId, one.getId())
                 .set(Inspection::getReceiveStatus, ReceiveStatus.DONE.getCode())
                 .update();
-        if (!update) {
-            throw new BizException("修改质检状态失败");
+
+        // 修改订单状态
+        boolean update1 = orderInService.lambdaUpdate()
+                .eq(OrderIn::getId, one.getRelatedOrderId())
+                .set(OrderIn::getStatus, OrderStatusEnums.COMPLETED.getCode())
+                .update();
+
+        // 修改订单详情状态信息
+        boolean update2 = orderInItemService.lambdaUpdate()
+                .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
+                .set(OrderInItem::getStatus, OrderStatusEnums.COMPLETED.getCode())
+                .update();
+
+        if (!update || !update1 || !update2) {
+            throw new BizException("修改状态失败");
         }
         // 获取质检详情信息
         LambdaQueryWrapper<InspectionItem> wrapper = new LambdaQueryWrapper<>();
