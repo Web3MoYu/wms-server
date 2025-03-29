@@ -10,7 +10,6 @@ import org.wms.common.enums.order.OrderType;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
-import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
@@ -34,9 +33,6 @@ public class OrderController {
 
     @Resource
     OrderOutService orderOutService;
-
-    @Resource
-    InspectionService inspectionService;
 
     /**
      * 分页查询订单信息
@@ -135,31 +131,5 @@ public class OrderController {
             return Result.error(402, "权限不足");
         }
         return orderService.updateStatus(type, id, remark, OrderStatusEnums.CANCELED);
-    }
-
-    /**
-     * 确认上架
-     *
-     * @param dto 参数
-     * @return 上架结果
-     */
-    @PutMapping("/stockAll/{inspectNo}")
-    @PreAuthorize("isAuthenticated()")
-    @GlobalTransactional
-    public Result<String> stockAll(@PathVariable String inspectNo) {
-        return null;
-    }
-
-    /**
-     * 上架单个商品
-     *
-     * @param dto 商品信息
-     * @return 上架结果
-     */
-    @PutMapping("/stockOne")
-    @PreAuthorize("isAuthenticated()")
-    @GlobalTransactional
-    public Result<String> stockOne(@RequestBody StockInDto dto) {
-        return inspectionService.stockOne(dto);
     }
 }

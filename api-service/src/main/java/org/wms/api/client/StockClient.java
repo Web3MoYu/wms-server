@@ -23,6 +23,16 @@ public interface StockClient {
     Stock checkStockByCodeAndBatch(@RequestParam("code") String code, @RequestParam("batchNumber") String batchNumber);
 
     /**
+     * 根据产品id和批次号获取库存信息
+     *
+     * @param productId   产品id
+     * @param batchNumber 批次号
+     * @return 库存信息
+     */
+    @GetMapping("/api/stock/getStockByProductIdAndBatch")
+    Stock getStockByProductIdAndBatch(@RequestParam("productId") String productId, @RequestParam("batchNumber") String batchNumber);
+
+    /**
      * 更新库存
      *
      * @param stock 库存信息

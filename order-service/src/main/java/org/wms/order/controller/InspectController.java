@@ -7,6 +7,7 @@ import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
+import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.vo.InspectionDetailVo;
@@ -66,5 +67,32 @@ public class InspectController {
             throw new BizException(303, "无操作权限");
         }
         return inspectService.inBoundCheck(dto);
+    }
+
+
+    /**
+     * 确认上架
+     *
+     * @param inspectNo 质检编号
+     * @return 上架结果
+     */
+    @PutMapping("/stockAll/{inspectNo}")
+    @PreAuthorize("isAuthenticated()")
+    @GlobalTransactional(timeoutMills = 1000 * 60 * 10)
+    public Result<String> stockAll(@PathVariable String inspectNo) {
+        return inspectService.stockAll(inspectNo);
+    }
+
+    /**
+     * 上架单个商品
+     *
+     * @param dto 商品信息
+     * @return 上架结果
+     */
+    @PutMapping("/stockOne")
+    @PreAuthorize("isAuthenticated()")
+    @GlobalTransactional
+    public Result<String> stockOne(@RequestBody StockInDto dto) {
+        return inspectService.stockOne(dto);
     }
 }

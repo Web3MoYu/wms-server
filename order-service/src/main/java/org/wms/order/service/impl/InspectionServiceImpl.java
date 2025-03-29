@@ -1,18 +1,25 @@
 package org.wms.order.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
+import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
 import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.enums.order.ReceiveStatus;
+import org.wms.common.enums.stock.AlertStatusEnums;
 import org.wms.common.exception.BizException;
+import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.common.utils.JsonUtils;
 import org.wms.order.mapper.InspectionItemMapper;
@@ -52,6 +59,9 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
 
     @Resource
     private UserClient userClient;
+
+    @Resource
+    private StockClient stockClient;
 
     @Resource
     private OrderInService orderInService;
@@ -133,7 +143,8 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 User user = userClient.getUserById(item.getInspector());
                 vo.setInspectorInfo(user);
             }
-            vo.setOrderStatus(orderInService.lambdaQuery().eq(OrderIn::getId, item.getRelatedOrderId()).one().getStatus());
+            vo.setOrderStatus(
+                    orderInService.lambdaQuery().eq(OrderIn::getId, item.getRelatedOrderId()).one().getStatus());
             return vo;
         }).toList();
         Page<InspectionVo> res = new Page<>(pageResult.getCurrent(), pageResult.getSize(), pageResult.getTotal());
@@ -160,7 +171,8 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         // 全成功
         if (status == list.size()) {
             // 修改质检状态
-            boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(), QualityStatusEnums.PASSED);
+            boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(),
+                    QualityStatusEnums.PASSED);
             // 订单状态
             orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
             // 订单质检状态
@@ -170,7 +182,8 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 throw new BizException(303, "修改质检状态失败");
             }
         } else if (status == 0) {
-            boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(), QualityStatusEnums.FAILED);
+            boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(),
+                    QualityStatusEnums.FAILED);
             orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.COMPLETED);
             // 订单质检状态
             boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
@@ -221,11 +234,13 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 // 将库位释放
                 // 查询库位信息
                 InspectionItem inspectionItem = inspectionItemMapper.selectById(item.getItemId());
-                if (inspectionItem == null || inspectionItem.getLocation() == null || inspectionItem.getLocation().isEmpty()) {
+                if (inspectionItem == null || inspectionItem.getLocation() == null
+                        || inspectionItem.getLocation().isEmpty()) {
                     throw new BizException(500, "业务异常");
                 }
                 inspectionItem.getLocation().forEach(location -> {
-                    boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(), null);
+                    boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(),
+                            null);
                     if (!b) {
                         throw new BizException(303, "修改库位信息失败");
                     }
@@ -288,7 +303,8 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         }
         // 占用库位
         dto.getLocations().forEach(location -> {
-            boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.OCCUPIED.getCode(), dto.getProductId());
+            boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.OCCUPIED.getCode(),
+                    dto.getProductId());
             if (!b) {
                 throw new BizException("占用库位信息失败");
             }
@@ -300,6 +316,128 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
             throw new BizException("修改质检状态信息失败");
         }
         return Result.success(null, "上架成功");
+    }
+
+    @Override
+    public Result<String> stockAll(String inspectNo) {
+        // 获取质检信息
+        Inspection one = this.lambdaQuery().eq(Inspection::getInspectionNo, inspectNo).one();
+        // 修改质检状态
+        boolean update = this.lambdaUpdate().eq(Inspection::getId, one.getId())
+                .set(Inspection::getReceiveStatus, ReceiveStatus.DONE.getCode())
+                .update();
+        if (!update) {
+            throw new BizException("修改质检状态失败");
+        }
+        // 获取质检详情信息
+        LambdaQueryWrapper<InspectionItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(InspectionItem::getInspectionId, one.getId())
+                .eq(InspectionItem::getReceiveStatus, ReceiveStatus.DONE.getCode())
+                .eq(InspectionItem::getQualityStatus, QualityStatusEnums.PASSED);
+        List<InspectionItem> inspectionItems = inspectionItemMapper.selectList(wrapper);
+        // 库存处理
+        inspectionItems.forEach((item) -> {
+            // 获取订单详情
+            OrderInItem orderItem = orderInItemService.lambdaQuery()
+                    .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
+                    .eq(OrderInItem::getProductId, item.getProductId())
+                    .eq(OrderInItem::getBatchNumber, item.getBatchNumber())
+                    .one();
+            if (Objects.isNull(orderItem)) {
+                throw new BizException("业务异常");
+            }
+            Assert.equals(item.getProductId(), orderItem.getProductId(), "产品id不一致");
+            Assert.equals(item.getBatchNumber(), orderItem.getBatchNumber(), "批次号不一致");
+            // 获取库存
+            Stock stock = stockClient.getStockByProductIdAndBatch(orderItem.getProductId(), orderItem.getBatchNumber());
+
+            if (Objects.isNull(stock)) {
+                // 库存不存在新增库存
+                stock = new Stock();
+                // 设置字段
+                stock.setProductId(orderItem.getProductId());
+                stock.setProductCode(orderItem.getProductCode());
+                stock.setAreaId(orderItem.getAreaId());
+                stock.setLocation(orderItem.getLocation());
+                stock.setQuantity(orderItem.getActualQuantity());
+                stock.setAvailableQuantity(orderItem.getActualQuantity());
+                stock.setAlertStatus(AlertStatusEnums.NORMAL);
+                stock.setBatchNumber(orderItem.getBatchNumber());
+                stock.setProductionDate(LocalDate.now());
+                stock.setUpdateTime(LocalDate.now());
+                stock.setCreateTime(LocalDate.now());
+                // 新增库存
+                boolean b = stockClient.addStock(stock);
+                if (!b) {
+                    throw new BizException("新增库位信息失败");
+                }
+            } else {
+                // 库存存在更新库存
+                stock.setQuantity(stock.getQuantity() + item.getQualifiedQuantity());
+                stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getQualifiedQuantity());
+                // TODO 预警
+                // 更新库位信息取并集
+                List<Location> itemLocation = item.getLocation();
+                List<Location> stockLocation = stock.getLocation();
+                List<Location> location = new ArrayList<>();
+                Set<String> processedShelfIds = new HashSet<>(); // 标记处理过的货架ID
+
+                // 处理相同货架ID的情况
+                for (Location il : itemLocation) {
+                    boolean found = false;
+                    for (Location sl : stockLocation) {
+                        if (Objects.equals(sl.getShelfId(), il.getShelfId())) {
+                            found = true;
+                            // 创建新的Location对象，合并库位信息
+                            Location newLocation = new Location();
+                            newLocation.setShelfId(il.getShelfId());
+
+                            // 取二者库位信息的并集
+                            Set<String> mergedStorageIds = new HashSet<>();
+                            if (il.getStorageIds() != null) {
+                                mergedStorageIds.addAll(il.getStorageIds());
+                            }
+                            if (sl.getStorageIds() != null) {
+                                mergedStorageIds.addAll(sl.getStorageIds());
+                            }
+                            newLocation.setStorageIds(new ArrayList<>(mergedStorageIds));
+
+                            // 添加到结果列表
+                            location.add(newLocation);
+                            processedShelfIds.add(il.getShelfId());
+                            break;
+                        }
+                    }
+
+                    // 如果itemLocation中的货架在stockLocation中不存在，也要添加
+                    if (!found) {
+                        location.add(il);
+                        processedShelfIds.add(il.getShelfId());
+                    }
+                }
+
+                // 添加stockLocation中还未处理的货架
+                for (Location sl : stockLocation) {
+                    if (!processedShelfIds.contains(sl.getShelfId())) {
+                        location.add(sl);
+                        processedShelfIds.add(sl.getShelfId());
+                    }
+                }
+
+                // 更新库位信息
+                stock.setLocation(location);
+
+                // 更新库存
+                stock.setUpdateTime(LocalDate.now());
+                boolean b = stockClient.updateStock(stock);
+                if (!b) {
+                    throw new BizException("更新库位信息失败");
+                }
+            }
+        });
+
+        return Result.success(null, "上架成功");
+
     }
 
     /**

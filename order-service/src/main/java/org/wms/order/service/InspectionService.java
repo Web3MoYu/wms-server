@@ -50,4 +50,12 @@ public interface InspectionService extends IService<Inspection> {
      * @return 上架结果
      */
     Result<String> stockOne(StockInDto dto);
+
+    /**
+     * 确认上架
+     *
+     * @param inspectNo 质检编号
+     * @return 上架结果
+     */
+    Result<String> stockAll(String inspectNo);
 }

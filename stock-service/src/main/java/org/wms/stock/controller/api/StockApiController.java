@@ -24,8 +24,26 @@ public class StockApiController {
     @GetMapping("/checkStockByCodeAndBatch")
     public Stock checkStockByCodeAndBatch(@RequestParam("code") String code,
                                           @RequestParam("batchNumber") String batchNumber) {
-        return stockService.lambdaQuery().eq(Stock::getProductCode, code)
-                .eq(Stock::getBatchNumber, batchNumber).one();
+        return stockService.lambdaQuery()
+                .eq(Stock::getProductCode, code)
+                .eq(Stock::getBatchNumber, batchNumber)
+                .one();
+    }
+
+    /**
+     * 根据产品id和批次号获取库存信息
+     *
+     * @param productId   产品id
+     * @param batchNumber 批次号
+     * @return 库存信息
+     */
+    @GetMapping("/getStockByProductIdAndBatch")
+    public Stock getStockByProductIdAndBatch(@RequestParam("productId") String productId,
+                                             @RequestParam("batchNumber") String batchNumber) {
+        return stockService.lambdaQuery()
+                .eq(Stock::getProductId, productId)
+                .eq(Stock::getBatchNumber, batchNumber)
+                .one();
     }
 
     /**
