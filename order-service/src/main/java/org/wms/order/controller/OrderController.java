@@ -89,10 +89,20 @@ public class OrderController {
      * @param id 订单id
      * @return 收货结果
      */
-    @PutMapping("/receive/{id}")
+    @PutMapping("/receive/{type}/{id}")
     @PreAuthorize("isAuthenticated()")
     @GlobalTransactional
-    public Result<String> receiveGoods(@PathVariable String id) {
+    public Result<String> receiveGoods(@PathVariable String id, @PathVariable Integer type) {
+        String dbId = null;
+        String userId = SecurityUtil.getUserID();
+        if (Objects.equals(type, OrderType.IN_ORDER.getCode())) {
+            dbId = orderInService.getById(id).getCreator();
+        } else {
+            dbId = orderOutService.getById(id).getCreator();
+        }
+        if (Objects.isNull(dbId) || !dbId.equals(userId)) {
+            return Result.error(402, "权限不足");
+        }
         return orderService.receiveGoods(id);
     }
 
