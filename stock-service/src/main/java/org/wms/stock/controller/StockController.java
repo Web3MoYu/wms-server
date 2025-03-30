@@ -84,6 +84,24 @@ public class StockController {
     }
 
     /**
+     * 根据产品id和批次号获取库存信息
+     *
+     * @param productId   产品id
+     * @param batchNumber 批次号
+     * @return 库存信息
+     */
+    @GetMapping("/getStockByProductIdAndBatch")
+    @PreAuthorize("isAuthenticated()")
+    public Result<Stock> getStockByProductIdAndBatch(@RequestParam("productId") String productId,
+                                                     @RequestParam("batchNumber") String batchNumber) {
+        Stock stock = stockService.lambdaQuery()
+                .eq(Stock::getProductId, productId)
+                .eq(Stock::getBatchNumber, batchNumber)
+                .one();
+        return Result.success(stock, "查询成功");
+    }
+
+    /**
      * 模糊查找批次号
      *
      * @param batchNumber 批次号
