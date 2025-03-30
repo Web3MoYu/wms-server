@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 30/03/2025 16:09:39
+ Date: 30/03/2025 23:17:59
 */
 
 SET NAMES utf8mb4;
@@ -589,7 +589,6 @@ CREATE TABLE `stock_movement` (
   `movement_no` varchar(32) NOT NULL COMMENT '变动编号',
   `product_id` varchar(32) NOT NULL COMMENT '产品ID',
   `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `shelf_id` varchar(32) DEFAULT NULL COMMENT '货架ID',
   `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
   `movement_type` tinyint(1) NOT NULL COMMENT '变动类型：1-入库，2-出库，3-调整',
   `before_quantity` int NOT NULL COMMENT '变动前数量',
