@@ -35,7 +35,7 @@ public class ProductCatController {
      * @return 树状结构的产品类别列表
      */
     @GetMapping("/tree")
-    @PreAuthorize("hasAuthority('product:cat:list')")
+    @PreAuthorize("hasAuthority('product:cat:list') or hasAuthority('order:in-out:add')")
     public Result<List<ProductCatTree>> getCategoryTree() {
         List<ProductCatTree> categoryTree = productCatService.getAllCategoryTree();
         return Result.success(categoryTree, "查询成功");
