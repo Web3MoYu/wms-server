@@ -133,44 +133,6 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
                 productById = product;
             }
             item.setProductId(productById.getId());
-            // TODO 库存信息的修改是在质检员审核完毕之后才修改的
-            // Stock stock = stockClient.checkStockByCodeAndBatch(productCode, batchNumber);
-            // if (Objects.isNull(stock)) {
-            // stock = new Stock();
-            // stock.setProductId(productById.getId());
-            // stock.setProductCode(productCode);
-            // stock.setQuantity(item.getActualQuantity());
-            // stock.setAvailableQuantity(item.getActualQuantity());
-            // if (stock.getQuantity() < productById.getMinStock()) {
-            // stock.setAlertStatus(AlertStatusEnums.LOW);
-            // }
-            // if (stock.getQuantity() > productById.getMaxStock()) {
-            // stock.setAlertStatus(AlertStatusEnums.HIGH);
-            // }
-            // stock.setBatchNumber(batchNumber);
-            // stock.setProductionDate(item.getProductionDate());
-            // stock.setCreateTime(LocalDate.now());
-            // stock.setUpdateTime(LocalDate.now());
-            // boolean b = stockClient.addStock(stock);
-            // if (!b) {
-            // throw new BizException("添加库存失败");
-            // }
-            // } else {
-            // stock.setUpdateTime(LocalDate.now());
-            // stock.setQuantity(stock.getQuantity() + item.getActualQuantity());
-            // stock.setAvailableQuantity(stock.getAvailableQuantity() +
-            // item.getActualQuantity());
-            // if (stock.getQuantity() < productById.getMinStock()) {
-            // stock.setAlertStatus(AlertStatusEnums.LOW);
-            // }
-            // if (stock.getQuantity() > productById.getMaxStock()) {
-            // stock.setAlertStatus(AlertStatusEnums.HIGH);
-            // }
-            // boolean b = stockClient.updateStock(stock);
-            // if (!b) {
-            // throw new BizException("更新库存失败");
-            // }
-            // }
         });
         // 插入订单详情
         orderInItemMapper.insert(orderItem, orderItem.size());
