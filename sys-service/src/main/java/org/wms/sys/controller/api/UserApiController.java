@@ -122,6 +122,12 @@ public class UserApiController {
                 .eq(User::getUserId, userId).update();
     }
 
+    /**
+     * 更新密码
+     *
+     * @param user 用户信息
+     * @return boolean
+     */
     @PutMapping
     public Boolean updatePass(@RequestBody User user) {
         return userService.lambdaUpdate()

@@ -57,11 +57,23 @@ public class StockApiController {
         return stockService.updateById(stock);
     }
 
+    /**
+     * 新增库存
+     *
+     * @param stock 库存
+     * @return boolean
+     */
     @PostMapping("/add")
     public boolean addStock(@RequestBody Stock stock) {
         return stockService.save(stock);
     }
 
+    /**
+     * 修改产品编码
+     *
+     * @param product 产品信息
+     * @return boolean
+     */
     @PutMapping("/product")
     public boolean updateProductCode(@RequestBody Product product) {
         return stockService.lambdaUpdate()

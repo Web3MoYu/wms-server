@@ -15,6 +15,12 @@ public class InspectApiController {
     @Resource
     InspectionItemService inspectionItemService;
 
+    /**
+     * 根据ID获取质检详情信息
+     *
+     * @param id ID
+     * @return InspectionItem
+     */
     @GetMapping("/getItemById/{id}")
     public InspectionItem getItemById(@PathVariable("id") String id) {
         return inspectionItemService.getById(id);
