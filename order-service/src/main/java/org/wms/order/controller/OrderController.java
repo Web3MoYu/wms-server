@@ -70,6 +70,20 @@ public class OrderController {
         return orderService.outDetail(id);
     }
 
+
+    /**
+     * 获取出库订单信息
+     *
+     * @param id 订单ID
+     * @return OrderOut
+     */
+    @GetMapping("/outOrder")
+    @PreAuthorize("isAuthenticated()")
+    public Result<OrderOut> outOrder(@RequestParam("id") String id) {
+        OrderOut one = orderOutService.lambdaQuery().eq(OrderOut::getId, id).one();
+        return Result.success(one, "获取出库订单信息成功");
+    }
+
     /**
      * 添加入库订单
      *
