@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 30/03/2025 23:18:09
+ Date: 08/04/2025 20:19:14
 */
 
 SET NAMES utf8mb4;
@@ -79,14 +79,14 @@ CREATE TABLE `order_in` (
   `type` tinyint(1) NOT NULL COMMENT '类型：0-出库，1入库',
   `order_type` tinyint(1) NOT NULL COMMENT '订单类型：1-采购入库，2-自动入库',
   `creator` varchar(50) NOT NULL COMMENT '创建人',
-  `approver` varchar(50) DEFAULT NULL COMMENT '审核人',
+  `approver` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '审核人',
   `inspector` varchar(50) DEFAULT NULL COMMENT '质检员',
-  `expected_time` datetime DEFAULT NULL COMMENT '预计到达时间',
+  `expected_time` datetime NOT NULL COMMENT '预计到达时间',
   `actual_time` datetime DEFAULT NULL COMMENT '实际到达时间',
-  `total_amount` decimal(12,2) DEFAULT '0.00' COMMENT '总金额',
-  `total_quantity` int DEFAULT '0' COMMENT '总数量',
+  `total_amount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '总金额',
+  `total_quantity` int NOT NULL DEFAULT '0' COMMENT '总数量',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝',
-  `quality_status` tinyint(1) DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
+  `quality_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -114,7 +114,6 @@ CREATE TABLE `order_in_item` (
   `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
   `batch_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '批次号',
   `production_date` date DEFAULT NULL COMMENT '生产日期',
-  `expiry_date` date DEFAULT NULL COMMENT '过期日期',
   `status` tinyint(1) DEFAULT '0' COMMENT '0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝',
   `quality_status` tinyint(1) DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
@@ -135,17 +134,17 @@ CREATE TABLE `order_out` (
   `type` tinyint(1) NOT NULL COMMENT '类型：0-出库，1入库',
   `order_type` tinyint(1) NOT NULL COMMENT '订单类型：1-销售出库，2-调拨出库，3-其他出库',
   `creator` varchar(50) NOT NULL COMMENT '创建人',
-  `approver` varchar(50) DEFAULT NULL COMMENT '审核人',
+  `approver` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '审核人',
   `inspector` varchar(50) DEFAULT NULL COMMENT '质检员',
-  `expected_time` datetime DEFAULT NULL COMMENT '预计出库时间',
+  `expected_time` datetime NOT NULL COMMENT '预计出库时间',
   `actual_time` datetime DEFAULT NULL COMMENT '实际出库时间',
-  `total_amount` decimal(12,2) DEFAULT '0.00' COMMENT '总金额',
-  `total_quantity` int DEFAULT '0' COMMENT '总数量',
+  `total_amount` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '总金额',
+  `total_quantity` int NOT NULL DEFAULT '0' COMMENT '总数量',
   `status` tinyint NOT NULL DEFAULT '0' COMMENT '0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝',
-  `quality_status` tinyint(1) DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
-  `delivery_address` varchar(255) DEFAULT NULL COMMENT '配送地址',
-  `contact_name` varchar(50) DEFAULT NULL COMMENT '联系人',
-  `contact_phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `quality_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
+  `delivery_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '配送地址',
+  `contact_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '联系人',
+  `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '联系电话',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -167,13 +166,14 @@ CREATE TABLE `order_out_item` (
   `product_code` varchar(50) NOT NULL COMMENT '产品编码',
   `expected_quantity` int NOT NULL COMMENT '预期数量',
   `actual_quantity` int DEFAULT '0' COMMENT '实际数量',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '单价',
-  `amount` decimal(12,2) DEFAULT NULL COMMENT '金额',
+  `price` decimal(10,2) NOT NULL COMMENT '单价',
+  `amount` decimal(12,2) NOT NULL COMMENT '金额',
   `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `location` json NOT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
-  `batch_number` varchar(100) DEFAULT NULL COMMENT '批次号',
-  `status` tinyint(1) DEFAULT '0' COMMENT '0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝',
-  `quality_status` tinyint(1) DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
+  `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `batch_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '批次号',
+  `production_date` date DEFAULT NULL COMMENT '生产日期',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝',
+  `quality_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '质检状态：0-未质检，1-质检通过，2-质检不通过，3-部分异常',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -544,7 +544,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1369 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1489 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
