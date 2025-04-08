@@ -20,7 +20,7 @@ import org.wms.common.model.vo.LocationVo;
 import org.wms.stock.mapper.StockMapper;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
-import org.wms.stock.model.vo.StockVo;
+import org.wms.common.model.vo.StockVo;
 import org.wms.stock.service.StockService;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

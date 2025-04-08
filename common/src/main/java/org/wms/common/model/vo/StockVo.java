@@ -1,6 +1,5 @@
-package org.wms.stock.model.vo;
+package org.wms.common.model.vo;
 
-import org.wms.common.model.vo.LocationVo;
 import org.wms.common.entity.stock.Stock;
 
 import lombok.Data;

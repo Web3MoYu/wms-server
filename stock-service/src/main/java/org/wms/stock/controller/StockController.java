@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
-import org.wms.stock.model.vo.StockVo;
+import org.wms.common.model.vo.StockVo;
 import org.wms.stock.service.StockService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

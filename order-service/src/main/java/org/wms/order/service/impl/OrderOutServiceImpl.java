@@ -4,15 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
 import org.wms.api.client.ProductClient;
+import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
 import org.wms.common.constant.MQConstant;
 import org.wms.common.entity.msg.Msg;
 import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.product.Product;
+import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
 import org.wms.common.enums.msg.MsgBizEnums;
 import org.wms.common.enums.msg.MsgEnums;
@@ -22,6 +25,7 @@ import org.wms.common.enums.order.OrderType;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
+import org.wms.common.model.vo.StockVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.order.mapper.OrderOutItemMapper;
 import org.wms.order.model.dto.OrderDto;
@@ -53,6 +57,9 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
 
     @Resource
     RabbitTemplate rabbitTemplate;
+
+    @Resource
+    StockClient stockClient;
 
     @Resource
     OrderOutItemMapper orderOutItemMapper;
@@ -132,19 +139,7 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
             throw new BizException(303, "出库订单添加失败");
         }
         // 添加出库订单详情
-        List<OrderOutItem> items = order.getOrderItems();
-        items.forEach((item) -> {
-            // 查询产品信息
-            Product product = productClient.getProductById(item.getProductId());
-            item.setOrderId(orderOut.getId());
-            item.setProductName(product.getProductName());
-            item.setProductCode(product.getProductCode());
-            item.setAmount(item.getPrice().multiply(new BigDecimal(item.getExpectedQuantity())));
-            item.setStatus(OrderStatusEnums.PENDING_REVIEW);
-            item.setQualityStatus(QualityStatusEnums.NOT_INSPECTED);
-            item.setUpdateTime(LocalDateTime.now());
-            item.setCreateTime(LocalDateTime.now());
-        });
+        List<OrderOutItem> items = getOrderOutItems(order, orderOut);
         orderOutItemMapper.insert(items, items.size());
         // 构建消息
         User from = userClient.getUserById(orderOut.getCreator());
@@ -155,6 +150,24 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
         return Result.success(null, "插入成功");
+    }
+
+    private @NotNull List<OrderOutItem> getOrderOutItems(OrderDto<OrderOut, OrderOutItem> order, OrderOut orderOut) {
+        List<OrderOutItem> items = order.getOrderItems();
+        items.forEach((item) -> {
+            // 查询产品信息
+            StockVo stock = stockClient.getStockVo(item.getBatchNumber(), item.getProductId());
+            item.setOrderId(orderOut.getId());
+            item.setProductName(stock.getProductName());
+            item.setProductCode(stock.getProductCode());
+            item.setProductionDate(stock.getProductionDate());
+            item.setAmount(item.getPrice().multiply(new BigDecimal(item.getExpectedQuantity())));
+            item.setStatus(OrderStatusEnums.PENDING_REVIEW);
+            item.setQualityStatus(QualityStatusEnums.NOT_INSPECTED);
+            item.setUpdateTime(LocalDateTime.now());
+            item.setCreateTime(LocalDateTime.now());
+        });
+        return items;
     }
 }
 

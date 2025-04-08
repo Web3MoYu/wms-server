@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wms.common.entity.product.Product;
 import org.wms.common.entity.stock.Stock;
+import org.wms.common.model.vo.StockVo;
 
 @FeignClient(value = "stock-service", contextId = "stock")
 public interface StockClient {
@@ -58,4 +59,14 @@ public interface StockClient {
      */
     @PutMapping("/api/stock/product")
     boolean updateProductCode(@RequestBody Product product);
+
+    /**
+     * 根据批次号和商品id查找库存
+     *
+     * @param batchNumber 批次号
+     * @param productId   商品id
+     * @return 库存
+     */
+    @GetMapping("/api/stock/getStockVo")
+    StockVo getStockVo(@RequestParam String batchNumber, @RequestParam String productId);
 }

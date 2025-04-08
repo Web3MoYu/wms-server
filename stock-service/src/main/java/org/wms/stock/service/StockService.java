@@ -5,7 +5,7 @@ import org.wms.common.model.Result;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.wms.stock.model.vo.StockVo;
+import org.wms.common.model.vo.StockVo;
 
 /**
  * @author moyu

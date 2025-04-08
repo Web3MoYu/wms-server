@@ -3,6 +3,7 @@ package org.wms.stock.controller.api;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.product.Product;
 import org.wms.common.entity.stock.Stock;
+import org.wms.common.model.vo.StockVo;
 import org.wms.stock.service.StockService;
 
 import jakarta.annotation.Resource;
@@ -81,4 +82,16 @@ public class StockApiController {
                 .set(Stock::getProductCode, product.getProductCode()).update();
     }
 
+
+    /**
+     * 根据批次号和商品id查找库存
+     *
+     * @param batchNumber 批次号
+     * @param productId   商品id
+     * @return 库存
+     */
+    @GetMapping("/getStockVo")
+    public StockVo getStockVo(@RequestParam String batchNumber, @RequestParam String productId) {
+        return stockService.getStockByBatchAndProduct(batchNumber, productId);
+    }
 }
