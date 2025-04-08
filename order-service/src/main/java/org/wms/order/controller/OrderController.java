@@ -85,6 +85,17 @@ public class OrderController {
     }
 
     /**
+     * 获取出库订单审批信息
+     * @param id 订单ID
+     * @return 出库订单的审批信息包括位置信息等。
+     */
+    @GetMapping("/outDetailItem/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public Result getOutDetailItem(@PathVariable String id) {
+        return null;
+    }
+
+    /**
      * 添加入库订单
      *
      * @param order 订单
