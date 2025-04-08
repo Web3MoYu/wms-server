@@ -114,6 +114,7 @@ public class OrderController {
      */
     @PostMapping("/addOrderOut")
     @PreAuthorize("hasAuthority('order:in-out:add')")
+    @GlobalTransactional
     public Result<String> addOrderOut(@RequestBody OrderDto<OrderOut, OrderOutItem> order) {
         return orderService.addOrderOut(order);
     }

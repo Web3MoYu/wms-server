@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Result<String> addOrderOut(OrderDto<OrderOut, OrderOutItem> order) {
-        return null;
+        return orderOutService.addOrder(order);
     }
 
     @Override

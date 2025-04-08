@@ -1,6 +1,7 @@
 package org.wms.order.service;
 
 import org.wms.common.model.Result;
+import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.entity.OrderOut;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.order.model.entity.OrderOutItem;
@@ -27,10 +28,16 @@ public interface OrderOutService extends IService<OrderOut> {
     /**
      * 更新订单状态
      *
-     * @param type        订单类型
      * @param id          订单ID
      * @param remark      备注
      * @param statusEnums 状态
      */
     void updateStatus(String id, String remark, OrderStatusEnums statusEnums);
+
+    /**
+     * 新增出库订单
+     * @param order 出库订单信息
+     * @return Result
+     */
+    Result<String> addOrder(OrderDto<OrderOut, OrderOutItem> order);
 }

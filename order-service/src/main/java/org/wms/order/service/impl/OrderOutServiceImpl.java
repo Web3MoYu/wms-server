@@ -12,6 +12,7 @@ import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.order.mapper.OrderOutItemMapper;
+import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.enums.OrderStatusEnums;
@@ -88,6 +89,11 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         if (!update || update1 <= 0) {
             throw new BizException(303, "失败");
         }
+    }
+
+    @Override
+    public Result<String> addOrder(OrderDto<OrderOut, OrderOutItem> order) {
+        return null;
     }
 }
 
