@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -89,6 +90,13 @@ public class OrderOutItem {
      * 批次号
      */
     private String batchNumber;
+
+    /**
+     * 生产日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate productionDate;
+
 
     /**
      * 状态：0-待审核，1-审批通过，2-入库中/出库中，3-已完成，-1-已取消 -2-审批拒绝
