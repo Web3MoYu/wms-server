@@ -139,7 +139,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 构建消息
         User from = userClient.getUserById(orderIn.getCreator());
         User to = userClient.getUserById(orderIn.getApprover());
-        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "订单通知", "你有一笔订单需要审批", to.getUserId(),
+        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "订单通知", "你有一笔入库订单需要审批", to.getUserId(),
                 to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(),
                 MsgBizEnums.INBOUND_ORDER);
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,

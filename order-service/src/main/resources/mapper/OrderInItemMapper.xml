@@ -18,7 +18,6 @@
         <result property="location" column="location"/>
         <result property="batchNumber" column="batch_number"/>
         <result property="productionDate" column="production_date"/>
-        <result property="expiryDate" column="expiry_date"/>
         <result property="status" column="status"/>
         <result property="qualityStatus" column="quality_status"/>
         <result property="remark" column="remark"/>
@@ -29,7 +28,7 @@
     <sql id="Base_Column_List">
         id,order_id,product_id,product_name,product_code,expected_quantity,
         actual_quantity,price,amount,area_id,location,
-        batch_number,production_date,expiry_date,status,quality_status,
+        batch_number,production_date,status,quality_status,
         remark,create_time,update_time
     </sql>
 </mapper>
