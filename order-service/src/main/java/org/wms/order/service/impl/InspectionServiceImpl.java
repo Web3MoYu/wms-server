@@ -15,6 +15,7 @@ import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.inspect.InspectType;
 import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.enums.order.ReceiveStatus;
 import org.wms.common.enums.stock.AlertStatusEnums;
@@ -33,6 +34,7 @@ import org.wms.common.entity.order.InspectionItem;
 import org.wms.order.model.entity.OrderIn;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.common.enums.order.InspectItemStatus;
+import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.InspectionDetailVo;
@@ -47,6 +49,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import org.wms.order.service.OrderInItemService;
 import org.wms.order.service.OrderInService;
+import org.wms.order.service.OrderOutService;
 
 /**
  * @author moyu
@@ -68,6 +71,9 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
 
     @Resource
     private OrderInItemService orderInItemService;
+
+    @Resource
+    private OrderOutService orderOutService;
 
     @Resource
     private InspectionItemMapper inspectionItemMapper;
@@ -143,8 +149,15 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 User user = userClient.getUserById(item.getInspector());
                 vo.setInspectorInfo(user);
             }
-            vo.setOrderStatus(
-                    orderInService.lambdaQuery().eq(OrderIn::getId, item.getRelatedOrderId()).one().getStatus());
+            if (item.getInspectionType() == InspectType.INBOUND_INSPECT) {
+                vo.setOrderStatus(
+                        orderInService.lambdaQuery().eq(OrderIn::getId, item.getRelatedOrderId()).one().getStatus());
+            }
+            if (item.getInspectionType() == InspectType.OUTBOUND_INSPECT) {
+                vo.setOrderStatus(
+                        orderOutService.lambdaQuery().eq(OrderOut::getId, item.getRelatedOrderId()).one().getStatus());
+            }
+
             return vo;
         }).toList();
         Page<InspectionVo> res = new Page<>(pageResult.getCurrent(), pageResult.getSize(), pageResult.getTotal());

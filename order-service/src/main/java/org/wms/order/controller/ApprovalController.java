@@ -73,14 +73,32 @@ public class ApprovalController {
      * @param inspector 质检人员
      * @return 审批结果
      */
-    @PostMapping("/{id}/{inspector}")
+    @PostMapping("/in/{id}/{inspector}")
     @PreAuthorize("hasAuthority('order:in-out:approval')")
     @GlobalTransactional
-    public Result<String> approve(@RequestBody List<ApprovalDto> dto, @PathVariable String id, @PathVariable String inspector) {
+    public Result<String> approveInOrder(@RequestBody List<ApprovalDto> dto, @PathVariable String id, @PathVariable String inspector) {
         if (checkAuth(id, OrderType.IN_ORDER.getCode())) {
             return Result.error(402, "权限不足");
         }
         return orderService.approvalInBound(id, dto, inspector);
+    }
+
+
+    /**
+     * 审批出库订单
+     *
+     * @param id        订单ID
+     * @param inspector 质检人员
+     * @return 审批结果
+     */
+    @PostMapping("/out/{id}/{inspector}")
+    @PreAuthorize("hasAuthority('order:in-out:approval')")
+    @GlobalTransactional
+    public Result<String> approveOutOrder(@PathVariable String id, @PathVariable String inspector) {
+        if (checkAuth(id, OrderType.OUT_ORDER.getCode())) {
+            return Result.error(402, "权限不足");
+        }
+        return orderService.approvalOutBound(id, inspector);
     }
 
     /**

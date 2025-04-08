@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -109,6 +110,21 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         if (!insert) {
             throw new BizException(303, "插入订单失败");
         }
+        List<OrderInItem> orderItem = getOrderInItems(order, orderIn);
+        // 插入订单详情
+        orderInItemMapper.insert(orderItem, orderItem.size());
+        // 构建消息
+        User from = userClient.getUserById(orderIn.getCreator());
+        User to = userClient.getUserById(orderIn.getApprover());
+        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "订单通知", "你有一笔入库订单需要审批", to.getUserId(),
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(),
+                MsgBizEnums.INBOUND_ORDER);
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
+        return Result.success(null, "插入成功");
+    }
+
+    private @NotNull List<OrderInItem> getOrderInItems(OrderDto<OrderIn, OrderInItem> order, OrderIn orderIn) {
         List<OrderInItem> orderItem = order.getOrderItems();
         // 设置入库订单详细信息
         orderItem.forEach((item) -> {
@@ -134,17 +150,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
             }
             item.setProductId(productById.getId());
         });
-        // 插入订单详情
-        orderInItemMapper.insert(orderItem, orderItem.size());
-        // 构建消息
-        User from = userClient.getUserById(orderIn.getCreator());
-        User to = userClient.getUserById(orderIn.getApprover());
-        Msg msg = new Msg(MsgTypeEnums.ORDER_STATUS, "订单通知", "你有一笔入库订单需要审批", to.getUserId(),
-                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, orderIn.getOrderNo(),
-                MsgBizEnums.INBOUND_ORDER);
-        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
-                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
-        return Result.success(null, "插入成功");
+        return orderItem;
     }
 
     @Override
@@ -280,7 +286,7 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         // 生成消息
         User from = userClient.getUserById(orderIn.getApprover());
         User to = userClient.getUserById(orderIn.getInspector());
-        Msg msg = new Msg(MsgTypeEnums.QUALITY_CHECK, "质检通知", "你有一笔质检订单", to.getUserId(),
+        Msg msg = new Msg(MsgTypeEnums.QUALITY_CHECK, "质检通知", "你有一笔出库质检订单", to.getUserId(),
                 to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, inspection.getInspectionNo(),
                 MsgBizEnums.QUALITY_CHECK);
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,

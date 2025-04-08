@@ -83,4 +83,13 @@ public interface OrderService {
      * @return 收货结果
      */
     Result<String> receiveGoods(String id);
+
+    /**
+     * 审批出库订单
+     *
+     * @param id        订单ID
+     * @param inspector 质检人员
+     * @return 审批结果
+     */
+    Result<String> approvalOutBound(String id, String inspector);
 }

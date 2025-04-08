@@ -90,6 +90,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Result<String> approvalOutBound(String id, String inspector) {
+        return orderOutService.approve(id, inspector);
+    }
+
+    @Override
     public Result<Page<OrderVo>> pageOrder(OrderQueryDto queryDto) {
         // 参数校验
         if (queryDto == null) {

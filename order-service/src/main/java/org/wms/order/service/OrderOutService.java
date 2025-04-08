@@ -36,8 +36,18 @@ public interface OrderOutService extends IService<OrderOut> {
 
     /**
      * 新增出库订单
+     *
      * @param order 出库订单信息
      * @return Result
      */
     Result<String> addOrder(OrderDto<OrderOut, OrderOutItem> order);
+
+    /**
+     * 审批出库订单
+     *
+     * @param id        订单ID
+     * @param inspector 质检人员
+     * @return 审批结果
+     */
+    Result<String> approve(String id, String inspector);
 }
