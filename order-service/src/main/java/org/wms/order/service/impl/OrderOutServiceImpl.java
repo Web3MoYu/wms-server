@@ -117,6 +117,21 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
                 .set(OrderOutItem::getRemark, remark)
                 .set(OrderOutItem::getUpdateTime, LocalDateTime.now());
         int update1 = orderOutItemMapper.update(itemWrapper);
+        // 将可用数量重新补回去
+        if (statusEnums == OrderStatusEnums.CANCELED || statusEnums == OrderStatusEnums.REJECT) {
+            // 获取订单
+            LambdaQueryWrapper<OrderOutItem> outItemWrapper = new LambdaQueryWrapper<>();
+            outItemWrapper.eq(OrderOutItem::getOrderId, id);
+            List<OrderOutItem> orderOutItems = orderOutItemMapper.selectList(outItemWrapper);
+            orderOutItems.forEach(item -> {
+                Stock stock = stockClient.getStockByProductIdAndBatch(item.getProductId(), item.getBatchNumber());
+                stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getExpectedQuantity());
+                boolean b = stockClient.updateStock(stock);
+                if (!b) {
+                    throw new BizException("恢复可用数量失败");
+                }
+            });
+        }
         if (!update || update1 <= 0) {
             throw new BizException(303, "失败");
         }
@@ -158,6 +173,12 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
             // 查询产品信息
             StockVo stock = stockClient.getStockVo(item.getBatchNumber(), item.getProductId());
             item.setOrderId(orderOut.getId());
+            // 减少库存可用数量
+            stock.setAvailableQuantity(stock.getAvailableQuantity() - item.getExpectedQuantity());
+            boolean b = stockClient.updateStock(stock);
+            if (!b) {
+                throw new BizException("修改库存可用数量失败");
+            }
             item.setProductName(stock.getProductName());
             item.setProductCode(stock.getProductCode());
             item.setProductionDate(stock.getProductionDate());
