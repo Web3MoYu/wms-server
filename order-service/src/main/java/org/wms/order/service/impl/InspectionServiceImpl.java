@@ -29,12 +29,9 @@ import org.wms.order.model.dto.InBoundInspectDto;
 import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.dto.ItemInspect;
 import org.wms.order.model.dto.StockInDto;
-import org.wms.order.model.entity.Inspection;
+import org.wms.order.model.entity.*;
 import org.wms.common.entity.order.InspectionItem;
-import org.wms.order.model.entity.OrderIn;
-import org.wms.order.model.entity.OrderInItem;
 import org.wms.common.enums.order.InspectItemStatus;
-import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.InspectionDetailVo;
@@ -267,6 +264,11 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
     }
 
     @Override
+    public Result<String> outBoundCheck(InBoundInspectDto dto) {
+        return null;
+    }
+
+    @Override
     public Result<InspectionDetailVo<OrderInItem>> inDetail(String id) {
         Inspection one = this.lambdaQuery().eq(Inspection::getId, id).one();
         Result<List<OrderDetailVo<OrderInItem>>> result = orderInService.inDetail(one.getRelatedOrderId());
@@ -280,6 +282,25 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         List<InspectionItem> inspectionItems = inspectionItemMapper.selectList(wrapper);
         // 封装vo
         InspectionDetailVo<OrderInItem> vo = new InspectionDetailVo<>();
+        vo.setOrderDetail(data);
+        vo.setInspectionItems(inspectionItems);
+        return Result.success(vo, "查询成功");
+    }
+
+    @Override
+    public Result<InspectionDetailVo<OrderOutItem>> outDetail(String id) {
+        Inspection one = this.lambdaQuery().eq(Inspection::getId, id).one();
+        Result<List<OrderDetailVo<OrderOutItem>>> result = orderOutService.outDetail(one.getRelatedOrderId());
+        if (result.getCode() != 200) {
+            throw new BizException(303, "查询出错");
+        }
+        List<OrderDetailVo<OrderOutItem>> data = result.getData();
+        // 查询质检详情
+        LambdaQueryWrapper<InspectionItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(InspectionItem::getInspectionId, one.getId());
+        List<InspectionItem> inspectionItems = inspectionItemMapper.selectList(wrapper);
+        // 封装vo
+        InspectionDetailVo<OrderOutItem> vo = new InspectionDetailVo<>();
         vo.setOrderDetail(data);
         vo.setInspectionItems(inspectionItems);
         return Result.success(vo, "查询成功");

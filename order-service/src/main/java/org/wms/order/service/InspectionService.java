@@ -6,6 +6,7 @@ import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.entity.OrderInItem;
+import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
 
@@ -38,7 +39,7 @@ public interface InspectionService extends IService<Inspection> {
     /**
      * 入库质检详情
      *
-     * @param id
+     * @param id 入库质检ID
      * @return 详细信息
      */
     Result<InspectionDetailVo<OrderInItem>> inDetail(String id);
@@ -58,4 +59,20 @@ public interface InspectionService extends IService<Inspection> {
      * @return 上架结果
      */
     Result<String> stockAll(String inspectNo);
+
+    /**
+     * 入库质检
+     *
+     * @param dto 质检条件
+     * @return 质检结果
+     */
+    Result<String> outBoundCheck(InBoundInspectDto dto);
+
+    /**
+     * 出库质检详情
+     *
+     * @param id 出库质检ID
+     * @return 详细信息
+     */
+    Result<InspectionDetailVo<OrderOutItem>> outDetail(String id);
 }

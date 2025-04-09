@@ -10,6 +10,7 @@ import org.wms.order.model.dto.InspectionDto;
 import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.entity.OrderInItem;
+import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
 import org.wms.order.service.InspectionService;
@@ -42,13 +43,26 @@ public class InspectController {
     /**
      * 查询质检订单详情
      *
-     * @param id 质检ID
+     * @param id 入库质检ID
      * @return 质检订单详情
      */
     @GetMapping("/inDetail")
     @PreAuthorize("isAuthenticated()")
     public Result<InspectionDetailVo<OrderInItem>> inDetail(@RequestParam("id") String id) {
         return inspectService.inDetail(id);
+    }
+
+
+    /**
+     * 查询质检订单详情
+     *
+     * @param id 出库质检ID
+     * @return 质检订单详情
+     */
+    @GetMapping("/outDetail")
+    @PreAuthorize("isAuthenticated()")
+    public Result<InspectionDetailVo<OrderOutItem>> outDetail(@RequestParam("id") String id) {
+        return inspectService.outDetail(id);
     }
 
     /**
@@ -67,6 +81,24 @@ public class InspectController {
             throw new BizException(303, "无操作权限");
         }
         return inspectService.inBoundCheck(dto);
+    }
+
+    /**
+     * 入库质检
+     *
+     * @param dto 质检参数
+     * @return 质检结果
+     */
+    @PostMapping("/outBoundCheck")
+    @PreAuthorize("isAuthenticated()")
+    @GlobalTransactional
+    public Result<String> outBoundCheck(@RequestBody InBoundInspectDto dto) {
+        // 检查有无权限
+        Inspection one = inspectService.lambdaQuery().eq(Inspection::getInspectionNo, dto.getInspectionNo()).one();
+        if (StrUtil.equals(one.getInspectionNo(), SecurityUtil.getUserID())) {
+            throw new BizException(303, "无操作权限");
+        }
+        return inspectService.outBoundCheck(dto);
     }
 
 
