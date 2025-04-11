@@ -2,6 +2,7 @@ package org.wms.order.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.wms.common.entity.order.InspectionItem;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -25,5 +26,6 @@ public interface InspectionItemMapper extends BaseMapper<InspectionItem> {
      * @return 是否成功
      */
     boolean updateItemStatusAndCount(@Param("remark") String remark, @Param("id") String id,
-                                     @Param("status") Integer status, @Param("count") Integer count);
+                                     @Param("status") Integer status, @Param("count") Integer count,
+                                     @Param("actualCount") Integer actualCount);
 }

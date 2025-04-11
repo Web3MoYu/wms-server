@@ -7,7 +7,6 @@ import java.util.*;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
@@ -37,16 +36,13 @@ import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
 import org.wms.order.model.vo.OrderDetailVo;
-import org.wms.order.service.InspectionService;
+import org.wms.order.service.*;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import jakarta.annotation.Resource;
-import org.wms.order.service.OrderInItemService;
-import org.wms.order.service.OrderInService;
-import org.wms.order.service.OrderOutService;
 
 /**
  * @author moyu
@@ -71,6 +67,9 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
 
     @Resource
     private OrderOutService orderOutService;
+
+    @Resource
+    private OrderOutItemService orderOutItemService;
 
     @Resource
     private InspectionItemMapper inspectionItemMapper;
@@ -177,27 +176,51 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         }
         // 获取质检订单
         Inspection one = this.lambdaQuery().eq(Inspection::getInspectionNo, dto.getInspectionNo()).one();
+        InspectType type = one.getInspectionType();
         // 修改状态
         // 全成功
         if (status == list.size()) {
             // 修改质检状态
             boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(),
                     QualityStatusEnums.PASSED);
-            // 订单状态
-            orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
-            // 订单质检状态
-            boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
-                    .set(OrderIn::getQualityStatus, QualityStatusEnums.PASSED.getCode()).update();
+            boolean update1 = false;
+            if (type == InspectType.INBOUND_INSPECT) {
+                // 订单状态
+                orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
+                // 订单质检状态
+                update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
+                        .set(OrderIn::getQualityStatus, QualityStatusEnums.PASSED.getCode()).update();
+
+            }
+            if (type == InspectType.OUTBOUND_INSPECT) {
+                // 订单状态
+                orderOutService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
+                // 订单质检状态
+                update1 = orderOutService.lambdaUpdate().eq(OrderOut::getId, one.getRelatedOrderId())
+                        .set(OrderOut::getQualityStatus, QualityStatusEnums.PASSED.getCode()).update();
+            }
+
             if (!update || !update1) {
                 throw new BizException(303, "修改质检状态失败");
             }
         } else if (status == 0) {
             boolean update = this.updateInspectionStatus(dto.getRemark(), dto.getInspectionNo(),
                     QualityStatusEnums.FAILED);
-            orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.COMPLETED);
-            // 订单质检状态
-            boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
-                    .set(OrderIn::getQualityStatus, QualityStatusEnums.FAILED.getCode()).update();
+            boolean update1 = false;
+            if (type == InspectType.INBOUND_INSPECT) {
+                orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.COMPLETED);
+                // 订单质检状态
+                update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
+                        .set(OrderIn::getQualityStatus, QualityStatusEnums.FAILED.getCode()).update();
+            }
+
+            if (type == InspectType.OUTBOUND_INSPECT) {
+                orderOutService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.COMPLETED);
+                // 订单质检状态
+                update1 = orderOutService.lambdaUpdate().eq(OrderOut::getId, one.getRelatedOrderId())
+                        .set(OrderOut::getQualityStatus, QualityStatusEnums.FAILED.getCode()).update();
+            }
+
             // 全失败
             if (!update || !update1) {
                 throw new BizException(303, "修改质检状态失败");
@@ -205,10 +228,19 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         } else {
             boolean update = this.updateInspectionStatus(dto.getRemark(),
                     dto.getInspectionNo(), QualityStatusEnums.PARTIALLY_EXCEPTIONAL);
-            orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
-            // 订单质检状态
-            boolean update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
-                    .set(OrderIn::getQualityStatus, QualityStatusEnums.PARTIALLY_EXCEPTIONAL.getCode()).update();
+            boolean update1 = false;
+            if (type == InspectType.INBOUND_INSPECT) {
+                orderInService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
+                // 订单质检状态
+                update1 = orderInService.lambdaUpdate().eq(OrderIn::getId, one.getRelatedOrderId())
+                        .set(OrderIn::getQualityStatus, QualityStatusEnums.PARTIALLY_EXCEPTIONAL.getCode()).update();
+            }
+            if (type == InspectType.OUTBOUND_INSPECT) {
+                orderOutService.updateStatus(one.getRelatedOrderId(), dto.getRemark(), OrderStatusEnums.IN_PROGRESS);
+                // 订单质检状态
+                update1 = orderOutService.lambdaUpdate().eq(OrderOut::getId, one.getRelatedOrderId())
+                        .set(OrderOut::getQualityStatus, QualityStatusEnums.PARTIALLY_EXCEPTIONAL.getCode()).update();
+            }
             if (!update || !update1) {
                 throw new BizException(303, "修改质检状态失败");
             }
@@ -217,55 +249,94 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         list.forEach(item -> {
             // 通过
             boolean r1;
-            boolean r2;
+            boolean r2 = false;
+            InspectionItem inspectionItem = inspectionItemMapper.selectById(item.getItemId());
             if (item.isApproval()) {
-                // 修改质检详情状态
+                // 修改质检详情状态和数量
                 r1 = this.inspectionItemMapper.updateItemStatusAndCount(item.getRemark(), item.getItemId(),
-                        InspectItemStatus.QUALIFIED.getCode(), item.getCount());
+                        InspectItemStatus.QUALIFIED.getCode(), item.getCount(), item.getActualQuantity());
+
 
                 // 修改订单详情状态
-                r2 = orderInItemService.lambdaUpdate()
-                        .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
-                        .eq(OrderInItem::getProductId, item.getProductId())
-                        .set(OrderInItem::getRemark, item.getRemark())
-                        .set(OrderInItem::getActualQuantity, item.getCount())
-                        .set(OrderInItem::getQualityStatus, QualityStatusEnums.PASSED).update();
+                if (type == InspectType.INBOUND_INSPECT) {
+                    r2 = orderInItemService.lambdaUpdate()
+                            .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
+                            .eq(OrderInItem::getProductId, item.getProductId())
+                            .set(OrderInItem::getRemark, item.getRemark())
+                            .set(OrderInItem::getActualQuantity, item.getCount())
+                            .set(OrderInItem::getQualityStatus, QualityStatusEnums.PASSED).update();
+                }
 
+                if (type == InspectType.OUTBOUND_INSPECT) {
+                    r2 = orderOutItemService.lambdaUpdate()
+                            .eq(OrderOutItem::getOrderId, one.getRelatedOrderId())
+                            .eq(OrderOutItem::getProductId, item.getProductId())
+                            .set(OrderOutItem::getRemark, item.getRemark())
+                            .set(OrderOutItem::getActualQuantity, item.getCount())
+                            .set(OrderOutItem::getQualityStatus, QualityStatusEnums.PASSED).update();
+                    // 将库存的数量减少
+                    OrderOutItem outItem = orderOutItemService.lambdaQuery().eq(OrderOutItem::getOrderId, one.getRelatedOrderId())
+                            .eq(OrderOutItem::getProductId, item.getProductId())
+                            .eq(OrderOutItem::getBatchNumber, inspectionItem.getBatchNumber()).one();
+                    Stock stock = stockClient.getStockByProductIdAndBatch(inspectionItem.getProductId(), inspectionItem.getBatchNumber());
+                    stock.setQuantity(stock.getQuantity() - item.getActualQuantity());
+                    // 可用数量增加
+                    stock.setAvailableQuantity(stock.getAvailableQuantity() + outItem.getExpectedQuantity() - item.getActualQuantity());
+                    boolean b = stockClient.updateStock(stock);
+                    if (!b) {
+                        throw new BizException("修改库存数量失败");
+                    }
+                }
             } else {
                 r1 = this.inspectionItemMapper.updateItemStatusAndCount(item.getRemark(), item.getItemId(),
-                        InspectItemStatus.UNQUALIFIED.getCode(), item.getCount());
-                // 修改订单详情状态
-                r2 = orderInItemService.lambdaUpdate()
-                        .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
-                        .eq(OrderInItem::getProductId, item.getProductId())
-                        .set(OrderInItem::getActualQuantity, item.getCount())
-                        .set(OrderInItem::getRemark, item.getRemark())
-                        .set(OrderInItem::getQualityStatus, QualityStatusEnums.FAILED).update();
-                // 将库位释放
-                // 查询库位信息
-                InspectionItem inspectionItem = inspectionItemMapper.selectById(item.getItemId());
-                if (inspectionItem == null || inspectionItem.getLocation() == null
-                        || inspectionItem.getLocation().isEmpty()) {
-                    throw new BizException(500, "业务异常");
-                }
-                inspectionItem.getLocation().forEach(location -> {
-                    boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(),
-                            null);
-                    if (!b) {
-                        throw new BizException(303, "修改库位信息失败");
+                        InspectItemStatus.UNQUALIFIED.getCode(), item.getCount(), item.getActualQuantity());
+                if (type == InspectType.INBOUND_INSPECT) {
+                    // 修改订单详情状态
+                    r2 = orderInItemService.lambdaUpdate()
+                            .eq(OrderInItem::getOrderId, one.getRelatedOrderId())
+                            .eq(OrderInItem::getProductId, item.getProductId())
+                            .set(OrderInItem::getActualQuantity, item.getCount())
+                            .set(OrderInItem::getRemark, item.getRemark())
+                            .set(OrderInItem::getQualityStatus, QualityStatusEnums.FAILED).update();
+                    // 将库位释放
+                    // 查询库位信息
+                    if (inspectionItem == null || inspectionItem.getLocation() == null
+                            || inspectionItem.getLocation().isEmpty()) {
+                        throw new BizException(500, "业务异常");
                     }
-                });
+                    inspectionItem.getLocation().forEach(location -> {
+                        boolean b = locationClient.updateStatusInStorage(location, LocationStatusEnums.FREE.getCode(),
+                                null);
+                        if (!b) {
+                            throw new BizException(303, "修改库位信息失败");
+                        }
+                    });
+                }
+                if (type == InspectType.OUTBOUND_INSPECT) {
+                    // 修改订单详情状态
+                    r2 = orderOutItemService.lambdaUpdate()
+                            .eq(OrderOutItem::getOrderId, one.getRelatedOrderId())
+                            .eq(OrderOutItem::getProductId, item.getProductId())
+                            .set(OrderOutItem::getActualQuantity, item.getCount())
+                            .set(OrderOutItem::getRemark, item.getRemark())
+                            .set(OrderOutItem::getQualityStatus, QualityStatusEnums.FAILED).update();
+                    // 将库存的数量恢复，应该做异常处理的，这里简化
+                    OrderOutItem outItem = orderOutItemService.lambdaQuery().eq(OrderOutItem::getOrderId, one.getRelatedOrderId())
+                            .eq(OrderOutItem::getProductId, item.getProductId())
+                            .eq(OrderOutItem::getBatchNumber, inspectionItem.getBatchNumber()).one();
+                    Stock stock = stockClient.getStockByProductIdAndBatch(inspectionItem.getProductId(), inspectionItem.getBatchNumber());
+                    stock.setAvailableQuantity(stock.getAvailableQuantity() + outItem.getExpectedQuantity());
+                    boolean b = stockClient.updateStock(stock);
+                    if (!b) {
+                        throw new BizException("修改库存数量失败");
+                    }
+                }
             }
             if (!r1 || !r2) {
                 throw new BizException(303, "修改详情状态失败");
             }
         });
         return Result.success(null, "质检成功");
-    }
-
-    @Override
-    public Result<String> outBoundCheck(InBoundInspectDto dto) {
-        return null;
     }
 
     @Override

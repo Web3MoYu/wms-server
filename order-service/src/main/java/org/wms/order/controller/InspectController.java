@@ -66,14 +66,14 @@ public class InspectController {
     }
 
     /**
-     * 入库质检
+     * 质检
      *
      * @param dto 质检参数
      * @return 质检结果
      */
     @PostMapping("/inBoundCheck")
     @PreAuthorize("isAuthenticated()")
-    @GlobalTransactional
+    @GlobalTransactional(timeoutMills = 1000 * 60 * 10 * 100)
     public Result<String> inBoundCheck(@RequestBody InBoundInspectDto dto) {
         // 检查有无权限
         Inspection one = inspectService.lambdaQuery().eq(Inspection::getInspectionNo, dto.getInspectionNo()).one();
@@ -81,24 +81,6 @@ public class InspectController {
             throw new BizException(303, "无操作权限");
         }
         return inspectService.inBoundCheck(dto);
-    }
-
-    /**
-     * 入库质检
-     *
-     * @param dto 质检参数
-     * @return 质检结果
-     */
-    @PostMapping("/outBoundCheck")
-    @PreAuthorize("isAuthenticated()")
-    @GlobalTransactional
-    public Result<String> outBoundCheck(@RequestBody InBoundInspectDto dto) {
-        // 检查有无权限
-        Inspection one = inspectService.lambdaQuery().eq(Inspection::getInspectionNo, dto.getInspectionNo()).one();
-        if (StrUtil.equals(one.getInspectionNo(), SecurityUtil.getUserID())) {
-            throw new BizException(303, "无操作权限");
-        }
-        return inspectService.outBoundCheck(dto);
     }
 
 

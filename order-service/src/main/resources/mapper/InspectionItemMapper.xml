@@ -30,8 +30,9 @@
         UPDATE quality_inspection_item
         SET remark               = #{remark},
             quality_status       = #{status},
+            inspection_quantity  = #{actualCount},
             qualified_quantity   = #{count},
-            unqualified_quantity = inspection_quantity - #{count},
+            unqualified_quantity = #{actualCount} - #{count},
             update_time          = NOW()
         WHERE id = #{id}
     </update>

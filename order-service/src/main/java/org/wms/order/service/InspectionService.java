@@ -61,14 +61,6 @@ public interface InspectionService extends IService<Inspection> {
     Result<String> stockAll(String inspectNo);
 
     /**
-     * 入库质检
-     *
-     * @param dto 质检条件
-     * @return 质检结果
-     */
-    Result<String> outBoundCheck(InBoundInspectDto dto);
-
-    /**
      * 出库质检详情
      *
      * @param id 出库质检ID

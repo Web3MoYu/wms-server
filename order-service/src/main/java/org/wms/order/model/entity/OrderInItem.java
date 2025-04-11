@@ -55,7 +55,7 @@ public class OrderInItem {
     private Integer expectedQuantity;
 
     /**
-     * 实际数量
+     * 实际数量也是合格数量
      */
     private Integer actualQuantity;
 
