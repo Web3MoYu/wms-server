@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 08/04/2025 20:19:14
+ Date: 11/04/2025 20:55:39
 */
 
 SET NAMES utf8mb4;
@@ -279,8 +279,8 @@ CREATE TABLE `quality_inspection_item` (
   `inspection_id` varchar(32) NOT NULL COMMENT '质检记录ID',
   `product_id` varchar(32) NOT NULL COMMENT '产品ID',
   `batch_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '批次号',
-  `area_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区域id',
-  `location` json NOT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `area_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '区域id',
+  `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
   `inspection_quantity` int NOT NULL COMMENT '质检数量',
   `qualified_quantity` int DEFAULT '0' COMMENT '合格数量',
   `unqualified_quantity` int DEFAULT '0' COMMENT '不合格数量',
@@ -544,7 +544,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1489 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1983 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
