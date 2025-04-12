@@ -5,17 +5,18 @@
 <mapper namespace="org.wms.order.mapper.PickingOrderRelationMapper">
 
     <resultMap id="BaseResultMap" type="org.wms.order.model.entity.PickingOrderRelation">
-            <id property="id" column="id" />
-            <result property="pickingId" column="picking_id" />
-            <result property="orderId" column="order_id" />
-            <result property="orderNo" column="order_no" />
-            <result property="status" column="status" />
-            <result property="createTime" column="create_time" />
-            <result property="updateTime" column="update_time" />
+        <id property="id" column="id"/>
+        <result property="pickingId" column="picking_id"/>
+        <result property="pickingNo" column="picking_no"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,picking_id,order_id,order_no,status,create_time,
+        id,picking_id,picking_no,order_id,order_no,`status`,create_time,
         update_time
     </sql>
 </mapper>

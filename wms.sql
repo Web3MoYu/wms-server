@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 11/04/2025 20:55:26
+ Date: 12/04/2025 16:22:24
 */
 
 SET NAMES utf8mb4;
@@ -125,6 +125,7 @@ INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `reci
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1910524691408363522', 2, '质检通知', '你有一笔入库质检订单', '1896450516030771201', 'admin', '1896450516030771201', 'admin', 0, 0, 'QO20250411000005', 3, '2025-04-11 10:45:57', NULL, 1, '2025-04-11 10:45:57', '2025-04-11 10:45:57');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1910524988163760130', 3, '订单通知', '你有一笔出库订单需要审批', '1896450516030771201', 'admin', '1896450516030771201', 'admin', 0, 0, 'IR20250411000008', 2, '2025-04-11 10:47:08', NULL, 1, '2025-04-11 10:47:08', '2025-04-11 10:47:08');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1910525013803540481', 2, '质检通知', '你有一笔入库质检订单', '1896450516030771201', 'admin', '1896450516030771201', 'admin', 0, 0, 'QO20250411000006', 3, '2025-04-11 10:47:14', NULL, 1, '2025-04-11 10:47:14', '2025-04-11 10:47:14');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1910935342677737473', 3, '订单通知', '你有一笔出库订单需要审批', '1896450516030771201', 'admin', '1896450516030771201', 'admin', 0, 0, 'IR20250412000001', 2, '2025-04-12 13:57:44', NULL, 1, '2025-04-12 13:57:44', '2025-04-12 13:57:44');
 COMMIT;
 
 -- ----------------------------
@@ -332,6 +333,7 @@ INSERT INTO `order_out` (`id`, `order_no`, `type`, `order_type`, `creator`, `app
 INSERT INTO `order_out` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `delivery_address`, `contact_name`, `contact_phone`, `remark`, `create_time`, `update_time`) VALUES ('1910522302987214850', 'IR20250411000006', 0, 1, '1896450516030771201', '1896450516030771201', NULL, '2025-04-11 10:36:09', NULL, 1374168.00, 12, -2, 0, '1', '王5', '13111122211', '3232', '2025-04-11 10:36:27', '2025-04-11 10:36:46');
 INSERT INTO `order_out` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `delivery_address`, `contact_name`, `contact_phone`, `remark`, `create_time`, `update_time`) VALUES ('1910524661293281281', 'IR20250411000007', 0, 1, '1896450516030771201', '1896450516030771201', '1896450516030771201', '2025-04-11 10:45:22', NULL, 96990.00, 10, 2, 1, '1', '王5', '13111122211', '', '2025-04-11 10:45:50', '2025-04-11 10:46:11');
 INSERT INTO `order_out` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `delivery_address`, `contact_name`, `contact_phone`, `remark`, `create_time`, `update_time`) VALUES ('1910524986947420162', 'IR20250411000008', 0, 1, '1896450516030771201', '1896450516030771201', '1896450516030771201', '2025-04-11 10:46:51', NULL, 67893.00, 7, 2, 1, '1', '王5', '13111122211', '', '2025-04-11 10:47:07', '2025-04-11 10:50:04');
+INSERT INTO `order_out` (`id`, `order_no`, `type`, `order_type`, `creator`, `approver`, `inspector`, `expected_time`, `actual_time`, `total_amount`, `total_quantity`, `status`, `quality_status`, `delivery_address`, `contact_name`, `contact_phone`, `remark`, `create_time`, `update_time`) VALUES ('1910935338965688321', 'IR20250412000001', 0, 1, '1896450516030771201', '1896450516030771201', '1896450516030771201', '2025-04-12 13:57:33', NULL, 114514.00, 1, 1, 0, '1', '2', '13111122211', '审批通过', '2025-04-12 13:57:43', '2025-04-12 13:57:58');
 COMMIT;
 
 -- ----------------------------
@@ -416,6 +418,97 @@ INSERT INTO `order_out_item` (`id`, `order_id`, `product_id`, `product_name`, `p
 INSERT INTO `order_out_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1910522303331147778', '1910522302987214850', '1897311533005512706', 'iPhone 15 pro', 'iPhone-15-pro', 12, 0, 114514.00, 1374168.00, NULL, NULL, '2025033000000007', '2025-03-30', -2, 0, '3232', '2025-04-11 10:36:28', '2025-04-11 10:36:46');
 INSERT INTO `order_out_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1910524662144724994', '1910524661293281281', '1897315660058042369', 'Galaxy', 'Sansung-01', 10, 5, 9699.00, 96990.00, NULL, NULL, '2025033000000009', '2025-03-30', 2, 1, '', '2025-04-11 10:45:50', '2025-04-11 10:46:11');
 INSERT INTO `order_out_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1910524987853389825', '1910524986947420162', '1897315660058042369', 'Galaxy', 'Sansung-01', 7, 3, 9699.00, 67893.00, NULL, NULL, '2025033000000009', '2025-03-30', 2, 1, '', '2025-04-11 10:47:08', '2025-04-11 10:50:04');
+INSERT INTO `order_out_item` (`id`, `order_id`, `product_id`, `product_name`, `product_code`, `expected_quantity`, `actual_quantity`, `price`, `amount`, `area_id`, `location`, `batch_number`, `production_date`, `status`, `quality_status`, `remark`, `create_time`, `update_time`) VALUES ('1910935342270799874', '1910935338965688321', '1897311533005512706', 'iPhone 15 pro', 'iPhone-15-pro', 1, 0, 114514.00, 114514.00, NULL, NULL, '2025033000000007', '2025-03-30', 1, 0, '审批通过', '2025-04-12 13:57:44', '2025-04-12 13:57:58');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for picking_item
+-- ----------------------------
+DROP TABLE IF EXISTS `picking_item`;
+CREATE TABLE `picking_item` (
+  `id` varchar(32) NOT NULL COMMENT '明细ID',
+  `picking_id` varchar(32) NOT NULL COMMENT '拣货单ID',
+  `order_id` varchar(32) NOT NULL COMMENT '出库订单ID',
+  `order_item_id` varchar(32) NOT NULL COMMENT '出库订单明细ID',
+  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
+  `product_name` varchar(200) NOT NULL COMMENT '产品名称',
+  `product_code` varchar(50) NOT NULL COMMENT '产品编码',
+  `batch_number` varchar(100) NOT NULL COMMENT '批次号',
+  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
+  `location` json DEFAULT NULL COMMENT '出库的具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `expected_quantity` int NOT NULL COMMENT '预期数量',
+  `actual_quantity` int DEFAULT '0' COMMENT '实际拣货数量',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待拣货，1-拣货中，2-已完成，3-异常\n',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `picking_time` datetime DEFAULT NULL COMMENT '拣货时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_picking_id` (`picking_id`),
+  KEY `idx_product_id` (`product_id`),
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_order_item_id` (`order_item_id`),
+  KEY `idx_batch_number` (`batch_number`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='拣货明细表';
+
+-- ----------------------------
+-- Records of picking_item
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for picking_order
+-- ----------------------------
+DROP TABLE IF EXISTS `picking_order`;
+CREATE TABLE `picking_order` (
+  `id` varchar(32) NOT NULL COMMENT '拣货单ID',
+  `picking_no` varchar(32) NOT NULL COMMENT '拣货单号',
+  `picker` varchar(50) NOT NULL COMMENT '拣货人员',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待拣货，1-拣货中，2-已完成，3-异常',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `total_orders` int NOT NULL DEFAULT '0' COMMENT '包含订单数量',
+  `total_items` int NOT NULL DEFAULT '0' COMMENT '包含商品种类数',
+  `total_quantity` int NOT NULL DEFAULT '0' COMMENT '总拣货数量',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_picking_no` (`picking_no`),
+  KEY `idx_status` (`status`),
+  KEY `idx_picker` (`picker`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='拣货单表';
+
+-- ----------------------------
+-- Records of picking_order
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for picking_order_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `picking_order_relation`;
+CREATE TABLE `picking_order_relation` (
+  `id` varchar(32) NOT NULL COMMENT '关联ID',
+  `picking_id` varchar(32) NOT NULL COMMENT '拣货单ID',
+  `picking_no` varchar(32) NOT NULL COMMENT '拣货编号',
+  `order_id` varchar(32) NOT NULL COMMENT '出库订单ID',
+  `order_no` varchar(32) NOT NULL COMMENT '出库订单编号',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待拣货，1-拣货中，2-已完成，3-异常',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_picking_order` (`picking_id`,`order_id`),
+  KEY `idx_picking_id` (`picking_id`),
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='拣货单-订单关联表';
+
+-- ----------------------------
+-- Records of picking_order_relation
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -717,7 +810,7 @@ CREATE TABLE `stock` (
 -- Records of stock
 -- ----------------------------
 BEGIN;
-INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1906254109624377346', '1897311533005512706', 'iPhone-15-pro', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352002\", \"1898787743397023747\", \"1898787743397023748\", \"1898787743397023749\"]}, {\"shelfId\": \"1898711268564119554\", \"storageIds\": [\"1898787743401218054\", \"1898787743401218055\", \"1898787743401218057\"]}, {\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898787401099874306\", \"1898787361241403393\", \"1898770317204676609\"]}]', 18, 18, 0, 0, '2025033000000007', '2025-03-30', '2025-03-30 00:00:00', '2025-04-09 00:00:00');
+INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1906254109624377346', '1897311533005512706', 'iPhone-15-pro', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352002\", \"1898787743397023747\", \"1898787743397023748\", \"1898787743397023749\"]}, {\"shelfId\": \"1898711268564119554\", \"storageIds\": [\"1898787743401218054\", \"1898787743401218055\", \"1898787743401218057\"]}, {\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898787401099874306\", \"1898787361241403393\", \"1898770317204676609\"]}]', 18, 17, 0, 0, '2025033000000007', '2025-03-30', '2025-03-30 00:00:00', '2025-04-09 00:00:00');
 INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1906254396502188034', '1897315660058042369', 'Sansung-01', '1898645979654766593', '[{\"shelfId\": \"1898711268564119554\", \"storageIds\": [\"1898787743401218056\"]}, {\"shelfId\": \"1898711159952617473\", \"storageIds\": [\"1898787743401218050\"]}]', 213, 213, 0, 0, '2025033000000009', '2025-03-30', '2025-03-30 00:00:00', '2025-04-11 00:00:00');
 INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1906256462104633346', '1897311533005512706', 'iPhone-15-pro', '1898646093588840449', '[{\"shelfId\": \"1898711613084250114\", \"storageIds\": [\"1898788794376359937\"]}]', 2, 2, 0, 0, '2025033000000011', '2025-03-30', '2025-03-30 00:00:00', '2025-03-30 00:00:00');
 INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `production_date`, `create_time`, `update_time`) VALUES ('1906691221573730306', '1897311533005512706', 'iPhone-15-pro', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1899421665568157699\", \"1899421665568157700\"]}]', 1, 1, 0, 0, '2025033100000002', '2025-03-31', '2025-03-31 00:00:00', '2025-03-31 00:00:00');
@@ -798,6 +891,7 @@ CREATE TABLE `stock_check_item` (
   `id` varchar(32) NOT NULL COMMENT '明细ID',
   `check_id` varchar(32) NOT NULL COMMENT '盘点单ID',
   `product_id` varchar(32) NOT NULL COMMENT '产品ID',
+  `batch_number` varchar(255) DEFAULT NULL COMMENT '批次号',
   `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
   `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
   `system_quantity` int NOT NULL COMMENT '系统数量',
@@ -1243,7 +1337,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1983 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1989 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of undo_log

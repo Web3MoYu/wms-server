@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 11/04/2025 20:55:39
+ Date: 12/04/2025 16:22:16
 */
 
 SET NAMES utf8mb4;
@@ -181,6 +181,78 @@ CREATE TABLE `order_out_item` (
   KEY `idx_order_id` (`order_id`),
   KEY `idx_product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='出库订单明细表';
+
+-- ----------------------------
+-- Table structure for picking_item
+-- ----------------------------
+DROP TABLE IF EXISTS `picking_item`;
+CREATE TABLE `picking_item` (
+  `id` varchar(32) NOT NULL COMMENT '明细ID',
+  `picking_id` varchar(32) NOT NULL COMMENT '拣货单ID',
+  `order_id` varchar(32) NOT NULL COMMENT '出库订单ID',
+  `order_item_id` varchar(32) NOT NULL COMMENT '出库订单明细ID',
+  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
+  `product_name` varchar(200) NOT NULL COMMENT '产品名称',
+  `product_code` varchar(50) NOT NULL COMMENT '产品编码',
+  `batch_number` varchar(100) NOT NULL COMMENT '批次号',
+  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
+  `location` json DEFAULT NULL COMMENT '出库的具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `expected_quantity` int NOT NULL COMMENT '预期数量',
+  `actual_quantity` int DEFAULT '0' COMMENT '实际拣货数量',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待拣货，1-拣货中，2-已完成，3-异常\n',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `picking_time` datetime DEFAULT NULL COMMENT '拣货时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_picking_id` (`picking_id`),
+  KEY `idx_product_id` (`product_id`),
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_order_item_id` (`order_item_id`),
+  KEY `idx_batch_number` (`batch_number`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='拣货明细表';
+
+-- ----------------------------
+-- Table structure for picking_order
+-- ----------------------------
+DROP TABLE IF EXISTS `picking_order`;
+CREATE TABLE `picking_order` (
+  `id` varchar(32) NOT NULL COMMENT '拣货单ID',
+  `picking_no` varchar(32) NOT NULL COMMENT '拣货单号',
+  `picker` varchar(50) NOT NULL COMMENT '拣货人员',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待拣货，1-拣货中，2-已完成，3-异常',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `total_orders` int NOT NULL DEFAULT '0' COMMENT '包含订单数量',
+  `total_items` int NOT NULL DEFAULT '0' COMMENT '包含商品种类数',
+  `total_quantity` int NOT NULL DEFAULT '0' COMMENT '总拣货数量',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_picking_no` (`picking_no`),
+  KEY `idx_status` (`status`),
+  KEY `idx_picker` (`picker`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='拣货单表';
+
+-- ----------------------------
+-- Table structure for picking_order_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `picking_order_relation`;
+CREATE TABLE `picking_order_relation` (
+  `id` varchar(32) NOT NULL COMMENT '关联ID',
+  `picking_id` varchar(32) NOT NULL COMMENT '拣货单ID',
+  `picking_no` varchar(32) NOT NULL COMMENT '拣货编号',
+  `order_id` varchar(32) NOT NULL COMMENT '出库订单ID',
+  `order_no` varchar(32) NOT NULL COMMENT '出库订单编号',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待拣货，1-拣货中，2-已完成，3-异常',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_picking_order` (`picking_id`,`order_id`),
+  KEY `idx_picking_id` (`picking_id`),
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='拣货单-订单关联表';
 
 -- ----------------------------
 -- Table structure for product
@@ -374,6 +446,7 @@ CREATE TABLE `stock_check_item` (
   `id` varchar(32) NOT NULL COMMENT '明细ID',
   `check_id` varchar(32) NOT NULL COMMENT '盘点单ID',
   `product_id` varchar(32) NOT NULL COMMENT '产品ID',
+  `batch_number` varchar(255) DEFAULT NULL COMMENT '批次号',
   `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
   `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
   `system_quantity` int NOT NULL COMMENT '系统数量',
@@ -544,7 +617,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1983 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1989 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.wms.order.model.enums.PickingStatus;
 
 /**
  * 拣货单表
@@ -35,7 +36,7 @@ public class PickingOrder {
     /**
      * 状态：0-待拣货，1-拣货中，2-已完成，3-异常
      */
-    private Integer status;
+    private PickingStatus status;
 
     /**
      * 备注
