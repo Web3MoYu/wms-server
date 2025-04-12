@@ -14,11 +14,9 @@ import org.wms.api.client.UserClient;
 import org.wms.common.constant.MQConstant;
 import org.wms.common.entity.msg.Msg;
 import org.wms.common.entity.msg.WsMsgDataVO;
-import org.wms.common.entity.order.InspectionItem;
 import org.wms.common.entity.product.Product;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
-import org.wms.common.enums.inspect.InspectType;
 import org.wms.common.enums.msg.MsgBizEnums;
 import org.wms.common.enums.msg.MsgEnums;
 import org.wms.common.enums.msg.MsgPriorityEnums;
@@ -29,8 +27,6 @@ import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.model.vo.StockVo;
 import org.wms.common.utils.IdGenerate;
-import org.wms.order.mapper.InspectionItemMapper;
-import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.mapper.OrderOutItemMapper;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.entity.*;
@@ -78,12 +74,6 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
 
     @Resource
     IdGenerate idGenerate;
-
-    @Resource
-    InspectionMapper inspectionMapper;
-
-    @Resource
-    InspectionItemMapper inspectionItemMapper;
 
     @Override
     public Result<List<OrderDetailVo<OrderOutItem>>> outDetail(String id) {

@@ -1,9 +1,11 @@
 package org.wms.order.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -73,7 +75,8 @@ public class PickingItem {
      * }
      * ]
      */
-    private Location location;
+    @TableField(typeHandler = org.wms.common.handler.LocationTypeHandler.class)
+    private List<Location> location;
 
     /**
      * 预期数量

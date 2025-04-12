@@ -1,5 +1,6 @@
 package org.wms.order.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2025-04-12 14:41:26
 * @Entity org.wms.order.model.entity.PickingOrder
 */
+@Mapper
 public interface PickingOrderMapper extends BaseMapper<PickingOrder> {
 
 }
