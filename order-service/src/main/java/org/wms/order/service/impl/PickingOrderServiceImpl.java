@@ -2,8 +2,12 @@ package org.wms.order.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.wms.api.client.UserClient;
+import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.utils.IdGenerate;
@@ -12,6 +16,7 @@ import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.PickingStatus;
+import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -46,8 +51,11 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
     @Resource
     IdGenerate idGenerate;
 
+    @Resource
+    UserClient userClient;
+
     @Override
-    public Result<Page<PickingOrder>> pageList(PickingOrderDto dto) {
+    public Result<Page<PickingOrderVo>> pageList(PickingOrderDto dto) {
         // 构建查询条件
         LambdaQueryWrapper<PickingOrder> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -105,8 +113,19 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         // 执行分页查询
         Page<PickingOrder> page = new Page<>(dto.getPage(), dto.getPageSize());
         Page<PickingOrder> pageResult = this.page(page, queryWrapper);
-
-        return Result.success(pageResult, "查询成功");
+        // 设置用户信息
+        List<PickingOrderVo> list = pageResult.getRecords().stream().map(item -> {
+            PickingOrderVo vo = new PickingOrderVo();
+            BeanUtils.copyProperties(item, vo);
+            if (StringUtils.hasText(item.getPicker())) {
+                User user = userClient.getUserById(item.getPicker());
+                vo.setPickingUser(user);
+            }
+            return vo;
+        }).toList();
+        Page<PickingOrderVo> res = new Page<>(pageResult.getCurrent(), pageResult.getSize(), pageResult.getTotal());
+        res.setRecords(list);
+        return Result.success(res, "查询成功");
     }
 
     @Override

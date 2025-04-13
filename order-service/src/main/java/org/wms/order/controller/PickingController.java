@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.PickingOrderDto;
-import org.wms.order.model.entity.PickingOrder;
+import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.PickingOrderService;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class PickingController {
      */
     @PostMapping("/page")
     @PreAuthorize("hasAuthority('order:picking:list')")
-    public Result<Page<PickingOrder>> page(@RequestBody PickingOrderDto dto) {
+    public Result<Page<PickingOrderVo>> page(@RequestBody PickingOrderDto dto) {
         return pickingOrderService.pageList(dto);
     }
 

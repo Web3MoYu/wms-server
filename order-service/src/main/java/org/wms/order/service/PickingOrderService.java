@@ -5,6 +5,7 @@ import org.wms.common.model.Result;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wms.order.model.vo.PickingOrderVo;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @param dto 分页条件
      * @return 分页数据
      */
-    Result<Page<PickingOrder>> pageList(PickingOrderDto dto);
+    Result<Page<PickingOrderVo>> pageList(PickingOrderDto dto);
 
     /**
      * 批量增加拣货信息
