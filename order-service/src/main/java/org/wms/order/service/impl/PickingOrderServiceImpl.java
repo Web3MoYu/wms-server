@@ -1,16 +1,26 @@
 package org.wms.order.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
+import org.wms.common.utils.IdGenerate;
 import org.wms.order.mapper.PickingOrderMapper;
 import org.wms.order.model.dto.PickingOrderDto;
-import org.wms.order.model.entity.PickingOrder;
-import org.wms.order.service.PickingOrderService;
+import org.wms.order.model.entity.*;
+import org.wms.order.model.enums.OrderStatusEnums;
+import org.wms.order.model.enums.PickingStatus;
+import org.wms.order.service.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author moyu
@@ -20,6 +30,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, PickingOrder>
         implements PickingOrderService {
+
+    @Resource
+    PickingItemService pickingItemService;
+
+    @Resource
+    PickingOrderRelationService pickingRelationService;
+
+    @Resource
+    OrderOutService orderOutService;
+
+    @Resource
+    OrderOutItemService orderOutItemService;
+
+    @Resource
+    IdGenerate idGenerate;
 
     @Override
     public Result<Page<PickingOrder>> pageList(PickingOrderDto dto) {
@@ -82,6 +107,85 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         Page<PickingOrder> pageResult = this.page(page, queryWrapper);
 
         return Result.success(pageResult, "查询成功");
+    }
+
+    @Override
+    public Result<String> batchAddPickings(List<String> ids, String picker) {
+        String pickId = String.valueOf(IdWorker.getId());
+        List<OrderOut> orderOutList = orderOutService.lambdaQuery().in(OrderOut::getId, ids).list();
+        int totalItems = 0;
+        int totalQuantity = 0;
+        List<PickingOrderRelation> relations = new ArrayList<>();
+        String pickingNo = idGenerate.generatePickingNo();
+        // 1.插入picking_item
+        for (OrderOut orderOut : orderOutList) {
+            // 获取订单详情
+            List<OrderOutItem> itemList = orderOutItemService.lambdaQuery()
+                    .eq(OrderOutItem::getOrderId, orderOut.getId()).list();
+
+            // 计算总商品种类和数量
+            totalItems += itemList.size();
+            for (OrderOutItem item : itemList) {
+                totalQuantity += item.getExpectedQuantity();
+            }
+
+            List<PickingItem> list = itemList.stream().map(item -> {
+                PickingItem pickingItem = new PickingItem();
+                pickingItem.setPickingId(pickId);
+                pickingItem.setOrderId(orderOut.getId());
+                pickingItem.setOrderItemId(item.getId());
+                pickingItem.setProductId(item.getProductId());
+                pickingItem.setProductName(item.getProductName());
+                pickingItem.setProductCode(item.getProductCode());
+                pickingItem.setBatchNumber(item.getBatchNumber());
+                pickingItem.setExpectedQuantity(item.getExpectedQuantity());
+                pickingItem.setStatus(PickingStatus.UNPICKING);
+                pickingItem.setCreateTime(LocalDateTime.now());
+                pickingItem.setUpdateTime(LocalDateTime.now());
+                return pickingItem;
+            }).toList();
+
+            boolean b = pickingItemService.saveBatch(list);
+            if (!b) {
+                throw new BizException("保存拣货详情失败");
+            }
+
+            // 设置picking_order_item列表
+
+            PickingOrderRelation relation = new PickingOrderRelation();
+            relation.setPickingId(pickId);
+            relation.setPickingNo(pickingNo);
+            relation.setOrderId(orderOut.getId());
+            relation.setOrderNo(orderOut.getOrderNo());
+            relation.setStatus(PickingStatus.UNPICKING);
+            relation.setCreateTime(LocalDateTime.now());
+            relation.setUpdateTime(LocalDateTime.now());
+            relations.add(relation);
+        }
+
+        // 2.插入picking_order
+        // 获取订单总数量和
+        PickingOrder pickingOrder = new PickingOrder();
+        pickingOrder.setId(pickId);
+        pickingOrder.setPickingNo(pickingNo);
+        pickingOrder.setPicker(picker);
+        pickingOrder.setStatus(PickingStatus.UNPICKING);
+        pickingOrder.setTotalOrders(ids.size());
+        pickingOrder.setTotalItems(totalItems);
+        pickingOrder.setTotalQuantity(totalQuantity);
+        pickingOrder.setCreateTime(LocalDateTime.now());
+        pickingOrder.setUpdateTime(LocalDateTime.now());
+        boolean pickOrderSave = this.save(pickingOrder);
+        // 3.插入picking_order_relation
+        boolean relationSave = pickingRelationService.saveBatch(relations);
+        if (!relationSave || !pickOrderSave) {
+            throw new BizException("保存拣货信息失败");
+        }
+        // 修改订单状态
+        for (String id : ids) {
+            orderOutService.updateStatus(id, null, OrderStatusEnums.IN_PROGRESS);
+        }
+        return Result.success(null, "添加拣货单成功");
     }
 }
 

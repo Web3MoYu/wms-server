@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public enum PickingStatus {
-    UNPICKING(0, "为拣货"),
+    UNPICKING(0, "未拣货"),
     PICKING(1, "拣货中"),
     PICKED(2, "已完成"),
     ERROR(3, "拣货异常");

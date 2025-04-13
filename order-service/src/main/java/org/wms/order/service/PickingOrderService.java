@@ -6,6 +6,8 @@ import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author moyu
  * @description 针对表【picking_order(拣货单表)】的数据库操作Service
@@ -20,4 +22,12 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @return 分页数据
      */
     Result<Page<PickingOrder>> pageList(PickingOrderDto dto);
+
+    /**
+     * 批量增加拣货信息
+     *
+     * @param ids 出库订单ID列表
+     * @return 是否增加成功。
+     */
+    Result<String> batchAddPickings(List<String> ids, String picker);
 }

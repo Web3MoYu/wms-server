@@ -34,6 +34,9 @@ public class IdGenerate {
             3, "QS"  // 库存质检 Quality Inspection Stock
     );
 
+    // 拣货单前缀
+    private static final String PICKING_PREFIX = "PO"; // 拣货单 Picking Order
+
     // 日期格式
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -100,6 +103,29 @@ public class IdGenerate {
         String prefix = INSPECT_PREFIX.getOrDefault(inspectType.getCode(), "QX"); // 默认其他类型
         String date = LocalDate.now().format(DATE_FORMATTER);
         String key = "inspect:no:" + prefix + ":" + date;
+
+        // 使用Redis获取自增序列号
+        Long sequence = redisTemplate.opsForValue().increment(key);
+        // 设置过期时间（2天）
+        redisTemplate.expire(key, 2, TimeUnit.DAYS);
+
+        // 格式化为6位序列号，不足补0
+        String sequenceStr = String.format("%06d", sequence);
+
+        return prefix + date + sequenceStr;
+    }
+    
+    /**
+     * 生成拣货编号
+     * 格式：前缀 + 日期 + 6位序列号
+     * 例如：PO2025031000001
+     *
+     * @return 拣货编号
+     */
+    public String generatePickingNo() {
+        String prefix = PICKING_PREFIX;
+        String date = LocalDate.now().format(DATE_FORMATTER);
+        String key = "picking:no:" + prefix + ":" + date;
 
         // 使用Redis获取自增序列号
         Long sequence = redisTemplate.opsForValue().increment(key);

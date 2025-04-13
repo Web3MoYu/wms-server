@@ -107,13 +107,13 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         LambdaUpdateWrapper<OrderOut> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(OrderOut::getId, id)
                 .set(OrderOut::getStatus, statusEnums.getCode())
-                .set(OrderOut::getRemark, remark)
+                .set(StringUtils.hasText(remark), OrderOut::getRemark, remark)
                 .set(OrderOut::getUpdateTime, LocalDateTime.now());
         boolean update = this.update(wrapper);
         LambdaUpdateWrapper<OrderOutItem> itemWrapper = new LambdaUpdateWrapper<>();
         itemWrapper.eq(OrderOutItem::getOrderId, id)
                 .set(OrderOutItem::getStatus, statusEnums.getCode())
-                .set(OrderOutItem::getRemark, remark)
+                .set(StringUtils.hasText(remark), OrderOutItem::getRemark, remark)
                 .set(OrderOutItem::getUpdateTime, LocalDateTime.now());
         int update1 = orderOutItemMapper.update(itemWrapper);
         // 将可用数量重新补回去
