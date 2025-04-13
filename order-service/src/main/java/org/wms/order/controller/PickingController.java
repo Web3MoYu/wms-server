@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.PickingOrderDto;
+import org.wms.order.model.vo.PickingDetailVo;
 import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.PickingOrderService;
 
@@ -42,5 +43,16 @@ public class PickingController {
     @GlobalTransactional
     public Result<String> batchAddPickings(@RequestBody List<String> ids, @PathVariable String picker) {
         return pickingOrderService.batchAddPickings(ids, picker);
+    }
+
+    /**
+     * 获取拣货单详情信息
+     *
+     * @param pickingId 拣货id
+     * @return 拣货的详细信息
+     */
+    @GetMapping("/pickingDetail/{pickingId}")
+    public Result<List<PickingDetailVo>> getPickingDetail(@PathVariable String pickingId) {
+        return pickingOrderService.detail(pickingId);
     }
 }

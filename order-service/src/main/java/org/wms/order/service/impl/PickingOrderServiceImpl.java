@@ -3,7 +3,6 @@ package org.wms.order.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.UserClient;
@@ -16,6 +15,8 @@ import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.PickingStatus;
+import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.PickingDetailVo;
 import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.*;
 
@@ -37,22 +38,22 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         implements PickingOrderService {
 
     @Resource
-    PickingItemService pickingItemService;
+    IdGenerate idGenerate;
 
     @Resource
-    PickingOrderRelationService pickingRelationService;
+    UserClient userClient;
 
     @Resource
     OrderOutService orderOutService;
 
     @Resource
+    PickingItemService pickingItemService;
+
+    @Resource
     OrderOutItemService orderOutItemService;
 
     @Resource
-    IdGenerate idGenerate;
-
-    @Resource
-    UserClient userClient;
+    PickingOrderRelationService pickingRelationService;
 
     @Override
     public Result<Page<PickingOrderVo>> pageList(PickingOrderDto dto) {
@@ -205,6 +206,32 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
             orderOutService.updateStatus(id, null, OrderStatusEnums.IN_PROGRESS);
         }
         return Result.success(null, "添加拣货单成功");
+    }
+
+    @Override
+    public Result<List<PickingDetailVo>> detail(String pickingId) {
+        // 获取拣货单关系详情信息
+        List<PickingOrderRelation> relations = pickingRelationService.lambdaQuery()
+                .eq(PickingOrderRelation::getPickingId, pickingId)
+                .list();
+        List<PickingDetailVo> res = new ArrayList<>();
+        for (PickingOrderRelation relation : relations) {
+            PickingDetailVo vo = new PickingDetailVo();
+            // 获取orderOut
+            OrderOut orderOut = orderOutService.getById(relation.getOrderId());
+            vo.setOrder(orderOut);
+            // 获取出库单详情信息
+            List<OrderDetailVo<OrderOutItem>> data = orderOutService.outDetail(relation.getOrderId()).getData();
+            vo.setOrderInfo(data);
+            // 获取分拣详情
+            List<PickingItem> items = pickingItemService.lambdaQuery()
+                    .eq(PickingItem::getPickingId, relation.getPickingId())
+                    .eq(PickingItem::getOrderId, relation.getOrderId())
+                    .list();
+            vo.setPickingItems(items);
+            res.add(vo);
+        }
+        return Result.success(res, "查询详情信息成功");
     }
 }
 

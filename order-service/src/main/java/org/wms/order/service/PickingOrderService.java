@@ -5,6 +5,7 @@ import org.wms.common.model.Result;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wms.order.model.vo.PickingDetailVo;
 import org.wms.order.model.vo.PickingOrderVo;
 
 import java.util.List;
@@ -31,4 +32,13 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @return 是否增加成功。
      */
     Result<String> batchAddPickings(List<String> ids, String picker);
+
+
+    /**
+     * 获取拣货单详情信息
+     *
+     * @param pickingId 拣货id
+     * @return 拣货的详细信息
+     */
+    Result<List<PickingDetailVo>> detail(String pickingId);
 }
