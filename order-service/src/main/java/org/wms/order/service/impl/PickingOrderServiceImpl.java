@@ -5,10 +5,14 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.wms.api.client.LocationClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.entity.location.Area;
 import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
+import org.wms.common.model.Location;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.order.mapper.PickingOrderMapper;
 import org.wms.order.model.dto.PickingOrderDto;
@@ -17,6 +21,7 @@ import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.PickingStatus;
 import org.wms.order.model.vo.OrderDetailVo;
 import org.wms.order.model.vo.PickingDetailVo;
+import org.wms.order.model.vo.PickingItemVo;
 import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.*;
 
@@ -42,6 +47,9 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
 
     @Resource
     UserClient userClient;
+
+    @Resource
+    LocationClient locationClient;
 
     @Resource
     OrderOutService orderOutService;
@@ -228,7 +236,23 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
                     .eq(PickingItem::getPickingId, relation.getPickingId())
                     .eq(PickingItem::getOrderId, relation.getOrderId())
                     .list();
-            vo.setPickingItems(items);
+
+            List<PickingItemVo> pickingItemVos = items.stream().map(item -> {
+                PickingItemVo itemVo = new PickingItemVo();
+                BeanUtils.copyProperties(item, itemVo);
+
+                if (StringUtils.hasLength(item.getAreaId())) {
+                    Area area = locationClient.getArea(item.getAreaId());
+                    itemVo.setAreaName(area.getAreaName());
+                }
+                List<Location> locations = item.getLocation();
+                if (locations != null && !locations.isEmpty()) {
+                    List<LocationVo> list = locations.stream().map(location -> locationClient.getLocations(location)).toList();
+                    itemVo.setLocations(list);
+                }
+                return itemVo;
+            }).toList();
+            vo.setPickingItems(pickingItemVos);
             res.add(vo);
         }
         return Result.success(res, "查询详情信息成功");
