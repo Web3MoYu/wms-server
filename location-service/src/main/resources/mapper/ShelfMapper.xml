@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.wms.location.mapper.ShelfMapper">
 
-    <resultMap id="BaseResultMap" type="org.wms.location.model.entity.Shelf">
+    <resultMap id="BaseResultMap" type="org.wms.common.entity.location.Shelf">
         <id property="id" column="id"/>
         <result property="areaId" column="area_id"/>
         <result property="shelfName" column="shelf_name"/>

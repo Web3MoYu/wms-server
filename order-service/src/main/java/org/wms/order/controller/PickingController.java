@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.vo.PickingDetailVo;
+import org.wms.order.model.vo.PickingItemVo;
 import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.PickingOrderService;
 
@@ -54,5 +55,11 @@ public class PickingController {
     @GetMapping("/pickingDetail/{pickingId}")
     public Result<List<PickingDetailVo>> getPickingDetail(@PathVariable String pickingId) {
         return pickingOrderService.detail(pickingId);
+    }
+
+
+    @GetMapping("/itemLocation/{orderId}")
+    public Result<List<PickingItemVo>> getPickingItem(@PathVariable String orderId) {
+
     }
 }

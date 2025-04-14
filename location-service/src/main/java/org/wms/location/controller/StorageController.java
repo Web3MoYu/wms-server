@@ -21,7 +21,7 @@ import org.wms.common.entity.order.InspectionItem;
 import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
-import org.wms.location.model.entity.Storage;
+import org.wms.common.entity.location.Storage;
 import org.wms.location.model.vo.StorageVo;
 import org.wms.location.service.StorageLocationService;
 

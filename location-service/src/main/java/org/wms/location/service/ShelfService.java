@@ -1,6 +1,6 @@
 package org.wms.location.service;
 
-import org.wms.location.model.entity.Shelf;
+import org.wms.common.entity.location.Shelf;
 import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.ShelfVo;
 

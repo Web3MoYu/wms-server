@@ -2,7 +2,7 @@ package org.wms.location.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.wms.location.model.entity.Shelf;
+import org.wms.common.entity.location.Shelf;
 
 /**
  * 货架信息VO，包含区域名称

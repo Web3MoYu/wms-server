@@ -2,7 +2,7 @@ package org.wms.location.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.wms.location.model.entity.Storage;
+import org.wms.common.entity.location.Storage;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

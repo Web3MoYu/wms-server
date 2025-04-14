@@ -257,6 +257,8 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         }
         return Result.success(res, "查询详情信息成功");
     }
+
+
 }
 
 

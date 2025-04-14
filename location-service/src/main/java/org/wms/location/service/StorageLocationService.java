@@ -2,7 +2,7 @@ package org.wms.location.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.wms.location.model.entity.Storage;
+import org.wms.common.entity.location.Storage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.location.model.vo.StorageVo;
 

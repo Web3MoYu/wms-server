@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.wms.location.model.entity.Shelf;
-import org.wms.location.model.entity.Storage;
+import org.wms.common.entity.location.Shelf;
+import org.wms.common.entity.location.Storage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.wms.location.model.vo.StorageVo;
 

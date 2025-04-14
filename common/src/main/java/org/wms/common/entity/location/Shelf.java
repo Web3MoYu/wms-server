@@ -1,4 +1,4 @@
-package org.wms.location.model.entity;
+package org.wms.common.entity.location;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -7,18 +7,17 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.wms.common.enums.location.LocationStatusEnums;
 
 /**
- * 库位表
+ * 货架表
  *
- * @TableName wms_storage_location
+ * @TableName wms_shelf
  */
-@TableName(value = "wms_storage_location")
+@TableName(value = "wms_shelf")
 @Data
-public class Storage {
+public class Shelf {
     /**
-     * 库位ID
+     * 货架ID
      */
     @TableId
     private String id;
@@ -29,29 +28,19 @@ public class Storage {
     private String areaId;
 
     /**
-     * 货架ID
+     * 货架名称
      */
-    private String shelfId;
+    private String shelfName;
 
     /**
-     * 库位编码
+     * 货架编码
      */
-    private String locationCode;
+    private String shelfCode;
 
     /**
-     * 库位名称
+     * 状态：0-禁用，1-启用
      */
-    private String locationName;
-
-    /**
-     * 状态：0-占用，1-空闲，2-禁用
-     */
-    private LocationStatusEnums status;
-
-    /**
-     * 当前存放的产品ID
-     */
-    private String productId;
+    private StatusEnums status;
 
     /**
      * 创建时间

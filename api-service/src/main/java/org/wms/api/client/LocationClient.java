@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wms.common.entity.location.Area;
 import org.wms.common.model.Location;
+import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 
 @FeignClient(value = "location-service", contextId = "location")
@@ -39,4 +40,13 @@ public interface LocationClient {
     @PostMapping("/api/location/updateStatusInStorage")
     boolean updateStatusInStorage(@RequestBody Location location, @RequestParam("status") Integer status,
                                   @RequestParam(value = "productId", required = false) String productId);
+
+    /**
+     * 获取位置的详细信息
+     *
+     * @param location 位置id信息
+     * @return 详细信息
+     */
+    @PostMapping("/api/location/getLocationInfo")
+    LocationInfo getLocationInfo(@RequestBody Location location);
 }

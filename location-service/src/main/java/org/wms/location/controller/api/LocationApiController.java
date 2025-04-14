@@ -9,9 +9,10 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.location.Area;
 import org.wms.common.model.Location;
+import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
-import org.wms.location.model.entity.Shelf;
-import org.wms.location.model.entity.Storage;
+import org.wms.common.entity.location.Shelf;
+import org.wms.common.entity.location.Storage;
 import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.location.service.AreaService;
 import org.wms.location.service.ShelfService;
@@ -92,5 +93,26 @@ public class LocationApiController {
                     .set(Storage::getProductId, productId);
         }
         return storageService.update(wrapper);
+    }
+
+
+    /**
+     * 获取位置的详细信息
+     *
+     * @param location 位置id信息
+     * @return 详细信息
+     */
+    @PostMapping("/getLocationInfo")
+    public LocationInfo getLocationInfo(@RequestBody Location location) {
+        String shelfId = location.getShelfId();
+        List<String> storageIds = location.getStorageIds();
+        Shelf shelf = service.lambdaQuery()
+                .select(Shelf::getShelfName)
+                .eq(Shelf::getId, shelfId).one();
+        List<Storage> storages = storageService.lambdaQuery()
+                .select(Storage::getLocationName)
+                .in(Storage::getId, storageIds).list();
+
+        return new LocationInfo(shelf, storages);
     }
 }

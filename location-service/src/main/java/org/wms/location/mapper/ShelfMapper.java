@@ -2,7 +2,7 @@ package org.wms.location.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.wms.location.model.entity.Shelf;
+import org.wms.common.entity.location.Shelf;
 import org.wms.location.model.vo.ShelfVo;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 * @author moyu
 * @description 针对表【wms_shelf(货架表)】的数据库操作Mapper
 * @createDate 2025-03-08 17:25:49
-* @Entity org.wms.location.model.entity.Shelf
+* @Entity org.wms.common.entity.location.Shelf
 */
 @Mapper
 public interface ShelfMapper extends BaseMapper<Shelf> {

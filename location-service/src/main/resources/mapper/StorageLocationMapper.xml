@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.wms.location.mapper.StorageLocationMapper">
 
-    <resultMap id="BaseResultMap" type="org.wms.location.model.entity.Storage">
+    <resultMap id="BaseResultMap" type="org.wms.common.entity.location.Storage">
         <id property="id" column="id"/>
         <result property="areaId" column="area_id"/>
         <result property="shelfId" column="shelf_id"/>
@@ -57,7 +57,7 @@
         </where>
         ORDER BY s.create_time DESC
     </select>
-    <select id="listFreeShelves" resultType="org.wms.location.model.entity.Shelf">
+    <select id="listFreeShelves" resultType="org.wms.common.entity.location.Shelf">
         select distinct ws.*
         from wms_shelf ws
                  left join wms_storage_location wsl on wsl.shelf_id = ws.id

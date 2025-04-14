@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.wms.location.mapper.ShelfMapper;
 import org.wms.location.mapper.StorageLocationMapper;
-import org.wms.location.model.entity.Shelf;
+import org.wms.common.entity.location.Shelf;
 import org.wms.common.entity.location.StatusEnums;
 import org.wms.location.model.vo.ShelfVo;
 import org.wms.location.service.ShelfService;
