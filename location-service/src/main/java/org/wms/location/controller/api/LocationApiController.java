@@ -107,10 +107,8 @@ public class LocationApiController {
         String shelfId = location.getShelfId();
         List<String> storageIds = location.getStorageIds();
         Shelf shelf = service.lambdaQuery()
-                .select(Shelf::getShelfName)
                 .eq(Shelf::getId, shelfId).one();
         List<Storage> storages = storageService.lambdaQuery()
-                .select(Storage::getLocationName)
                 .in(Storage::getId, storageIds).list();
 
         return new LocationInfo(shelf, storages);

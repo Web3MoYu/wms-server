@@ -6,6 +6,7 @@ import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.order.model.vo.PickingDetailVo;
+import org.wms.order.model.vo.PickingLocation;
 import org.wms.order.model.vo.PickingOrderVo;
 
 import java.util.List;
@@ -41,4 +42,12 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @return 拣货的详细信息
      */
     Result<List<PickingDetailVo>> detail(String pickingId);
+
+    /**
+     * 根据出库订单 ID 获取出库位置信息
+     *
+     * @param orderId 出库订单ID
+     * @return 位置信息
+     */
+    Result<List<PickingLocation>> getPickingLocation(String orderId);
 }

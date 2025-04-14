@@ -6,12 +6,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
+import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
 import org.wms.common.entity.location.Area;
+import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.order.mapper.PickingOrderMapper;
@@ -19,10 +22,7 @@ import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.PickingStatus;
-import org.wms.order.model.vo.OrderDetailVo;
-import org.wms.order.model.vo.PickingDetailVo;
-import org.wms.order.model.vo.PickingItemVo;
-import org.wms.order.model.vo.PickingOrderVo;
+import org.wms.order.model.vo.*;
 import org.wms.order.service.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -47,6 +47,9 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
 
     @Resource
     UserClient userClient;
+
+    @Resource
+    StockClient stockClient;
 
     @Resource
     LocationClient locationClient;
@@ -256,6 +259,35 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
             res.add(vo);
         }
         return Result.success(res, "查询详情信息成功");
+    }
+
+    @Override
+    public Result<List<PickingLocation>> getPickingLocation(String orderId) {
+        // 获取当前订单的picking_item
+        List<PickingItem> list = pickingItemService.lambdaQuery().eq(PickingItem::getOrderId, orderId).list();
+
+        // 针对每一个订单查询库存信息
+        List<PickingLocation> res = new ArrayList<>();
+        for (PickingItem pickingItem : list) {
+            PickingLocation pickingLocation = new PickingLocation();
+            pickingLocation.setItemId(pickingItem.getId());
+            // 获取库存信息
+            Stock stock = stockClient.getStockByProductIdAndBatch(pickingItem.getProductId(), pickingItem.getBatchNumber());
+            // 获取库存信息
+            List<Location> locations = stock.getLocation();
+            List<LocationInfo> locationInfos = new ArrayList<>();
+            for (Location location : locations) {
+                LocationInfo locationInfo = locationClient.getLocationInfo(location);
+                locationInfos.add(locationInfo);
+            }
+            // 获取区域信息
+            Area area = locationClient.getArea(stock.getAreaId());
+            pickingLocation.setArea(area);
+            // 组装
+            pickingLocation.setLocations(locationInfos);
+            res.add(pickingLocation);
+        }
+        return Result.success(res, "查询信息成功");
     }
 
 

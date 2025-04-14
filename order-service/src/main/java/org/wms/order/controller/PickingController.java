@@ -10,6 +10,7 @@ import org.wms.common.model.Result;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.vo.PickingDetailVo;
 import org.wms.order.model.vo.PickingItemVo;
+import org.wms.order.model.vo.PickingLocation;
 import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.PickingOrderService;
 
@@ -58,8 +59,14 @@ public class PickingController {
     }
 
 
+    /**
+     * 根据出库订单 ID 获取出库位置信息
+     *
+     * @param orderId 出库订单ID
+     * @return 位置信息
+     */
     @GetMapping("/itemLocation/{orderId}")
-    public Result<List<PickingItemVo>> getPickingItem(@PathVariable String orderId) {
-
+    public Result<List<PickingLocation>> getPickingLocation(@PathVariable String orderId) {
+        return pickingOrderService.getPickingLocation(orderId);
     }
 }
