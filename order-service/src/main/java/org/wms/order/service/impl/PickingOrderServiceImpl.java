@@ -1,23 +1,40 @@
 package org.wms.order.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import jakarta.annotation.Resource;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
 import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.constant.MQConstant;
 import org.wms.common.entity.location.Area;
 import org.wms.common.entity.location.Storage;
+import org.wms.common.entity.msg.Msg;
+import org.wms.common.entity.msg.WsMsgDataVO;
+import org.wms.common.entity.order.InspectionItem;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.inspect.InspectType;
+import org.wms.common.enums.location.LocationStatusEnums;
+import org.wms.common.enums.msg.MsgBizEnums;
+import org.wms.common.enums.msg.MsgEnums;
+import org.wms.common.enums.msg.MsgPriorityEnums;
+import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
+import org.wms.common.utils.JsonUtils;
+import org.wms.order.mapper.InspectionItemMapper;
+import org.wms.order.mapper.InspectionMapper;
+import org.wms.order.mapper.OrderOutItemMapper;
 import org.wms.order.mapper.PickingOrderMapper;
 import org.wms.order.model.dto.BatchAddPickingDto;
 import org.wms.order.model.dto.PickingOneDto;
@@ -25,6 +42,7 @@ import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.PickingStatus;
+import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.*;
 import org.wms.order.service.*;
 
@@ -33,9 +51,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author moyu
@@ -56,13 +72,25 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
     StockClient stockClient;
 
     @Resource
+    RabbitTemplate rabbitTemplate;
+
+    @Resource
     LocationClient locationClient;
 
     @Resource
     OrderOutService orderOutService;
 
     @Resource
+    InspectionMapper inspectionMapper;
+
+    @Resource
+    OrderOutItemMapper orderOutItemMapper;
+
+    @Resource
     PickingItemService pickingItemService;
+
+    @Resource
+    InspectionItemMapper inspectionItemMapper;
 
     @Resource
     OrderOutItemService orderOutItemService;
@@ -300,9 +328,171 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
 
     @Override
     public Result<String> pickOne(List<PickingOneDto> dto) {
-        return null;
+        // 后面处理有用
+        String pickId = null;
+        String orderOutId = null;
+        Map<String, PickingItem> map = new HashMap<>();
+
+        for (PickingOneDto one : dto) {
+            Set<String> set = one.getSet();
+            String itemId = one.getItemId();
+            String remark = one.getRemark();
+            Integer count = one.getCount();
+            String areaId = one.getAreaId();
+
+            List<LocationInfo> locations = one.getLocation();
+            PickingItem pickingItem = pickingItemService.getById(itemId);
+            pickId = pickingItem.getPickingId();
+            orderOutId = pickingItem.getOrderId();
+
+
+            // 修改数量和状态以及location
+            List<Location> loc = locations.stream().map(item -> {
+                Location location = new Location();
+                location.setShelfId(item.getShelf().getId());
+                List<String> list = item.getStorages().stream().map(Storage::getId).toList();
+                location.setStorageIds(list);
+                return location;
+            }).toList();
+            boolean pickItemUpdate = pickingItemService.lambdaUpdate()
+                    .eq(PickingItem::getId, itemId)
+                    .set(PickingItem::getAreaId, areaId)
+                    .set(PickingItem::getLocation, JsonUtils.toJsonString(loc))
+                    .set(PickingItem::getActualQuantity, count)
+                    .set(PickingItem::getStatus, PickingStatus.PICKED)
+                    .set(PickingItem::getRemark, remark)
+                    .set(PickingItem::getPickingTime, LocalDateTime.now()).update();
+
+            // 修改拣货单状态
+            boolean pickOrderUpdate = this.lambdaUpdate().eq(PickingOrder::getId, pickId)
+                    .set(PickingOrder::getStatus, PickingStatus.PICKING).update();
+
+            if (!pickOrderUpdate || !pickItemUpdate) {
+                throw new BizException("拣货失败");
+            }
+            // 保存pickItem，以便插入质检信息使用
+            PickingItem mapItem = pickingItemService.getById(itemId);
+            map.put(mapItem.getOrderItemId(), mapItem);
+
+            // 修改库存
+            Stock stock = stockClient.getStockByProductIdAndBatch(pickingItem.getProductId(), pickingItem.getBatchNumber());
+            // 修改数量
+            stock.setQuantity(stock.getQuantity() - count);
+            stock.setAvailableQuantity(stock.getAvailableQuantity() + pickingItem.getExpectedQuantity() - count);
+            // 修改库位信息
+            List<Location> stockLocations = stock.getLocation();
+            List<Location> newLocations = new ArrayList<>();
+            for (Location location : stockLocations) {
+                Location newLocation = new Location();
+                newLocation.setShelfId(location.getShelfId());
+                List<String> storageIds = location.getStorageIds();
+                List<String> newStorageIds = new ArrayList<>();
+                for (String storageId : storageIds) {
+                    if (!set.contains(storageId)) {
+                        newStorageIds.add(storageId);
+                    }
+                }
+                newLocation.setStorageIds(newStorageIds);
+                newLocations.add(newLocation);
+            }
+            stock.setLocation(newLocations);
+            // 修改库存信息
+            boolean stockUpdate = stockClient.updateStock(stock);
+            // 修改库位信息
+            boolean storageUpdate = locationClient.updateStatusInIds(set, LocationStatusEnums.FREE.getCode(), null);
+            if (!stockUpdate || !storageUpdate) {
+                throw new BizException("修改库位信息失败");
+            }
+        }
+
+        Assert.hasLength(pickId, "pickId为空，业务异常");
+        // 检查当前拣货单是否存在为拣货的数据
+        List<PickingItem> list = pickingItemService.lambdaQuery()
+                .eq(PickingItem::getPickingId, pickId)
+                .eq(PickingItem::getStatus, PickingStatus.UNPICKING).list();
+        if (list.isEmpty()) {
+            // 修改拣货单状态
+            boolean pickOrderUpdate = this.lambdaUpdate().eq(PickingOrder::getId, pickId)
+                    .set(PickingOrder::getStatus, PickingStatus.PICKING).update();
+            if (!pickOrderUpdate) {
+                throw new BizException("修改拣货单失败");
+            }
+        }
+
+        Assert.hasLength(orderOutId, "orderOutId为空, 业务异常");
+        addInspectionInfo(orderOutId, map);
+        return Result.success(null, "拣货成功");
     }
 
+
+    /**
+     * 增加质检信息
+     *
+     * @param id  出库订单ID
+     * @param map 数据记录
+     */
+    private void addInspectionInfo(String id, Map<String, PickingItem> map) {
+
+        // 获取出库订单信息
+        OrderOut orderOut = orderOutService.getById(id);
+
+        // 添加质检信息
+        LambdaUpdateWrapper<OrderOutItem> itemWrapper = new LambdaUpdateWrapper<>();
+        itemWrapper.eq(OrderOutItem::getOrderId, id);
+        List<OrderOutItem> inItems = orderOutItemMapper.selectList(itemWrapper);
+        // 生成质检信息
+        Inspection inspection = new Inspection();
+        inspection.setInspectionNo(idGenerate.generateInspectionNo(InspectType.OUTBOUND_INSPECT));
+        inspection.setInspectionType(InspectType.OUTBOUND_INSPECT);
+        inspection.setRelatedOrderId(orderOut.getId());
+        inspection.setRelatedOrderNo(orderOut.getOrderNo());
+        inspection.setInspector(orderOut.getInspector());
+        inspection.setStatus(QualityStatusEnums.NOT_INSPECTED);
+        inspection.setCreateTime(LocalDateTime.now());
+        inspection.setUpdateTime(LocalDateTime.now());
+        // 插入质检信息
+        int insert = inspectionMapper.insert(inspection);
+        if (insert <= 0) {
+            throw new BizException(303, "插入质检信息失败");
+        }
+        // 生成质检详情信息
+        List<InspectionItem> list = inItems.stream().map((item) -> {
+            InspectionItem inspectionItem = new InspectionItem();
+            inspectionItem.setInspectionId(inspection.getId());
+            inspectionItem.setProductId(item.getProductId());
+            inspectionItem.setBatchNumber(item.getBatchNumber());
+            // 这里处理数量和位置信息
+            PickingItem pickingItem = map.get(item.getId());
+            inspectionItem.setAreaId(pickingItem.getAreaId());
+            inspectionItem.setLocation(pickingItem.getLocation());
+            inspectionItem.setInspectionQuantity(pickingItem.getActualQuantity());
+            inspectionItem.setCreateTime(LocalDateTime.now());
+            inspectionItem.setUpdateTime(LocalDateTime.now());
+            return inspectionItem;
+        }).toList();
+
+        // 修改出库订单详情区域和位置信息
+        map.forEach((key, val) -> {
+            String itemId = val.getOrderItemId();
+            boolean update = orderOutItemService.lambdaUpdate().eq(OrderOutItem::getId, itemId)
+                    .set(OrderOutItem::getAreaId, val.getAreaId())
+                    .set(OrderOutItem::getLocation, JsonUtils.toJsonString(val.getLocation())).update();
+            if (!update) {
+                throw new BizException("修改出库详情失败");
+            }
+        });
+        // 插入质检详情信息
+        inspectionItemMapper.insert(list, list.size());
+
+        // 生成消息
+        User from = userClient.getUserById(orderOut.getApprover());
+        User to = userClient.getUserById(orderOut.getInspector());
+        Msg msg = new Msg(MsgTypeEnums.QUALITY_CHECK, "质检通知", "你有一笔入库质检订单", to.getUserId(),
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, inspection.getInspectionNo(),
+                MsgBizEnums.QUALITY_CHECK);
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
+    }
 
 }
 

@@ -18,5 +18,7 @@ public class PickingOneDto {
 
     Integer count; // 实际数量
 
-    String areaId;
+    String areaId; // 区域ID
+
+    String remark; // 备注
 }

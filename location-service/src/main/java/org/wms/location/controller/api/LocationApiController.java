@@ -1,5 +1,6 @@
 package org.wms.location.controller.api;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -112,5 +113,29 @@ public class LocationApiController {
                 .in(Storage::getId, storageIds).list();
 
         return new LocationInfo(shelf, storages);
+    }
+
+    /**
+     * 更改库位状态
+     *
+     * @return 处理结果
+     */
+    @PostMapping("/updateStatusInIds")
+    public boolean updateStatusInIds(@RequestBody Collection<String> ids, @RequestParam("status") Integer type,
+                                     @RequestParam(value = "productId", required = false) String productId) {
+        LambdaUpdateWrapper<Storage> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.in(Storage::getId, ids);
+        if (Objects.equals(type, LocationStatusEnums.DISABLED.getCode())) {
+            wrapper.set(Storage::getStatus, LocationStatusEnums.DISABLED.getCode());
+        }
+        if (Objects.equals(type, LocationStatusEnums.FREE.getCode())) {
+            wrapper.set(Storage::getStatus, LocationStatusEnums.FREE.getCode())
+                    .set(Storage::getProductId, null);
+        }
+        if (Objects.equals(type, LocationStatusEnums.OCCUPIED.getCode())) {
+            wrapper.set(Storage::getStatus, LocationStatusEnums.OCCUPIED.getCode())
+                    .set(Storage::getProductId, productId);
+        }
+        return storageService.update(wrapper);
     }
 }

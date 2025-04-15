@@ -10,6 +10,8 @@ import org.wms.common.model.Location;
 import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 
+import java.util.Collection;
+
 @FeignClient(value = "location-service", contextId = "location")
 public interface LocationClient {
 
@@ -49,4 +51,13 @@ public interface LocationClient {
      */
     @PostMapping("/api/location/getLocationInfo")
     LocationInfo getLocationInfo(@RequestBody Location location);
+
+    /**
+     * 更改库位状态
+     *
+     * @return 处理结果
+     */
+    @PostMapping("/api/location/updateStatusInIds")
+    boolean updateStatusInIds(@RequestBody Collection<String> ids, @RequestParam("status") Integer type,
+                              @RequestParam(value = "productId", required = false) String productId);
 }

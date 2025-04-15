@@ -78,7 +78,7 @@ public class PickingController {
      * @return 是否分拣成功
      */
     @PostMapping("/pickingOne")
-    @GlobalTransactional
+    @GlobalTransactional(timeoutMills = 1000 * 60 * 10000)
     public Result<String> pickingOne(@RequestBody List<PickingOneDto> dto) {
         return pickingOrderService.pickOne(dto);
     }

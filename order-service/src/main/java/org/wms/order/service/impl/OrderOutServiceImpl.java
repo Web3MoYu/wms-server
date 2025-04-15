@@ -176,47 +176,6 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         if (!b) {
             throw new BizException("修改质检员失败");
         }
-        // todo 放到拣货完成后在生成质检信息
-//        LambdaUpdateWrapper<OrderOutItem> itemWrapper = new LambdaUpdateWrapper<>();
-//        itemWrapper.eq(OrderOutItem::getOrderId, id);
-//        List<OrderOutItem> inItems = orderOutItemMapper.selectList(itemWrapper);
-//        // 生成质检信息
-//        Inspection inspection = new Inspection();
-//        inspection.setInspectionNo(idGenerate.generateInspectionNo(InspectType.OUTBOUND_INSPECT));
-//        inspection.setInspectionType(InspectType.OUTBOUND_INSPECT);
-//        inspection.setRelatedOrderId(orderOut.getId());
-//        inspection.setRelatedOrderNo(orderOut.getOrderNo());
-//        inspection.setInspector(orderOut.getInspector());
-//        inspection.setStatus(QualityStatusEnums.NOT_INSPECTED);
-//        inspection.setCreateTime(LocalDateTime.now());
-//        inspection.setUpdateTime(LocalDateTime.now());
-//        // 插入质检信息
-//        int insert = inspectionMapper.insert(inspection);
-//        if (insert <= 0) {
-//            throw new BizException(303, "插入质检信息失败");
-//        }
-//        // 生成质检详情信息
-//        List<InspectionItem> list = inItems.stream().map((item) -> {
-//            InspectionItem inspectionItem = new InspectionItem();
-//            inspectionItem.setInspectionId(inspection.getId());
-//            inspectionItem.setProductId(item.getProductId());
-//            inspectionItem.setBatchNumber(item.getBatchNumber());
-//            inspectionItem.setInspectionQuantity(item.getExpectedQuantity());
-//            inspectionItem.setCreateTime(LocalDateTime.now());
-//            inspectionItem.setUpdateTime(LocalDateTime.now());
-//            return inspectionItem;
-//        }).toList();
-//        // 插入质检详情信息
-//        inspectionItemMapper.insert(list);
-//
-//        // 生成消息
-//        User from = userClient.getUserById(orderOut.getApprover());
-//        User to = userClient.getUserById(orderOut.getInspector());
-//        Msg msg = new Msg(MsgTypeEnums.QUALITY_CHECK, "质检通知", "你有一笔入库质检订单", to.getUserId(),
-//                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, inspection.getInspectionNo(),
-//                MsgBizEnums.QUALITY_CHECK);
-//        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
-//                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
         // 修改订单状态位审批通过
         updateStatus(id, "审批通过", OrderStatusEnums.APPROVED);
         return Result.success(null, "收货成功");
