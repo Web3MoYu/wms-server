@@ -274,18 +274,6 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                             .set(OrderOutItem::getRemark, item.getRemark())
                             .set(OrderOutItem::getActualQuantity, item.getCount())
                             .set(OrderOutItem::getQualityStatus, QualityStatusEnums.PASSED).update();
-                    // 将库存的数量减少
-                    OrderOutItem outItem = orderOutItemService.lambdaQuery().eq(OrderOutItem::getOrderId, one.getRelatedOrderId())
-                            .eq(OrderOutItem::getProductId, item.getProductId())
-                            .eq(OrderOutItem::getBatchNumber, inspectionItem.getBatchNumber()).one();
-                    Stock stock = stockClient.getStockByProductIdAndBatch(inspectionItem.getProductId(), inspectionItem.getBatchNumber());
-                    stock.setQuantity(stock.getQuantity() - item.getActualQuantity());
-                    // 可用数量增加
-                    stock.setAvailableQuantity(stock.getAvailableQuantity() + outItem.getExpectedQuantity() - item.getActualQuantity());
-                    boolean b = stockClient.updateStock(stock);
-                    if (!b) {
-                        throw new BizException("修改库存数量失败");
-                    }
                 }
             } else {
                 r1 = this.inspectionItemMapper.updateItemStatusAndCount(item.getRemark(), item.getItemId(),
@@ -320,16 +308,6 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                             .set(OrderOutItem::getActualQuantity, item.getCount())
                             .set(OrderOutItem::getRemark, item.getRemark())
                             .set(OrderOutItem::getQualityStatus, QualityStatusEnums.FAILED).update();
-                    // 将库存的数量恢复，应该做异常处理的，这里简化
-                    OrderOutItem outItem = orderOutItemService.lambdaQuery().eq(OrderOutItem::getOrderId, one.getRelatedOrderId())
-                            .eq(OrderOutItem::getProductId, item.getProductId())
-                            .eq(OrderOutItem::getBatchNumber, inspectionItem.getBatchNumber()).one();
-                    Stock stock = stockClient.getStockByProductIdAndBatch(inspectionItem.getProductId(), inspectionItem.getBatchNumber());
-                    stock.setAvailableQuantity(stock.getAvailableQuantity() + outItem.getExpectedQuantity());
-                    boolean b = stockClient.updateStock(stock);
-                    if (!b) {
-                        throw new BizException("修改库存数量失败");
-                    }
                 }
             }
             if (!r1 || !r2) {

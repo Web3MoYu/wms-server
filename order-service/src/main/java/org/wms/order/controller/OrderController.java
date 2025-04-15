@@ -1,5 +1,6 @@
 package org.wms.order.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,6 +8,7 @@ import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.enums.order.OrderType;
+import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.dto.OrderQueryDto;
@@ -156,5 +158,26 @@ public class OrderController {
             return Result.error(402, "权限不足");
         }
         return orderService.updateStatus(type, id, remark, OrderStatusEnums.CANCELED);
+    }
+
+    /**
+     * 出库订单id
+     *
+     * @param id 出库订单id
+     * @return 是否出库成功
+     */
+    @PutMapping("/doneOutBound/{id}")
+    @GlobalTransactional
+    public Result<String> doneOutBound(@PathVariable String id) {
+        orderOutService.updateStatus(id, null, OrderStatusEnums.COMPLETED);
+        // 修改出库时间
+        boolean update = orderOutService.lambdaUpdate()
+                .eq(OrderOut::getId, id)
+                .set(OrderOut::getActualTime, LocalDateTime.now())
+                .update();
+        if (!update) {
+            throw new BizException("出库失败");
+        }
+        return Result.success(null, "出库成功");
     }
 }

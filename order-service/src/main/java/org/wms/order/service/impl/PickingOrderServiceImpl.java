@@ -399,7 +399,10 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
             // 修改库存信息
             boolean stockUpdate = stockClient.updateStock(stock);
             // 修改库位信息
-            boolean storageUpdate = locationClient.updateStatusInIds(set, LocationStatusEnums.FREE.getCode(), null);
+            boolean storageUpdate = true;
+            if (!set.isEmpty()) {
+                storageUpdate = locationClient.updateStatusInIds(set, LocationStatusEnums.FREE.getCode(), null);
+            }
             if (!stockUpdate || !storageUpdate) {
                 throw new BizException("修改库位信息失败");
             }
@@ -413,7 +416,7 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         if (list.isEmpty()) {
             // 修改拣货单状态
             boolean pickOrderUpdate = this.lambdaUpdate().eq(PickingOrder::getId, pickId)
-                    .set(PickingOrder::getStatus, PickingStatus.PICKING).update();
+                    .set(PickingOrder::getStatus, PickingStatus.PICKED).update();
             if (!pickOrderUpdate) {
                 throw new BizException("修改拣货单失败");
             }
