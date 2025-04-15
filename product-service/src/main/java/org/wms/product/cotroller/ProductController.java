@@ -154,4 +154,14 @@ public class ProductController {
         return Result.success(productService.getProductById(id), "查询成功");
     }
 
+    /**
+     * 统计产品数量
+     *
+     * @return 产品数量
+     */
+    @GetMapping("/countProduct")
+    public Result<Long> countProduct() {
+        return Result.success(productService.count(), "查询成功");
+    }
+
 }

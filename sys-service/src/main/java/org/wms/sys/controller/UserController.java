@@ -221,4 +221,15 @@ public class UserController {
                 .like(User::getRealName, realName).list();
         return Result.success(list, "查询成功");
     }
+
+    /**
+     * 统计用户数量
+     *
+     * @return 用户数量
+     */
+    @GetMapping("/countUser")
+    public Result<Long> countUser() {
+        long count = userService.count();
+        return Result.success(count, "查询成功");
+    }
 }

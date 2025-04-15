@@ -14,6 +14,7 @@ import org.wms.product.mapper.ProductCatMapper;
 import org.wms.product.mapper.ProductMapper;
 import org.wms.common.entity.product.Product;
 import org.wms.product.model.entity.ProductCat;
+import org.wms.product.model.vo.ProductCatCountVo;
 import org.wms.product.model.vo.ProductCatTree;
 import org.wms.product.service.ProductCatService;
 
@@ -116,5 +117,11 @@ public class ProductCatServiceImpl extends ServiceImpl<ProductCatMapper, Product
             return Result.success(null, "删除成功");
         }
         return Result.error(500, "删除失败");
+    }
+
+    @Override
+    public Result<List<ProductCatCountVo>> countInfo() {
+        List<ProductCatCountVo> list = productMapper.countCatInfo();
+        return Result.success(list, "查询成功");
     }
 }

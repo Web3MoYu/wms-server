@@ -85,4 +85,40 @@
                  LEFT JOIN category_path cp ON p.category_id = cp.id
         where p.id = #{id}
     </select>
+    <select id="countCatInfo" resultType="org.wms.product.model.vo.ProductCatCountVo">
+        -- 递归获取所有分类的路径：父-子-孙...
+        WITH RECURSIVE
+            category_path AS (SELECT id,
+                                     category_name,
+                                     parent_id,
+                                     category_name AS full_path
+                              FROM product_cat
+                              WHERE parent_id IS NULL
+
+                              UNION ALL
+
+                              SELECT c.id,
+                                     c.category_name,
+                                     c.parent_id,
+                                     CONCAT(cp.full_path, '-', c.category_name)
+                              FROM product_cat c
+                                       JOIN
+                                   category_path cp ON c.parent_id = cp.id),
+
+-- 把分类和产品关联上（有的分类可能没产品）
+            product_with_category AS (SELECT cp.full_path,
+                                             cp.id AS category_id,
+                                             p.id  AS product_id
+                                      FROM category_path cp
+                                               LEFT JOIN
+                                           product p ON p.category_id = cp.id)
+
+-- 最终统计每个分类路径下的产品数量
+        SELECT full_path         AS catName,
+               COUNT(product_id) AS productCount
+        FROM product_with_category
+        GROUP BY full_path
+        ORDER BY full_path;
+
+    </select>
 </mapper>

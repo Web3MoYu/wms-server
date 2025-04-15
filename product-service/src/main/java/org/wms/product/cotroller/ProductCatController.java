@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
 import org.wms.product.model.entity.ProductCat;
+import org.wms.product.model.vo.ProductCatCountVo;
 import org.wms.product.model.vo.ProductCatTree;
 import org.wms.product.service.ProductCatService;
 
@@ -104,6 +105,16 @@ public class ProductCatController {
     @PreAuthorize("hasAuthority('product:cat:delete')")
     public Result<String> delete(@PathVariable String id) {
         return productCatService.delete(id);
+    }
+
+    /**
+     * 统计产品分类和数量
+     *
+     * @return 产品分类和数量
+     */
+    @GetMapping("/countCat")
+    public Result<List<ProductCatCountVo>> countCategory() {
+        return productCatService.countInfo();
     }
 
 }

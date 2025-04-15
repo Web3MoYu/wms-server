@@ -3,11 +3,14 @@ package org.wms.product.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.wms.common.entity.product.Product;
+import org.wms.product.model.vo.ProductCatCountVo;
 import org.wms.product.model.vo.ProductVo;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * @author moyu
@@ -34,6 +37,14 @@ public interface ProductMapper extends BaseMapper<Product> {
      * @return 产品信息
      */
     ProductVo selectProductById(String id);
+
+    /**
+     * 统计产品分类和数量
+     *
+     * @return 产品分类和数量
+     */
+    List<ProductCatCountVo> countCatInfo();
+
 }
 
 
