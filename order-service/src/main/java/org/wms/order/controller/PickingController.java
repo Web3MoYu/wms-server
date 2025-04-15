@@ -7,9 +7,10 @@ import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
+import org.wms.order.model.dto.BatchAddPickingDto;
+import org.wms.order.model.dto.PickingOneDto;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.vo.PickingDetailVo;
-import org.wms.order.model.vo.PickingItemVo;
 import org.wms.order.model.vo.PickingLocation;
 import org.wms.order.model.vo.PickingOrderVo;
 import org.wms.order.service.PickingOrderService;
@@ -41,10 +42,10 @@ public class PickingController {
      * @param ids 出库订单ID列表
      * @return 是否增加成功。
      */
-    @PostMapping("/add/{picker}")
+    @PostMapping("/add")
     @GlobalTransactional
-    public Result<String> batchAddPickings(@RequestBody List<String> ids, @PathVariable String picker) {
-        return pickingOrderService.batchAddPickings(ids, picker);
+    public Result<String> batchAddPickings(@RequestBody BatchAddPickingDto dto) {
+        return pickingOrderService.batchAddPickings(dto);
     }
 
     /**
@@ -68,5 +69,17 @@ public class PickingController {
     @GetMapping("/itemLocation/{orderId}")
     public Result<List<PickingLocation>> getPickingLocation(@PathVariable String orderId) {
         return pickingOrderService.getPickingLocation(orderId);
+    }
+
+    /**
+     * 分拣
+     *
+     * @param dto 分拣数据
+     * @return 是否分拣成功
+     */
+    @PostMapping("/pickingOne")
+    @GlobalTransactional
+    public Result<String> pickingOne(@RequestBody List<PickingOneDto> dto) {
+        return pickingOrderService.pickOne(dto);
     }
 }

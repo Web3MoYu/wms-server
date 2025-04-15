@@ -9,6 +9,7 @@ import org.wms.api.client.LocationClient;
 import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
 import org.wms.common.entity.location.Area;
+import org.wms.common.entity.location.Storage;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
@@ -18,6 +19,8 @@ import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.order.mapper.PickingOrderMapper;
+import org.wms.order.model.dto.BatchAddPickingDto;
+import org.wms.order.model.dto.PickingOneDto;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
@@ -32,6 +35,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author moyu
@@ -141,7 +145,10 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
     }
 
     @Override
-    public Result<String> batchAddPickings(List<String> ids, String picker) {
+    public Result<String> batchAddPickings(BatchAddPickingDto dto) {
+        List<String> ids = dto.getIds();
+        String picker = dto.getPicker();
+        String remark = dto.getRemark();
         String pickId = String.valueOf(IdWorker.getId());
         List<OrderOut> orderOutList = orderOutService.lambdaQuery().in(OrderOut::getId, ids).list();
         int totalItems = 0;
@@ -206,6 +213,7 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         pickingOrder.setTotalQuantity(totalQuantity);
         pickingOrder.setCreateTime(LocalDateTime.now());
         pickingOrder.setUpdateTime(LocalDateTime.now());
+        pickingOrder.setRemark(remark);
         boolean pickOrderSave = this.save(pickingOrder);
         // 3.插入picking_order_relation
         boolean relationSave = pickingRelationService.saveBatch(relations);
@@ -288,6 +296,11 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
             res.add(pickingLocation);
         }
         return Result.success(res, "查询信息成功");
+    }
+
+    @Override
+    public Result<String> pickOne(List<PickingOneDto> dto) {
+        return null;
     }
 
 

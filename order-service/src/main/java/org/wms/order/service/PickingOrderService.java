@@ -2,6 +2,8 @@ package org.wms.order.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wms.common.model.Result;
+import org.wms.order.model.dto.BatchAddPickingDto;
+import org.wms.order.model.dto.PickingOneDto;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -29,10 +31,10 @@ public interface PickingOrderService extends IService<PickingOrder> {
     /**
      * 批量增加拣货信息
      *
-     * @param ids 出库订单ID列表
+     * @param dto 新增信息
      * @return 是否增加成功。
      */
-    Result<String> batchAddPickings(List<String> ids, String picker);
+    Result<String> batchAddPickings(BatchAddPickingDto dto);
 
 
     /**
@@ -50,4 +52,12 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @return 位置信息
      */
     Result<List<PickingLocation>> getPickingLocation(String orderId);
+
+    /**
+     * 分拣
+     *
+     * @param dto 分拣数据
+     * @return 是否分拣成功
+     */
+    Result<String> pickOne(List<PickingOneDto> dto);
 }
