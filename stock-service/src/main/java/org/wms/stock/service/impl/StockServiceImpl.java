@@ -16,11 +16,13 @@ import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.CountVo;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.stock.mapper.StockMapper;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.model.vo.StockVo;
+import org.wms.stock.model.vo.StockCountVo;
 import org.wms.stock.service.StockService;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -153,6 +155,28 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
             return null;
         }
         return convertToStockVo(one);
+    }
+
+    @Override
+    public Result<List<StockCountVo>> countStock() {
+        List<Stock> list = this.list();
+        List<StockCountVo> res = list.stream().map((item) -> {
+            StockCountVo vo = new StockCountVo();
+            // 获取商品名称
+            Product product = productClient.getProductById(item.getProductId());
+            vo.setName(product.getProductName());
+            // 统计同一种商品其余批次的数量和批次号
+            List<Stock> stocks = lambdaQuery().eq(Stock::getProductId, item.getProductId()).list();
+            List<CountVo> countVos = stocks.stream().map((stock -> {
+                CountVo countVo = new CountVo();
+                countVo.setName(stock.getBatchNumber());
+                countVo.setCount(stock.getQuantity());
+                return countVo;
+            })).toList();
+            vo.setBatchCount(countVos);
+            return vo;
+        }).toList();
+        return Result.success(res, "查询成功");
     }
 
     /**

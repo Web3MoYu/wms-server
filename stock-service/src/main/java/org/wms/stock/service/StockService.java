@@ -2,10 +2,14 @@ package org.wms.stock.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.CountVo;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.common.model.vo.StockVo;
+import org.wms.stock.model.vo.StockCountVo;
+
+import java.util.List;
 
 /**
  * @author moyu
@@ -46,4 +50,12 @@ public interface StockService extends IService<Stock> {
      * @return vo
      */
     StockVo getStockByBatchAndProduct(String batchNumber, String productId);
+
+    /**
+     * 统计库存数量
+     *
+     * @return 库存数量
+     */
+    Result<List<StockCountVo>> countStock();
+
 }

@@ -1,5 +1,6 @@
 package org.wms.stock.controller;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.CountVo;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.model.vo.StockVo;
+import org.wms.stock.model.vo.StockCountVo;
 import org.wms.stock.service.StockService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -128,5 +131,15 @@ public class StockController {
     public Result<StockVo> getStock(@RequestParam String batchNumber, @RequestParam String productId) {
         StockVo stockVo = stockService.getStockByBatchAndProduct(batchNumber, productId);
         return Result.success(stockVo, "查询成功");
+    }
+
+    /**
+     * 统计库存数量
+     *
+     * @return 库存数量
+     */
+    @GetMapping("/countStock")
+    public Result<List<StockCountVo>> countStock() {
+        return stockService.countStock();
     }
 }

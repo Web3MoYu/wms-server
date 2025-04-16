@@ -7,5 +7,5 @@ public class CountVo {
 
     private String name;
 
-    private String count;
+    private Integer count;
 }
