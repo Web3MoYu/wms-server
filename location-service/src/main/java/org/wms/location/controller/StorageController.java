@@ -22,6 +22,7 @@ import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.common.entity.location.Storage;
+import org.wms.location.model.vo.StorageCountVo;
 import org.wms.location.model.vo.StorageVo;
 import org.wms.location.service.StorageLocationService;
 
@@ -235,4 +236,22 @@ public class StorageController {
         return Result.success(list, "查询成功");
     }
 
+    /**
+     * 统计库位信息占有情况
+     *
+     * @return 库位信息统计数据F
+     */
+    @GetMapping("/countStorage")
+    public Result<StorageCountVo> countStorage() {
+        long totalCount = storageLocationService.count();
+        long freeCount = storageLocationService.lambdaQuery().eq(Storage::getStatus, LocationStatusEnums.FREE.getCode()).count();
+        long occupiedCount = storageLocationService.lambdaQuery().eq(Storage::getStatus, LocationStatusEnums.OCCUPIED.getCode()).count();
+        long disabledCount = storageLocationService.lambdaQuery().eq(Storage::getStatus, LocationStatusEnums.DISABLED.getCode()).count();
+        StorageCountVo storageCountVo = new StorageCountVo();
+        storageCountVo.setTotalCount(totalCount);
+        storageCountVo.setFreeCount(freeCount);
+        storageCountVo.setOccupiedCount(occupiedCount);
+        storageCountVo.setDisabledCount(disabledCount);
+        return Result.success(storageCountVo, "查询成功");
+    }
 }
