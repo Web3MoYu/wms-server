@@ -142,4 +142,12 @@ public class StockController {
     public Result<List<StockCountVo>> countStock() {
         return stockService.countStock();
     }
+
+    /**
+     * 统计库存种类数
+     */
+    @GetMapping("/countStockCat")
+    public Result<Long> countStockCat() {
+        return Result.success(stockService.count(), "查询成功");
+    }
 }
