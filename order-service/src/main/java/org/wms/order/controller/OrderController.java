@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.seata.spring.annotation.GlobalTransactional;
+import org.assertj.core.util.Lists;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.wms.common.enums.order.OrderType;
@@ -179,5 +180,20 @@ public class OrderController {
             throw new BizException("出库失败");
         }
         return Result.success(null, "出库成功");
+    }
+
+    /**
+     * 统计订单数量
+     *
+     * @return 只有两个大小的数组，第一个是入库订单数量，第二个是出库订单数量
+     */
+    @GetMapping("/getOrderCount")
+    public Result<List<Long>> getOrderCount() {
+        List<Long> res = Lists.newArrayList();
+        long orderInCount = orderInService.count();
+        long orderOutCount = orderOutService.count();
+        res.add(orderInCount);
+        res.add(orderOutCount);
+        return Result.success(res, "查询成功");
     }
 }
