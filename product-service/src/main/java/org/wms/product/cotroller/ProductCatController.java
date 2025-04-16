@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.CountVo;
 import org.wms.product.model.entity.ProductCat;
-import org.wms.product.model.vo.ProductCatCountVo;
 import org.wms.product.model.vo.ProductCatTree;
 import org.wms.product.service.ProductCatService;
 
@@ -113,7 +113,7 @@ public class ProductCatController {
      * @return 产品分类和数量
      */
     @GetMapping("/countCat")
-    public Result<List<ProductCatCountVo>> countCategory() {
+    public Result<List<CountVo>> countCategory() {
         return productCatService.countInfo();
     }
 

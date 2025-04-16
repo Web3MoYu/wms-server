@@ -3,7 +3,7 @@ package org.wms.product.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.wms.common.entity.product.Product;
-import org.wms.product.model.vo.ProductCatCountVo;
+import org.wms.common.model.vo.CountVo;
 import org.wms.product.model.vo.ProductVo;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -43,7 +43,7 @@ public interface ProductMapper extends BaseMapper<Product> {
      *
      * @return 产品分类和数量
      */
-    List<ProductCatCountVo> countCatInfo();
+    List<CountVo> countCatInfo();
 
 }
 

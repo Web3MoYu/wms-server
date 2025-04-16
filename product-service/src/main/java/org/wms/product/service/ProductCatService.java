@@ -3,8 +3,8 @@ package org.wms.product.service;
 import java.util.List;
 
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.CountVo;
 import org.wms.product.model.entity.ProductCat;
-import org.wms.product.model.vo.ProductCatCountVo;
 import org.wms.product.model.vo.ProductCatTree;
 
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -36,5 +36,5 @@ public interface ProductCatService extends IService<ProductCat> {
      *
      * @return 产品分类和数量
      */
-    Result<List<ProductCatCountVo>> countInfo();
+    Result<List<CountVo>> countInfo();
 }

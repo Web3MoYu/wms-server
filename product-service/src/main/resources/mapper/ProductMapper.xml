@@ -19,7 +19,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
-    
+
     <resultMap id="ProductVoResultMap" type="org.wms.product.model.vo.ProductVo" extends="BaseResultMap">
         <result property="categoryName" column="category_name"/>
     </resultMap>
@@ -29,63 +29,55 @@
         spec,price,min_stock,max_stock,image_url,
         description,create_time,update_time
     </sql>
-    
+
     <!-- 递归查询分类名称 -->
     <select id="selectProductVoPage" resultMap="ProductVoResultMap">
-        WITH RECURSIVE category_path(id, category_name, parent_id, full_path) AS (
-            SELECT
-                id,
-                category_name,
-                parent_id,
-                category_name as full_path
-            FROM product_cat
-            WHERE parent_id = '0' OR parent_id IS NULL
+        WITH RECURSIVE category_path(id, category_name, parent_id, full_path) AS (SELECT id,
+                                                                                         category_name,
+                                                                                         parent_id,
+                                                                                         category_name as full_path
+                                                                                  FROM product_cat
+                                                                                  WHERE parent_id = '0'
+                                                                                     OR parent_id IS NULL
 
-            UNION ALL
+                                                                                  UNION ALL
 
-            SELECT
-                pc.id,
-                pc.category_name,
-                pc.parent_id,
-                CONCAT(cp.full_path, '-', pc.category_name) as full_path
-            FROM product_cat pc
-            JOIN category_path cp ON pc.parent_id = cp.id
-        )
-        SELECT
-            p.*,
-            cp.full_path as category_name
+                                                                                  SELECT pc.id,
+                                                                                         pc.category_name,
+                                                                                         pc.parent_id,
+                                                                                         CONCAT(cp.full_path, '-', pc.category_name) as full_path
+                                                                                  FROM product_cat pc
+                                                                                           JOIN category_path cp ON pc.parent_id = cp.id)
+        SELECT p.*,
+               cp.full_path as category_name
         FROM product p
-        LEFT JOIN category_path cp ON p.category_id = cp.id
-        ${ew.customSqlSegment}
+                 LEFT JOIN category_path cp ON p.category_id = cp.id
+            ${ew.customSqlSegment}
     </select>
     <select id="selectProductById" resultType="org.wms.product.model.vo.ProductVo">
-        WITH RECURSIVE category_path(id, category_name, parent_id, full_path) AS (
-            SELECT
-                id,
-                category_name,
-                parent_id,
-                category_name as full_path
-            FROM product_cat
-            WHERE parent_id = '0' OR parent_id IS NULL
+        WITH RECURSIVE category_path(id, category_name, parent_id, full_path) AS (SELECT id,
+                                                                                         category_name,
+                                                                                         parent_id,
+                                                                                         category_name as full_path
+                                                                                  FROM product_cat
+                                                                                  WHERE parent_id = '0'
+                                                                                     OR parent_id IS NULL
 
-            UNION ALL
+                                                                                  UNION ALL
 
-            SELECT
-                pc.id,
-                pc.category_name,
-                pc.parent_id,
-                CONCAT(cp.full_path, '-', pc.category_name) as full_path
-            FROM product_cat pc
-                     JOIN category_path cp ON pc.parent_id = cp.id
-        )
-        SELECT
-            p.*,
-            cp.full_path as category_name
+                                                                                  SELECT pc.id,
+                                                                                         pc.category_name,
+                                                                                         pc.parent_id,
+                                                                                         CONCAT(cp.full_path, '-', pc.category_name) as full_path
+                                                                                  FROM product_cat pc
+                                                                                           JOIN category_path cp ON pc.parent_id = cp.id)
+        SELECT p.*,
+               cp.full_path as category_name
         FROM product p
                  LEFT JOIN category_path cp ON p.category_id = cp.id
         where p.id = #{id}
     </select>
-    <select id="countCatInfo" resultType="org.wms.product.model.vo.ProductCatCountVo">
+    <select id="countCatInfo" resultType="org.wms.common.model.vo.CountVo">
         -- 递归获取所有分类的路径：父-子-孙...
         WITH RECURSIVE
             category_path AS (SELECT id,
@@ -114,8 +106,8 @@
                                            product p ON p.category_id = cp.id)
 
 -- 最终统计每个分类路径下的产品数量
-        SELECT full_path         AS catName,
-               COUNT(product_id) AS productCount
+        SELECT full_path         AS `name`,
+               COUNT(product_id) AS count
         FROM product_with_category
         GROUP BY full_path
         ORDER BY full_path;

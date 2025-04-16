@@ -10,11 +10,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.wms.common.model.Result;
+import org.wms.common.model.vo.CountVo;
 import org.wms.product.mapper.ProductCatMapper;
 import org.wms.product.mapper.ProductMapper;
 import org.wms.common.entity.product.Product;
 import org.wms.product.model.entity.ProductCat;
-import org.wms.product.model.vo.ProductCatCountVo;
 import org.wms.product.model.vo.ProductCatTree;
 import org.wms.product.service.ProductCatService;
 
@@ -120,8 +120,8 @@ public class ProductCatServiceImpl extends ServiceImpl<ProductCatMapper, Product
     }
 
     @Override
-    public Result<List<ProductCatCountVo>> countInfo() {
-        List<ProductCatCountVo> list = productMapper.countCatInfo();
+    public Result<List<CountVo>> countInfo() {
+        List<CountVo> list = productMapper.countCatInfo();
         return Result.success(list, "查询成功");
     }
 }
