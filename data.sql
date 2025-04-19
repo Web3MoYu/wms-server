@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 13/04/2025 00:31:01
+ Date: 19/04/2025 21:38:27
 */
 
 SET NAMES utf8mb4;
@@ -292,33 +292,6 @@ CREATE TABLE `product_cat` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `category_code` (`category_code`,`parent_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='产品分类表';
-
--- ----------------------------
--- Table structure for quality_exception_mark
--- ----------------------------
-DROP TABLE IF EXISTS `quality_exception_mark`;
-CREATE TABLE `quality_exception_mark` (
-  `id` varchar(32) NOT NULL COMMENT '异常ID',
-  `exception_no` varchar(32) NOT NULL COMMENT '异常编号',
-  `exception_type` tinyint(1) NOT NULL COMMENT '异常类型：1-质量异常，2-数量异常，3-其他异常',
-  `related_order_id` varchar(32) DEFAULT NULL COMMENT '关联订单ID',
-  `related_order_no` varchar(32) DEFAULT NULL COMMENT '关联订单编号',
-  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
-  `reporter` varchar(50) NOT NULL COMMENT '报告人',
-  `handler` varchar(50) DEFAULT NULL COMMENT '处理人',
-  `exception_description` varchar(500) NOT NULL COMMENT '异常描述',
-  `handling_suggestion` varchar(500) DEFAULT NULL COMMENT '处理建议',
-  `handling_result` varchar(500) DEFAULT NULL COMMENT '处理结果',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待处理，1-处理中，2-已处理',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_exception_no` (`exception_no`),
-  KEY `idx_product_id` (`product_id`),
-  KEY `idx_status` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='异常标记表';
 
 -- ----------------------------
 -- Table structure for quality_inspection
@@ -617,7 +590,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2114 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2508 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
