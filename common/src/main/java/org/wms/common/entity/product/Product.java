@@ -57,17 +57,7 @@ public class Product {
      * 价格
      */
     private BigDecimal price;
-
-    /**
-     * 最小库存（预警阈值）
-     */
-    private Integer minStock;
-
-    /**
-     * 最大库存
-     */
-    private Integer maxStock;
-
+    
     /**
      * 描述
      */

@@ -13,8 +13,6 @@
         <result property="model" column="model"/>
         <result property="spec" column="spec"/>
         <result property="price" column="price"/>
-        <result property="minStock" column="min_stock"/>
-        <result property="maxStock" column="max_stock"/>
         <result property="description" column="description"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -26,7 +24,7 @@
 
     <sql id="Base_Column_List">
         id,product_name,product_code,category_id,brand,model,
-        spec,price,min_stock,max_stock,image_url,
+        spec,price,image_url,
         description,create_time,update_time
     </sql>
 

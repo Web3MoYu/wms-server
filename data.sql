@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 19/04/2025 21:38:27
+ Date: 22/04/2025 19:54:35
 */
 
 SET NAMES utf8mb4;
@@ -267,8 +267,6 @@ CREATE TABLE `product` (
   `model` varchar(100) DEFAULT NULL COMMENT '型号',
   `spec` varchar(200) DEFAULT NULL COMMENT '规格',
   `price` decimal(10,2) DEFAULT NULL COMMENT '价格',
-  `min_stock` int DEFAULT '4' COMMENT '最小库存（预警阈值）',
-  `max_stock` int DEFAULT '1000' COMMENT '最大库存',
   `description` text COMMENT '描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
