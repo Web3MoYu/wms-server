@@ -15,14 +15,16 @@
         <result property="lockedQuantity" column="locked_quantity"/>
         <result property="alertStatus" column="alert_status"/>
         <result property="batchNumber" column="batch_number"/>
+        <result property="minStock" column="min_stock"/>
+        <result property="maxStock" column="max_stock"/>
         <result property="productionDate" column="production_date"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
-
     <sql id="Base_Column_List">
         id,product_id,product_code,area_id,location,quantity,
-        available_quantity,locked_quantity,alert_status,batch_number,production_date,
+        available_quantity,locked_quantity,alert_status,batch_number,
+        min_stock,max_stock,production_date,
         expiry_date,create_time,update_time
     </sql>
 </mapper>

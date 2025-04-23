@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 22/04/2025 19:54:35
+ Date: 23/04/2025 09:55:26
 */
 
 SET NAMES utf8mb4;
@@ -353,6 +353,8 @@ CREATE TABLE `stock` (
   `locked_quantity` int NOT NULL DEFAULT '0' COMMENT '锁定数量',
   `alert_status` tinyint(1) DEFAULT '0' COMMENT '预警状态：0-正常，1-低于最小库存，2-超过最大库存',
   `batch_number` varchar(100) DEFAULT NULL COMMENT '批次号',
+  `min_stock` int DEFAULT NULL COMMENT '最小库存',
+  `max_stock` int DEFAULT NULL COMMENT '最大库存',
   `production_date` date DEFAULT NULL COMMENT '生产日期',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -588,7 +590,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2508 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2633 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area

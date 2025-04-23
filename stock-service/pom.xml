@@ -10,7 +10,7 @@
     <artifactId>stock-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>storage-service</name>
+    <name>stock-service</name>
     <url>http://maven.apache.org</url>
 
     <properties>

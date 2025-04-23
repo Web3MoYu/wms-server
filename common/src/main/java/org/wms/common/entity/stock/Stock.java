@@ -79,6 +79,16 @@ public class Stock {
     private String batchNumber;
 
     /**
+     * 最小库存
+     */
+    private Integer minStock;
+
+    /**
+     * 最大库存
+     */
+    private Integer maxStock;
+
+    /**
      * 生产日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
