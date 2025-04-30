@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
-import org.wms.common.model.vo.CountVo;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.model.vo.StockVo;
