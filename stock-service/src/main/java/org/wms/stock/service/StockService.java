@@ -58,4 +58,10 @@ public interface StockService extends IService<Stock> {
      */
     Result<List<StockCountVo>> countStock();
 
+    /**
+     * 将Stock转换为StockVo
+     * @param stock stock
+     * @return vo
+     */
+    StockVo convertToStockVo(Stock stock);
 }

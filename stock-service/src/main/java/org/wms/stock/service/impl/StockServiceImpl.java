@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +82,7 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
 
         // 转换为StockVo
         Page<StockVo> stockVoPage = new Page<>(stockPage.getCurrent(), stockPage.getSize(), stockPage.getTotal());
-        List<StockVo> stockVoList = stockPage.getRecords().stream().map(this::convertToStockVo).collect(java.util.stream.Collectors.toList());
+        List<StockVo> stockVoList = stockPage.getRecords().stream().map(this::convertToStockVo).collect(Collectors.toList());
         stockVoPage.setRecords(stockVoList);
 
         return Result.success(stockVoPage, "查询成功");
@@ -185,7 +186,8 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
      * @param stock 库存对象
      * @return vo
      */
-    private StockVo convertToStockVo(Stock stock) {
+    @Override
+    public StockVo convertToStockVo(Stock stock) {
         StockVo stockVo = new StockVo();
         BeanUtils.copyProperties(stock, stockVo);
 

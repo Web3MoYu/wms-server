@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wms.stock.mapper.AlertMapper">
+
+    <resultMap id="BaseResultMap" type="org.wms.stock.model.entity.Alert">
+            <id property="id" column="id" />
+            <result property="productId" column="product_id" />
+            <result property="currentQuantity" column="current_quantity" />
+            <result property="minStock" column="min_stock" />
+            <result property="maxStock" column="max_stock" />
+            <result property="alertType" column="alert_type" />
+            <result property="alertTime" column="alert_time" />
+            <result property="isHandled" column="is_handled" />
+            <result property="handler" column="handler" />
+            <result property="handlingTime" column="handling_time" />
+            <result property="handlingMethod" column="handling_method" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,product_id,current_quantity,min_stock,max_stock,alert_type,
+        alert_time,is_handled,handler,handling_time,handling_method,
+        create_time,update_time
+    </sql>
+</mapper>
