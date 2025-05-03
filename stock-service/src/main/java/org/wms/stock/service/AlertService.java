@@ -1,6 +1,7 @@
 package org.wms.stock.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.wms.common.entity.stock.Stock;
 import org.wms.stock.model.dto.AlertQueryDto;
 import org.wms.stock.model.entity.Alert;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,4 +21,13 @@ public interface AlertService extends IService<Alert> {
      * @return 预警的分页信息
      */
     Page<AlertVo> pageList(AlertQueryDto dto);
+
+
+    /**
+     * 修改预警配置
+     *
+     * @param stock 参数
+     * @return 是否修改成功
+     */
+    String updateAlertConfig(Stock stock);
 }

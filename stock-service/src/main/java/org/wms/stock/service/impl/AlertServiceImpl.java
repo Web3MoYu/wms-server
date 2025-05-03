@@ -6,6 +6,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.wms.common.entity.stock.Stock;
+import org.wms.common.exception.BizException;
 import org.wms.common.model.vo.StockVo;
 import org.wms.stock.model.dto.AlertQueryDto;
 import org.wms.stock.model.entity.Alert;
@@ -55,6 +56,20 @@ public class AlertServiceImpl extends ServiceImpl<AlertMapper, Alert>
         Page<AlertVo> res = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
         res.setRecords(list);
         return res;
+    }
+
+    @Override
+    public String updateAlertConfig(Stock stock) {
+        boolean update = stockService.lambdaUpdate()
+                .eq(Stock::getId, stock.getId())
+                .set(Stock::getMinStock, stock.getMinStock())
+                .set(Stock::getMaxStock, stock.getMaxStock())
+                .update();
+        if (!update) {
+            throw new BizException("修改失败");
+        }
+
+        return "修改成功";
     }
 }
 
