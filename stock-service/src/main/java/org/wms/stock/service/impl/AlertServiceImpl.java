@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
+import org.wms.api.client.UserClient;
 import org.wms.common.entity.stock.Stock;
+import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.vo.StockVo;
 import org.wms.stock.model.dto.AlertQueryDto;
@@ -26,6 +28,8 @@ import java.util.List;
 @Service
 public class AlertServiceImpl extends ServiceImpl<AlertMapper, Alert>
         implements AlertService {
+    @Resource
+    UserClient userClient;
 
     @Resource
     StockService stockService;
@@ -48,7 +52,9 @@ public class AlertServiceImpl extends ServiceImpl<AlertMapper, Alert>
             BeanUtils.copyProperties(item, vo);
             Stock stock = stockService.getById(item.getStockId());
             StockVo stockVo = stockService.convertToStockVo(stock);
+            User userById = userClient.getUserById(item.getHandler());
             vo.setStock(stockVo);
+            vo.setHandlerUser(userById);
             return vo;
         }).toList();
 
