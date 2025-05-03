@@ -500,7 +500,7 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getQualifiedQuantity());
 
                 // 判断是否超过最大库存
-                if (stock.getQuantity() >= stock.getMaxStock()) {
+                if (stock.getMaxStock() != null && stock.getQuantity() >= stock.getMaxStock()) {
                     Alert alert = new Alert();
                     alert.setStockId(stock.getId());
                     alert.setAlertNo(idGenerate.generateAlertNo());
@@ -584,8 +584,8 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 stock.setUpdateTime(LocalDate.now());
 
                 // 判断是否正常
-                if (stock.getQuantity() < stock.getMaxStock() && stock.getQuantity() > stock.getMinStock()) {
-                    stock.setAlertStatus(AlertStatusEnums.LOW);
+                if ((stock.getMaxStock() != null && stock.getMinStock() != null) && (stock.getQuantity() < stock.getMaxStock() && stock.getQuantity() > stock.getMinStock())) {
+                    stock.setAlertStatus(AlertStatusEnums.NORMAL);
                 }
                 boolean b = stockClient.updateStock(stock);
                 if (!b) {
