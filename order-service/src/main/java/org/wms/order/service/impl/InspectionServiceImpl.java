@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.IdGenerator;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.AlertClient;
 import org.wms.api.client.LocationClient;
