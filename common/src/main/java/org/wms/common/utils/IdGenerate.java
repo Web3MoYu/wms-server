@@ -37,6 +37,9 @@ public class IdGenerate {
     // 拣货单前缀
     private static final String PICKING_PREFIX = "PO"; // 拣货单 Picking Order
 
+    // 预警前缀
+    private static final String ALERT_PREFIX = "AL";
+
     // 日期格式
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -88,13 +91,13 @@ public class IdGenerate {
 
         return date + sequenceStr;
     }
-    
+
     /**
      * 生成质检编号
      * 格式：前缀 + 日期 + 6位序列号
      * 例如：QI2025031000001（入库质检）
-     *      QO2025031000001（出库质检）
-     *      QS2025031000001（库存质检）
+     * QO2025031000001（出库质检）
+     * QS2025031000001（库存质检）
      *
      * @param inspectType 质检类型
      * @return 质检编号
@@ -114,7 +117,7 @@ public class IdGenerate {
 
         return prefix + date + sequenceStr;
     }
-    
+
     /**
      * 生成拣货编号
      * 格式：前缀 + 日期 + 6位序列号
@@ -131,6 +134,29 @@ public class IdGenerate {
         Long sequence = redisTemplate.opsForValue().increment(key);
         // 设置过期时间（2天）
         redisTemplate.expire(key, 2, TimeUnit.DAYS);
+
+        // 格式化为6位序列号，不足补0
+        String sequenceStr = String.format("%06d", sequence);
+
+        return prefix + date + sequenceStr;
+    }
+
+    /**
+     * 生成预警编号
+     * 格式：前缀 + 日期 + 6位序列号
+     * 例如：AL2025031000001
+     *
+     * @return 预警编号
+     */
+    public String generateAlertNo() {
+        String prefix = ALERT_PREFIX;
+        String date = LocalDate.now().format(DATE_FORMATTER);
+        String key = "alert:no:" + prefix + ":" + date;
+
+        // 使用Redis获取自增序列号
+        Long sequence = redisTemplate.opsForValue().increment(key);
+        // 设置过期时间（7天）
+        redisTemplate.expire(key, 7, TimeUnit.DAYS);
 
         // 格式化为6位序列号，不足补0
         String sequenceStr = String.format("%06d", sequence);

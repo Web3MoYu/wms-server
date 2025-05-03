@@ -1,4 +1,4 @@
-package org.wms.stock.model.entity;
+package org.wms.common.entity.stock;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -27,6 +27,11 @@ public class Alert {
      * 库存ID
      */
     private String stockId;
+
+    /**
+     * 预警编号
+     */
+    private String alertNo;
 
     /**
      * 当前数量

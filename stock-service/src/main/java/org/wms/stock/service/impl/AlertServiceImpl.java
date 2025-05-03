@@ -9,7 +9,7 @@ import org.wms.common.entity.stock.Stock;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.vo.StockVo;
 import org.wms.stock.model.dto.AlertQueryDto;
-import org.wms.stock.model.entity.Alert;
+import org.wms.common.entity.stock.Alert;
 import org.wms.stock.model.vo.AlertVo;
 import org.wms.stock.service.AlertService;
 import org.wms.stock.mapper.AlertMapper;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.wms.stock.service.StockService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author moyu

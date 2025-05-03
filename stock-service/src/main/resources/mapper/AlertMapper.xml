@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.wms.stock.mapper.AlertMapper">
 
-    <resultMap id="BaseResultMap" type="org.wms.stock.model.entity.Alert">
+    <resultMap id="BaseResultMap" type="org.wms.common.entity.stock.Alert">
             <id property="id" column="id" />
-            <result property="productId" column="product_id" />
+            <result property="stockId" column="stock_id" />
             <result property="currentQuantity" column="current_quantity" />
             <result property="minStock" column="min_stock" />
             <result property="maxStock" column="max_stock" />
@@ -21,8 +21,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,product_id,current_quantity,min_stock,max_stock,alert_type,
-        alert_time,is_handled,handler,handling_time,handling_method,
+        id,stock_id,current_quantity,min_stock,max_stock,alert_type,
+        alert_time,is_handled,handler
+        ,handling_time,handling_method,
         create_time,update_time
     </sql>
 </mapper>

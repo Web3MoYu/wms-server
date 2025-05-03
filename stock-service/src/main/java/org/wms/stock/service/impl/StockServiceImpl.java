@@ -95,7 +95,6 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
                 .eq(Stock::getProductId, stock.getProductId())
                 .eq(Stock::getBatchNumber, stock.getBatchNumber()).one();
 
-        // TODO 预警
         // 新增
         boolean success = false;
         if (Objects.isNull(one)) {
@@ -137,7 +136,6 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock>
     @Override
     public Result<String> updateStock(Stock stock) {
         // 查询原有信息
-        // TODO 预警
         // 修改其余属性
         boolean b = this.updateById(stock);
         if (!b) {

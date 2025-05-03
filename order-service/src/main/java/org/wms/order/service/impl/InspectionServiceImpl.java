@@ -6,21 +6,34 @@ import java.util.*;
 
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.IdGenerator;
 import org.springframework.util.StringUtils;
+import org.wms.api.client.AlertClient;
 import org.wms.api.client.LocationClient;
 import org.wms.api.client.StockClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.constant.MQConstant;
+import org.wms.common.entity.location.Area;
+import org.wms.common.entity.msg.Msg;
+import org.wms.common.entity.msg.WsMsgDataVO;
+import org.wms.common.entity.stock.Alert;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
 import org.wms.common.enums.inspect.InspectType;
 import org.wms.common.enums.location.LocationStatusEnums;
+import org.wms.common.enums.msg.MsgBizEnums;
+import org.wms.common.enums.msg.MsgEnums;
+import org.wms.common.enums.msg.MsgPriorityEnums;
+import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.enums.order.ReceiveStatus;
 import org.wms.common.enums.stock.AlertStatusEnums;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Location;
 import org.wms.common.model.Result;
+import org.wms.common.utils.IdGenerate;
 import org.wms.common.utils.JsonUtils;
 import org.wms.order.mapper.InspectionItemMapper;
 import org.wms.order.mapper.InspectionMapper;
@@ -57,25 +70,34 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
     private UserClient userClient;
 
     @Resource
+    private AlertClient alertClient;
+
+    @Resource
     private StockClient stockClient;
+
+    @Resource
+    private IdGenerate idGenerate;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private LocationClient locationClient;
 
     @Resource
     private OrderInService orderInService;
 
     @Resource
-    private OrderInItemService orderInItemService;
+    private OrderOutService orderOutService;
 
     @Resource
-    private OrderOutService orderOutService;
+    private OrderInItemService orderInItemService;
 
     @Resource
     private OrderOutItemService orderOutItemService;
 
     @Resource
     private InspectionItemMapper inspectionItemMapper;
-
-    @Resource
-    private LocationClient locationClient;
 
     @Override
     public Page<InspectionVo> pageList(InspectionDto dto) {
@@ -476,7 +498,37 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
                 // 库存存在更新库存
                 stock.setQuantity(stock.getQuantity() + item.getQualifiedQuantity());
                 stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getQualifiedQuantity());
-                // TODO 预警
+
+                // 判断是否超过最大库存
+                if (stock.getQuantity() >= stock.getMaxStock()) {
+                    Alert alert = new Alert();
+                    alert.setStockId(stock.getId());
+                    alert.setAlertNo(idGenerate.generateAlertNo());
+                    alert.setCurrentQuantity(stock.getQuantity());
+                    alert.setMinStock(stock.getMinStock());
+                    alert.setMaxStock(stock.getMaxStock());
+                    alert.setAlertType(AlertStatusEnums.HIGH);
+                    alert.setAlertTime(LocalDateTime.now());
+                    Area area = locationClient.getArea(stock.getAreaId());
+                    alert.setHandler(area.getAreaManager());
+                    alert.setCreateTime(LocalDateTime.now());
+                    alert.setUpdateTime(LocalDateTime.now());
+                    boolean b = alertClient.addAlert(alert);
+                    // 修改库存状态
+                    stock.setAlertStatus(AlertStatusEnums.HIGH);
+                    if (!b) {
+                        throw new BizException("新增预警信息失败");
+                    }
+
+                    // 发送消息通知
+                    User to = userClient.getUserById(area.getAreaManager());
+                    Msg msg = new Msg(MsgTypeEnums.STOCK_WARNING, "库存预警", "库存超过最大库存", to.getUserId(),
+                            to.getRealName(), "-1", "system", MsgPriorityEnums.NORMAL, alert.getAlertNo(),
+                            MsgBizEnums.STOCK_WARNING);
+                    rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                            new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
+                }
+
                 // 更新库位信息取并集
                 List<Location> itemLocation = item.getLocation();
                 List<Location> stockLocation = stock.getLocation();
@@ -530,6 +582,11 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
 
                 // 更新库存
                 stock.setUpdateTime(LocalDate.now());
+
+                // 判断是否正常
+                if (stock.getQuantity() < stock.getMaxStock() && stock.getQuantity() > stock.getMinStock()) {
+                    stock.setAlertStatus(AlertStatusEnums.LOW);
+                }
                 boolean b = stockClient.updateStock(stock);
                 if (!b) {
                     throw new BizException("更新库位信息失败");
