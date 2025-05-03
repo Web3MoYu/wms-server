@@ -50,4 +50,12 @@ public interface OrderOutService extends IService<OrderOut> {
      * @return 审批结果
      */
     Result<String> approve(String id, String inspector);
+
+    /**
+     * 出库订单id
+     *
+     * @param id 出库订单id
+     * @return 是否出库成功
+     */
+    Result<String> doneOutBound(String id);
 }

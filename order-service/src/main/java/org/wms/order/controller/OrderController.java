@@ -170,16 +170,7 @@ public class OrderController {
     @PutMapping("/doneOutBound/{id}")
     @GlobalTransactional
     public Result<String> doneOutBound(@PathVariable String id) {
-        orderOutService.updateStatus(id, null, OrderStatusEnums.COMPLETED);
-        // 修改出库时间
-        boolean update = orderOutService.lambdaUpdate()
-                .eq(OrderOut::getId, id)
-                .set(OrderOut::getActualTime, LocalDateTime.now())
-                .update();
-        if (!update) {
-            throw new BizException("出库失败");
-        }
-        return Result.success(null, "出库成功");
+        return orderOutService.doneOutBound(id);
     }
 
     /**

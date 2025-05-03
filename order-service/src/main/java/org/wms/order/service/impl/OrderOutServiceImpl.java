@@ -7,14 +7,13 @@ import jakarta.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.StringUtils;
-import org.wms.api.client.LocationClient;
-import org.wms.api.client.ProductClient;
-import org.wms.api.client.StockClient;
-import org.wms.api.client.UserClient;
+import org.wms.api.client.*;
 import org.wms.common.constant.MQConstant;
+import org.wms.common.entity.location.Area;
 import org.wms.common.entity.msg.Msg;
 import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.product.Product;
+import org.wms.common.entity.stock.Alert;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
 import org.wms.common.enums.msg.MsgBizEnums;
@@ -22,6 +21,7 @@ import org.wms.common.enums.msg.MsgEnums;
 import org.wms.common.enums.msg.MsgPriorityEnums;
 import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.enums.order.OrderType;
+import org.wms.common.enums.stock.AlertStatusEnums;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
@@ -55,25 +55,28 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         implements OrderOutService {
 
     @Resource
-    RabbitTemplate rabbitTemplate;
-
-    @Resource
-    StockClient stockClient;
-
-    @Resource
-    OrderOutItemMapper orderOutItemMapper;
-
-    @Resource
-    ProductClient productClient;
+    IdGenerate idGenerate;
 
     @Resource
     UserClient userClient;
 
     @Resource
+    AlertClient alertClient;
+
+    @Resource
+    StockClient stockClient;
+
+    @Resource
+    ProductClient productClient;
+
+    @Resource
+    RabbitTemplate rabbitTemplate;
+
+    @Resource
     LocationClient locationClient;
 
     @Resource
-    IdGenerate idGenerate;
+    OrderOutItemMapper orderOutItemMapper;
 
     @Override
     public Result<List<OrderDetailVo<OrderOutItem>>> outDetail(String id) {
@@ -180,6 +183,70 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         updateStatus(id, "审批通过", OrderStatusEnums.APPROVED);
         return Result.success(null, "收货成功");
 
+    }
+
+    @Override
+    public Result<String> doneOutBound(String id) {
+        this.updateStatus(id, null, OrderStatusEnums.COMPLETED);
+        // 修改出库时间
+        boolean update = this.lambdaUpdate()
+                .eq(OrderOut::getId, id)
+                .set(OrderOut::getActualTime, LocalDateTime.now())
+                .update();
+        if (!update) {
+            throw new BizException("出库失败");
+        }
+
+        // 获取订单详情信息
+        LambdaQueryWrapper<OrderOutItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderOutItem::getOrderId, id);
+        List<OrderOutItem> items = orderOutItemMapper.selectList(wrapper);
+        items.forEach(item -> {
+            // 获取库存信息
+            Stock stock = stockClient.getStockByProductIdAndBatch(item.getProductId(), item.getBatchNumber());
+
+            // 判断是否需要预警
+            // 判断是否超过最小库存
+            if (stock.getMinStock() != null && stock.getQuantity() <= stock.getMinStock()) {
+                Alert alert = new Alert();
+                alert.setStockId(stock.getId());
+                alert.setAlertNo(idGenerate.generateAlertNo());
+                alert.setCurrentQuantity(stock.getQuantity());
+                alert.setMinStock(stock.getMinStock());
+                alert.setMaxStock(stock.getMaxStock());
+                alert.setAlertType(AlertStatusEnums.LOW);
+                alert.setAlertTime(LocalDateTime.now());
+                Area area = locationClient.getArea(stock.getAreaId());
+                alert.setHandler(area.getAreaManager());
+                alert.setCreateTime(LocalDateTime.now());
+                alert.setUpdateTime(LocalDateTime.now());
+                boolean b = alertClient.addAlert(alert);
+                // 修改库存状态
+                stock.setAlertStatus(AlertStatusEnums.LOW);
+                if (!b) {
+                    throw new BizException("新增预警信息失败");
+                }
+
+                // 发送消息通知
+                User to = userClient.getUserById(area.getAreaManager());
+                Msg msg = new Msg(MsgTypeEnums.STOCK_WARNING, "库存预警", "库存低于最小库存", to.getUserId(),
+                        to.getRealName(), "-1", "system", MsgPriorityEnums.NORMAL, alert.getAlertNo(),
+                        MsgBizEnums.STOCK_WARNING);
+                rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                        new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
+            }
+            // 不需要预警或者变为正常状态的话
+            // 判断是否正常
+            if ((stock.getMaxStock() != null && stock.getMinStock() != null) && (stock.getQuantity() < stock.getMaxStock() && stock.getQuantity() > stock.getMinStock())) {
+                stock.setAlertStatus(AlertStatusEnums.NORMAL);
+            }
+            boolean b = stockClient.updateStock(stock);
+            if (!b) {
+                throw new BizException("更新库存信息失败");
+            }
+        });
+
+        return Result.success(null, "出库成功");
     }
 
     private @NotNull List<OrderOutItem> getOrderOutItems(OrderDto<OrderOut, OrderOutItem> order, OrderOut orderOut) {
