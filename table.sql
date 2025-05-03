@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 02/05/2025 15:19:01
+ Date: 03/05/2025 13:30:24
 */
 
 SET NAMES utf8mb4;
@@ -368,11 +368,12 @@ CREATE TABLE `stock` (
 DROP TABLE IF EXISTS `stock_alert`;
 CREATE TABLE `stock_alert` (
   `id` varchar(32) NOT NULL COMMENT '记录ID',
-  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
+  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '库存ID',
+  `alert_no` varchar(255) NOT NULL COMMENT '预警编号',
   `current_quantity` int NOT NULL COMMENT '当前数量',
   `min_stock` int NOT NULL COMMENT '最小库存',
   `max_stock` int NOT NULL COMMENT '最大库存',
-  `alert_type` tinyint(1) NOT NULL COMMENT '预警类型：1-库存不足，2-库存过多',
+  `alert_type` tinyint(1) NOT NULL COMMENT '预警类型：1-低于最小库存，2-超过最大库存\n',
   `alert_time` datetime NOT NULL COMMENT '预警时间',
   `is_handled` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否处理：0-否，1-是',
   `handler` varchar(50) DEFAULT NULL COMMENT '处理人',
@@ -380,8 +381,8 @@ CREATE TABLE `stock_alert` (
   `handling_method` varchar(500) DEFAULT NULL COMMENT '处理方法',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `idx_product_id` (`product_id`),
+  PRIMARY KEY (`id`,`alert_no`) USING BTREE,
+  KEY `idx_product_id` (`stock_id`),
   KEY `idx_alert_time` (`alert_time`),
   KEY `idx_is_handled` (`is_handled`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='产品库存预警记录表';
@@ -464,34 +465,6 @@ CREATE TABLE `stock_movement` (
   KEY `idx_movement_time` (`movement_time`),
   KEY `idx_related_order_id` (`related_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='库存变动记录表';
-
--- ----------------------------
--- Table structure for stock_restock
--- ----------------------------
-DROP TABLE IF EXISTS `stock_restock`;
-CREATE TABLE `stock_restock` (
-  `id` varchar(32) NOT NULL COMMENT '请求ID',
-  `request_no` varchar(32) NOT NULL COMMENT '请求编号',
-  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `current_quantity` int NOT NULL COMMENT '当前数量',
-  `request_quantity` int NOT NULL COMMENT '请求数量',
-  `requester` varchar(50) NOT NULL COMMENT '请求人',
-  `approver` varchar(50) DEFAULT NULL COMMENT '审批人',
-  `request_reason` varchar(500) DEFAULT NULL COMMENT '请求原因',
-  `request_time` datetime NOT NULL COMMENT '请求时间',
-  `approval_time` datetime DEFAULT NULL COMMENT '审批时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待审批，1-已审批待执行，2-已执行，3-已拒绝',
-  `is_auto` tinyint(1) DEFAULT '0' COMMENT '是否自动生成：0-否，1-是',
-  `related_order_id` varchar(32) DEFAULT NULL COMMENT '关联订单ID',
-  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_request_no` (`request_no`),
-  KEY `idx_product_id` (`product_id`),
-  KEY `idx_status` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='补货请求表';
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -590,7 +563,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2711 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2737 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
