@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 03/05/2025 13:30:24
+ Date: 03/05/2025 18:05:24
 */
 
 SET NAMES utf8mb4;
@@ -444,27 +444,22 @@ DROP TABLE IF EXISTS `stock_movement`;
 CREATE TABLE `stock_movement` (
   `id` varchar(32) NOT NULL COMMENT '记录ID',
   `movement_no` varchar(32) NOT NULL COMMENT '变动编号',
-  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
-  `movement_type` tinyint(1) NOT NULL COMMENT '变动类型：1-入库，2-出库，3-调整',
-  `before_quantity` int NOT NULL COMMENT '变动前数量',
-  `movement_quantity` int NOT NULL COMMENT '变动数量',
-  `after_quantity` int NOT NULL COMMENT '变动后数量',
-  `related_order_id` varchar(32) DEFAULT NULL COMMENT '关联订单ID',
-  `related_order_no` varchar(32) DEFAULT NULL COMMENT '关联订单编号',
+  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '库存ID',
+  `before_area_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '变动前区域ID',
+  `before_location` json NOT NULL COMMENT '变动前具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `after_area_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '变动后区域ID',
+  `after_location` json NOT NULL COMMENT '变动后具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
   `operator` varchar(50) NOT NULL COMMENT '操作人',
-  `movement_time` datetime NOT NULL COMMENT '变动时间',
-  `batch_number` varchar(100) DEFAULT NULL COMMENT '批次号',
+  `approver` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '审批人',
+  `movement_time` datetime DEFAULT NULL COMMENT '变动时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0-未审批,1-待变动，2-已完成',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_movement_no` (`movement_no`),
-  KEY `idx_product_id` (`product_id`),
-  KEY `idx_movement_type` (`movement_type`),
-  KEY `idx_movement_time` (`movement_time`),
-  KEY `idx_related_order_id` (`related_order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='库存变动记录表';
+  KEY `idx_product_id` (`stock_id`),
+  KEY `idx_movement_time` (`movement_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='库位变动记录表';
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -563,7 +558,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2737 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2912 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
