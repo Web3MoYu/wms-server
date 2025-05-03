@@ -43,6 +43,7 @@ public class AlertServiceImpl extends ServiceImpl<AlertMapper, Alert>
                 .le(dto.getEndDate() != null, Alert::getAlertTime, dto.getEndDate())
                 .eq(dto.getIsHandled() != null, Alert::getIsHandled, dto.getIsHandled())
                 .eq(StringUtils.hasText(dto.getHandler()), Alert::getHandler, dto.getHandler())
+                .like(StringUtils.hasText(dto.getAlertNo()), Alert::getAlertNo, dto.getAlertNo())
                 .orderByDesc(Alert::getAlertTime)
                 .page(new Page<>(dto.getPage(), dto.getPageSize()));
 

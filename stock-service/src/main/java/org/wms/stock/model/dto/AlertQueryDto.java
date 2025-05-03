@@ -22,6 +22,8 @@ public class AlertQueryDto {
      */
     Integer alertType;
 
+    String alertNo; // 预警编号
+
     /**
      * 开始时间
      */
