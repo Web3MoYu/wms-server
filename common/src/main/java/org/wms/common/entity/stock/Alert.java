@@ -72,6 +72,7 @@ public class Alert {
     /**
      * 处理时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime handlingTime;
 
     /**
