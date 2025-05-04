@@ -6,11 +6,12 @@ import lombok.Getter;
 
 @Getter
 public enum MsgTypeEnums {
+
     STOCK_WARNING(1, "库存预警"),
     QUALITY_CHECK(2, "质检通知"),
     ORDER_STATUS(3, "订单通知"),
-    EXCEPTION_ALERT(4, "异常通知"),
-    RESTOCK_ALERT(5, "补货通知"),
+    STORAGE_CHANGE(4, "库位变更"),
+    STOCK_CHECK(5, "库存盘点"),
     OTHER(6, "其他");
 
     @JsonValue

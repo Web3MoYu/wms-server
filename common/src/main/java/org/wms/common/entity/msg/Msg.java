@@ -24,7 +24,7 @@ public class Msg {
     private String id;
 
     /**
-     * 通知类型：1-库存预警，2-质检通知，3-订单状态，4-异常通知，5-补货通知，6-其他
+     * 通知类型：1-库存预警，2-质检通知，3-订单状态，4-库位变更，5-库存盘点，6-其他
      */
     private MsgTypeEnums type;
 
@@ -74,7 +74,7 @@ public class Msg {
     private String relatedBizId;
 
     /**
-     * 关联业务类型：1-入库单，2-出库单，3-质检单，4-异常标记，5-库存预警
+     * 关联业务类型：1-入库单，2-出库单，3-质检单，4-库位变更，5-库存预警，6-库存盘点
      */
     private MsgBizEnums relatedBizType;
 
