@@ -24,7 +24,7 @@ public class MovementVo extends Movement {
 
     private List<LocationVo> afterLocationVo;
 
-    private User opeatorUser;
+    private User operatorUser;
 
     private User approverUser;
 }
