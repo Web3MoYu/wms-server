@@ -72,7 +72,7 @@ public class MovementServiceImpl extends ServiceImpl<MovementMapper, Movement>
                 .ge(dto.getStartDate() != null, Movement::getMovementTime, dto.getStartDate())
                 .le(dto.getEndDate() != null, Movement::getMovementTime, dto.getEndDate())
                 .eq(dto.getStatus() != null, Movement::getStatus, dto.getStatus())
-                .orderByDesc(Movement::getMovementTime)
+                .orderByDesc(Movement::getCreateTime)
                 .page(new Page<>(dto.getPage(), dto.getPageSize()));
 
         // 转化为vo
