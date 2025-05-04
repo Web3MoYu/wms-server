@@ -59,7 +59,6 @@ public class MsgController {
                 .eq(dto.getPriority() != null, Msg::getPriority, dto.getPriority())
                 .ge(dto.getStartTime() != null, Msg::getSendTime, dto.getStartTime())
                 .le(dto.getEndTime() != null, Msg::getSendTime, dto.getEndTime())
-                .orderByAsc(Msg::getReadStatus)
                 .orderByDesc(Msg::getSendTime)
                 .page(new Page<>(dto.getPage(), dto.getPageSize()));
 
