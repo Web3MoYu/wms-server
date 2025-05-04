@@ -16,11 +16,13 @@ import org.wms.common.entity.msg.Msg;
 import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.location.LocationStatusEnums;
 import org.wms.common.enums.msg.MsgBizEnums;
 import org.wms.common.enums.msg.MsgEnums;
 import org.wms.common.enums.msg.MsgPriorityEnums;
 import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.exception.BizException;
+import org.wms.common.model.Location;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.model.vo.StockVo;
 import org.wms.common.utils.IdGenerate;
@@ -169,15 +171,40 @@ public class MovementServiceImpl extends ServiceImpl<MovementMapper, Movement>
         }
         Stock stock = stockService.getById(movement.getStockId());
 
-        // 清除之前的库位信息
+        movement.setBeforeLocation(stock.getLocation());
+        movement.setStatus(MovementStatus.COMPLETED);
+        movement.setMovementTime(LocalDateTime.now());
+
+        // 修改库位信息
+        List<Location> beforeLocation = movement.getBeforeLocation();
+        // 释放原先的库位信息
+        beforeLocation.forEach((item) -> {
+            boolean update = locationClient.updateStatusInStorage(item, LocationStatusEnums.FREE.getCode(), null);
+            if (!update) {
+                throw new BizException("变更失败");
+            }
+        });
 
         // 覆盖新的库位信息
+        List<Location> afterLocation = movement.getAfterLocation();
+        afterLocation.forEach((item) -> {
+            boolean update = locationClient.updateStatusInStorage(item, LocationStatusEnums.OCCUPIED.getCode(), stock.getProductId());
+            if (!update) {
+                throw new BizException("变更失败");
+            }
+        });
 
         // 更新状态以及库位信息
-        movement.setBeforeLocation(stock.getLocation());
-        movement.setStatus(MovementStatus.TO_BE_CHANGED);
+        boolean moveUpdate = this.updateById(movement);
 
         // 更新库存状态
+        stock.setAreaId(movement.getAfterAreaId());
+        stock.setLocation(movement.getAfterLocation());
+        boolean stockUpdate = stockService.updateById(stock);
+
+        if (!moveUpdate || !stockUpdate) {
+            throw new BizException("变更失败");
+        }
         return "变更成功";
     }
 
