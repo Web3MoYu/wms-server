@@ -2,7 +2,6 @@ package org.wms.order.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 import org.wms.common.entity.order.InspectionItem;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

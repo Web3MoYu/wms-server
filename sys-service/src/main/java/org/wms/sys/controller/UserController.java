@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wms.common.entity.sys.User;
 import org.wms.common.exception.BizException;
 import org.wms.common.model.Result;
-import org.wms.common.utils.JWTUtils;
 import org.wms.common.utils.RedisUtils;
 import org.wms.common.utils.UploadUtils;
 import org.wms.sys.mapper.UserMapper;

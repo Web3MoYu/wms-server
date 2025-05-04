@@ -2,7 +2,6 @@ package org.wms.stock.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wms.common.model.Result;
-import org.wms.common.model.vo.CountVo;
 import org.wms.stock.model.dto.StockDto;
 import org.wms.common.entity.stock.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
