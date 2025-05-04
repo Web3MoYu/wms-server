@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 03/05/2025 18:05:24
+ Date: 05/05/2025 00:00:16
 */
 
 SET NAMES utf8mb4;
@@ -452,9 +452,10 @@ CREATE TABLE `stock_movement` (
   `operator` varchar(50) NOT NULL COMMENT '操作人',
   `approver` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '审批人',
   `movement_time` datetime DEFAULT NULL COMMENT '变动时间',
+  `reason` varchar(255) DEFAULT NULL COMMENT '拒绝原因',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0-未审批,1-待变动，2-已完成',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '-1-拒绝，0-未审批,1-待变动，2-已完成',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_movement_no` (`movement_no`),
   KEY `idx_product_id` (`stock_id`),
