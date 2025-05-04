@@ -2,11 +2,9 @@ package org.wms.stock.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.AddMovementDto;
 import org.wms.stock.model.dto.MovementDto;
@@ -40,7 +38,41 @@ public class MoveController {
      */
     @PostMapping("/add")
     public Result<String> addMovement(@RequestBody AddMovementDto dto) {
-//        return null;
         return Result.success(null, movementService.addMovement(dto));
+    }
+
+    /**
+     * 审批通过
+     *
+     * @param id 变更ID
+     * @return 是否成功
+     */
+    @GetMapping("/approve/{id}")
+    public Result<String> approveMovement(@PathVariable String id) {
+        return Result.success(null, movementService.approveMovement(id));
+    }
+
+    /**
+     * 审批拒绝
+     *
+     * @param id     变更ID
+     * @param reason 原因
+     * @return 是否成功
+     */
+    @GetMapping("/reject/{id}")
+    public Result<String> rejectMovement(@PathVariable String id, @RequestParam("reason") String reason) {
+        return Result.success(null, movementService.rejectMovement(id, reason));
+    }
+
+    /**
+     * 执行变更
+     *
+     * @param id 变更ID
+     * @return 执行结果
+     */
+    @GetMapping("/doneMove/{id}")
+    @GlobalTransactional
+    public Result<String> doneMovement(@PathVariable String id) {
+        return Result.success(null, movementService.doneMovement(id));
     }
 }

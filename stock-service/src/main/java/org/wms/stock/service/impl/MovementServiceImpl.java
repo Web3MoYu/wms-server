@@ -1,10 +1,12 @@
 package org.wms.stock.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
 import org.wms.api.client.UserClient;
@@ -115,6 +117,68 @@ public class MovementServiceImpl extends ServiceImpl<MovementMapper, Movement>
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
 
         return "添加成功";
+    }
+
+    @Override
+    public String approveMovement(String id) {
+        String userId = SecurityUtil.getUserID();
+        Movement movement = this.getById(id);
+        if (!StrUtil.equals(userId, movement.getApprover())) {
+            throw new BizException("没有权限");
+        }
+        movement.setStatus(MovementStatus.TO_BE_CHANGED);
+        boolean b = this.updateById(movement);
+        if (!b) {
+            throw new BizException("审批失败");
+        }
+
+        // 通知操作人进行变更
+        User from = userClient.getUserById(movement.getApprover());
+        User to = userClient.getUserById(movement.getOperator());
+        Msg msg = new Msg(MsgTypeEnums.STORAGE_CHANGE, "库位变更", "你有一条库位变更消息", to.getUserId(),
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, movement.getMovementNo(),
+                MsgBizEnums.STORAGE_CHANGE);
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
+        return "审批成功";
+    }
+
+    @Override
+    public String rejectMovement(String id, String reason) {
+        String userId = SecurityUtil.getUserID();
+        Movement movement = this.getById(id);
+        if (!StrUtil.equals(userId, movement.getApprover())) {
+            throw new BizException("没有权限");
+        }
+
+        boolean update = this.lambdaUpdate().eq(Movement::getId, id)
+                .set(Movement::getReason, reason)
+                .set(Movement::getStatus, MovementStatus.REJECT).update();
+        if (!update) {
+            throw new BizException("拒绝失败");
+        }
+        return "拒绝成功";
+    }
+
+    @Override
+    public String doneMovement(String id) {
+        String userId = SecurityUtil.getUserID();
+        Movement movement = this.getById(id);
+        if (!StrUtil.equals(userId, movement.getOperator())) {
+            throw new BizException("没有权限");
+        }
+        Stock stock = stockService.getById(movement.getStockId());
+
+        // 清除之前的库位信息
+
+        // 覆盖新的库位信息
+
+        // 更新状态以及库位信息
+        movement.setBeforeLocation(stock.getLocation());
+        movement.setStatus(MovementStatus.TO_BE_CHANGED);
+
+        // 更新库存状态
+        return "变更成功";
     }
 
 

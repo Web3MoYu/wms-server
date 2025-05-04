@@ -29,4 +29,23 @@ public interface MovementService extends IService<Movement> {
      * @return 是否成功
      */
     String addMovement(AddMovementDto dto);
+
+    /**
+     * 审批通过
+     *
+     * @param id 变更ID
+     * @return 是否成功
+     */
+    String approveMovement(String id);
+
+    /**
+     * 审批拒绝
+     *
+     * @param id     变更ID
+     * @param reason 原因
+     * @return 是否成功
+     */
+    String rejectMovement(String id, String reason);
+
+    String doneMovement(String id);
 }
