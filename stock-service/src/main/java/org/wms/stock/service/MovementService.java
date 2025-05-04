@@ -1,6 +1,7 @@
 package org.wms.stock.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.wms.stock.model.dto.AddMovementDto;
 import org.wms.stock.model.dto.MovementDto;
 import org.wms.stock.model.entity.Movement;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,4 +21,12 @@ public interface MovementService extends IService<Movement> {
      * @return 分页数据
      */
     Page<MovementVo> pageMovement(MovementDto dto);
+
+    /**
+     * 新增库存移动
+     *
+     * @param dto 库位移动信息
+     * @return 是否成功
+     */
+    String addMovement(AddMovementDto dto);
 }

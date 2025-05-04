@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.wms.common.model.Result;
+import org.wms.stock.model.dto.AddMovementDto;
 import org.wms.stock.model.dto.MovementDto;
 import org.wms.stock.model.vo.MovementVo;
 import org.wms.stock.service.MovementService;
@@ -29,5 +30,17 @@ public class MoveController {
     @PreAuthorize("hasAuthority('inventory:move')")
     public Result<Page<MovementVo>> pageMovement(@RequestBody MovementDto dto) {
         return Result.success(movementService.pageMovement(dto), "查询成功");
+    }
+
+    /**
+     * 新增库存移动
+     *
+     * @param dto 库位移动信息
+     * @return 是否成功
+     */
+    @PostMapping("/add")
+    public Result<String> addMovement(@RequestBody AddMovementDto dto) {
+//        return null;
+        return Result.success(null, movementService.addMovement(dto));
     }
 }

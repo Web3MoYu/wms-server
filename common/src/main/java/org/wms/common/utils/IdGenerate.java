@@ -40,6 +40,9 @@ public class IdGenerate {
     // 预警前缀
     private static final String ALERT_PREFIX = "AL";
 
+    // 库位移动前缀
+    private static final String STORAGE_MOVEMENT_PREFIX = "SM"; // 库位移动 Storage Movement
+
     // 日期格式
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -157,6 +160,29 @@ public class IdGenerate {
         Long sequence = redisTemplate.opsForValue().increment(key);
         // 设置过期时间（7天）
         redisTemplate.expire(key, 7, TimeUnit.DAYS);
+
+        // 格式化为6位序列号，不足补0
+        String sequenceStr = String.format("%06d", sequence);
+
+        return prefix + date + sequenceStr;
+    }
+
+    /**
+     * 生成库位移动编号
+     * 格式：前缀 + 日期 + 6位序列号
+     * 例如：SM2025031000001
+     *
+     * @return 库位移动编号
+     */
+    public String generateStorageMovementNo() {
+        String prefix = STORAGE_MOVEMENT_PREFIX;
+        String date = LocalDate.now().format(DATE_FORMATTER);
+        String key = "movement:no:" + prefix + ":" + date;
+
+        // 使用Redis获取自增序列号
+        Long sequence = redisTemplate.opsForValue().increment(key);
+        // 设置过期时间（3天）
+        redisTemplate.expire(key, 3, TimeUnit.DAYS);
 
         // 格式化为6位序列号，不足补0
         String sequenceStr = String.format("%06d", sequence);

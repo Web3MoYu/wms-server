@@ -17,6 +17,13 @@ spring:
     username: root
     password: root
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /wms
+    username: admin
+    password: admin
+
 feign:
   sentinel:
     # 必须引入sentinel并开启这个才可以触发兜底

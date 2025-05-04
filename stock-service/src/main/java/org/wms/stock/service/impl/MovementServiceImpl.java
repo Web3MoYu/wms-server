@@ -3,22 +3,36 @@ package org.wms.stock.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.StringUtils;
 import org.wms.api.client.LocationClient;
 import org.wms.api.client.UserClient;
+import org.wms.common.constant.MQConstant;
 import org.wms.common.entity.location.Area;
+import org.wms.common.entity.msg.Msg;
+import org.wms.common.entity.msg.WsMsgDataVO;
 import org.wms.common.entity.stock.Stock;
 import org.wms.common.entity.sys.User;
+import org.wms.common.enums.msg.MsgBizEnums;
+import org.wms.common.enums.msg.MsgEnums;
+import org.wms.common.enums.msg.MsgPriorityEnums;
+import org.wms.common.enums.msg.MsgTypeEnums;
+import org.wms.common.exception.BizException;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.model.vo.StockVo;
+import org.wms.common.utils.IdGenerate;
+import org.wms.security.util.SecurityUtil;
+import org.wms.stock.model.dto.AddMovementDto;
 import org.wms.stock.model.dto.MovementDto;
 import org.wms.stock.model.entity.Movement;
+import org.wms.stock.model.enums.MovementStatus;
 import org.wms.stock.model.vo.MovementVo;
 import org.wms.stock.service.MovementService;
 import org.wms.stock.mapper.MovementMapper;
 import org.springframework.stereotype.Service;
 import org.wms.stock.service.StockService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,10 +48,16 @@ public class MovementServiceImpl extends ServiceImpl<MovementMapper, Movement>
     UserClient userClient;
 
     @Resource
+    IdGenerate idGenerate;
+
+    @Resource
     StockService stockService;
 
     @Resource
     LocationClient locationClient;
+
+    @Resource
+    RabbitTemplate rabbitTemplate;
 
 
     @Override
@@ -59,6 +79,41 @@ public class MovementServiceImpl extends ServiceImpl<MovementMapper, Movement>
         Page<MovementVo> res = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
         res.setRecords(list);
         return res;
+    }
+
+    @Override
+    public String addMovement(AddMovementDto dto) {
+        Stock stock = stockService.getById(dto.getStockId());
+        String operator = SecurityUtil.getUserID();
+        Area area = locationClient.getArea(dto.getAreaId());
+
+        Movement movement = new Movement();
+        movement.setMovementNo(idGenerate.generateStorageMovementNo());
+        movement.setStockId(dto.getStockId());
+        movement.setBeforeAreaId(stock.getAreaId());
+        movement.setBeforeLocation(stock.getLocation());
+        movement.setAfterAreaId(dto.getAreaId());
+        movement.setAfterLocation(dto.getLocations());
+        movement.setOperator(operator);
+        movement.setApprover(area.getAreaManager());
+        movement.setRemark(dto.getRemark());
+        movement.setCreateTime(LocalDateTime.now());
+        movement.setStatus(MovementStatus.PENDING);
+        boolean save = this.save(movement);
+        if (!save) {
+            throw new BizException("新增库位变更失败");
+        }
+
+        // 通知审批人进行审批
+        User from = userClient.getUserById(movement.getOperator());
+        User to = userClient.getUserById(movement.getApprover());
+        Msg msg = new Msg(MsgTypeEnums.STORAGE_CHANGE, "库位变更", "你有一条库位变更消息", to.getUserId(),
+                to.getRealName(), from.getUserId(), from.getRealName(), MsgPriorityEnums.NORMAL, movement.getMovementNo(),
+                MsgBizEnums.STORAGE_CHANGE);
+        rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
+                new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
+
+        return "添加成功";
     }
 
 
