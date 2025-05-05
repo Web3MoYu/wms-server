@@ -5,25 +5,25 @@
 <mapper namespace="org.wms.stock.mapper.MovementMapper">
 
     <resultMap id="BaseResultMap" type="org.wms.stock.model.entity.Movement">
-            <id property="id" column="id" />
-            <result property="movementNo" column="movement_no" />
-            <result property="stockId" column="stock_id" />
-            <result property="beforeAreaId" column="before_area_id" />
-            <result property="beforeLocation" column="before_location" />
-            <result property="afterAreaId" column="after_area_id" />
-            <result property="afterLocation" column="after_location" />
-            <result property="operator" column="operator" />
-            <result property="approver" column="approver" />
-            <result property="movementTime" column="movement_time" />
-            <result property="reason" column="reason" />
-            <result property="remark" column="remark" />
-            <result property="createTime" column="create_time" />
-            <result property="status" column="status" />
+        <id property="id" column="id"/>
+        <result property="movementNo" column="movement_no"/>
+        <result property="stockId" column="stock_id"/>
+        <result property="beforeAreaId" column="before_area_id"/>
+        <result property="beforeLocation" column="before_location"/>
+        <result property="afterAreaId" column="after_area_id"/>
+        <result property="afterLocation" column="after_location"/>
+        <result property="operator" column="operator"/>
+        <result property="approver" column="approver"/>
+        <result property="movementTime" column="movement_time"/>
+        <result property="reason" column="reason"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,movement_no,stock_id,before_area_id,before_location,after_area_id,
         after_location,operator,approver,movement_time,reason,
-        remark,create_time,status
+        remark,create_time,`status`
     </sql>
 </mapper>
