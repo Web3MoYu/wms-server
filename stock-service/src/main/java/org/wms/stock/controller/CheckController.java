@@ -59,6 +59,18 @@ public class CheckController {
     }
 
     /**
+     * 废弃盘点
+     *
+     * @param id 盘点ID
+     * @return 是否成功
+     */
+    @PutMapping("/cancel/{id}")
+    @GlobalTransactional
+    public Result<String> cancelCheck(@PathVariable String id) {
+        return Result.success(null, checkService.cancelCheck(id));
+    }
+
+    /**
      * 开始盘点
      *
      * @param dto 盘点信息

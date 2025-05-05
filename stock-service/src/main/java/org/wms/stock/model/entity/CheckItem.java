@@ -50,7 +50,7 @@ public class CheckItem {
     private Integer differenceQuantity;
 
     /**
-     * 状态：0-待盘点，1-已盘点
+     * 状态：-1-已废弃,0-待盘点，2-已盘点
      */
     private CheckStatus status;
 

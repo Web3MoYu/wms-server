@@ -7,8 +7,12 @@ import lombok.Getter;
 @Getter
 public enum CheckStatus {
 
+    CANCELED(-1, "已废弃"),
+
     WAIT_CHECK(0, "待盘点"),
+
     WAIT_CONFIRM(1, "待确认"),
+
     COMPLETED(2, "已完成");
 
     @JsonValue

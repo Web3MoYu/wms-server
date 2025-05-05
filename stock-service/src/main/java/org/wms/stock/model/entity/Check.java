@@ -68,7 +68,7 @@ public class Check {
     private LocalDateTime actualEndTime;
 
     /**
-     * 状态：0-待盘点,1-待确认，2-已完成
+     * 状态：-1-已废弃,0-待盘点,1-待确认，2-已完成
      */
     private CheckStatus status;
 

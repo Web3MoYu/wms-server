@@ -183,6 +183,26 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
         return "盘点成功";
     }
 
+    @Override
+    public String cancelCheck(String id) {
+        boolean checkUpdate = this.lambdaUpdate()
+                .eq(Check::getId, id)
+                .set(Check::getActualStartTime, LocalDateTime.now())
+                .set(Check::getActualEndTime, LocalDateTime.now())
+                .set(Check::getStatus, CheckStatus.CANCELED)
+                .update();
+
+        boolean checkItemUpdate = checkItemService.lambdaUpdate()
+                .eq(CheckItem::getCheckId, id)
+                .set(CheckItem::getStatus, CheckStatus.CANCELED)
+                .update();
+
+        if (!checkUpdate || !checkItemUpdate) {
+            throw new BizException("废弃失败");
+        }
+        return "废弃成功";
+    }
+
 
     public CheckVo assembleCheckVo(Check check) {
         CheckVo vo = new CheckVo();

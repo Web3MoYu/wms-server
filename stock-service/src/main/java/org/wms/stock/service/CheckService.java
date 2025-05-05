@@ -49,4 +49,12 @@ public interface CheckService extends IService<Check> {
      * @return 是否成功
      */
     String startCheck(List<StockCheckDto> dto);
+
+    /**
+     * 废弃盘点
+     *
+     * @param id 盘点ID
+     * @return 是否成功
+     */
+    String cancelCheck(String id);
 }
