@@ -81,4 +81,16 @@ public class CheckController {
     public Result<String> startCheck(@RequestBody List<StockCheckDto> dto) {
         return Result.success(null, checkService.startCheck(dto));
     }
+
+    /**
+     * 确认盘点信息
+     *
+     * @param id 盘点ID
+     * @return 是否成功
+     */
+    @PutMapping("/confirm/{id}")
+    @GlobalTransactional
+    public Result<String> confirmCheck(@PathVariable String id) {
+        return Result.success(null, checkService.confirmCheck(id));
+    }
 }

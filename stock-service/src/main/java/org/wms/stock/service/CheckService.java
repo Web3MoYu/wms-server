@@ -57,4 +57,12 @@ public interface CheckService extends IService<Check> {
      * @return 是否成功
      */
     String cancelCheck(String id);
+
+    /**
+     * 确认盘点信息
+     *
+     * @param id 盘点ID
+     * @return 是否成功
+     */
+    String confirmCheck(String id);
 }

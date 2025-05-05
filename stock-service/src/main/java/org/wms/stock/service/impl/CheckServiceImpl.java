@@ -91,6 +91,19 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
 
     @Override
     public String addCheck(AddCheckDto dto) {
+        // 进行业务校验，如果当前区域存在盘点则提示
+        List<Check> checks = this.lambdaQuery()
+                .eq(Check::getAreaId, dto.getAreaId())
+                .eq(Check::getStatus, CheckStatus.WAIT_CHECK)
+                .or()
+                .eq(Check::getAreaId, dto.getAreaId())
+                .eq(Check::getStatus, CheckStatus.WAIT_CHECK)
+                .list();
+        if (!checks.isEmpty()) {
+            throw new BizException("当前区域存在未完成的盘点，无法再次盘点");
+        }
+
+
         String creator = SecurityUtil.getUserID();
         User checker = locationClient.getMainInspector(dto.getAreaId());
 
@@ -165,7 +178,7 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
         List<CheckItem> list = dto.stream().map(item -> {
             CheckItem checkItem = checkItemService.getById(item.getCheckItemId());
             checkItem.setActualQuantity(item.getActualQuantity());
-            checkItem.setDifferenceQuantity(checkItem.getSystemQuantity() - item.getActualQuantity());
+            checkItem.setDifferenceQuantity(item.getActualQuantity() - checkItem.getSystemQuantity());
             checkItem.setStatus(CheckStatus.COMPLETED);
             if (checkItem.getDifferenceQuantity() == 0) {
                 checkItem.setIsDifference(CheckDiffStatus.NO);
@@ -203,6 +216,31 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
         return "废弃成功";
     }
 
+    @Override
+    public String confirmCheck(String id) {
+        // 修改Check表
+        boolean checkUpdate = this.lambdaUpdate()
+                .eq(Check::getId, id)
+                .set(Check::getActualEndTime, LocalDateTime.now())
+                .set(Check::getStatus, CheckStatus.COMPLETED)
+                .update();
+
+        // 修改库存数量
+        List<CheckItem> checkItems = checkItemService.lambdaQuery().eq(CheckItem::getCheckId, id).list();
+        List<Stock> list = checkItems.stream().map(item -> {
+            Stock stock = stockService.getById(item.getStockId());
+            stock.setQuantity(stock.getQuantity() + item.getDifferenceQuantity());
+            stock.setAvailableQuantity(stock.getAvailableQuantity() + item.getDifferenceQuantity());
+            return stock;
+        }).toList();
+
+        boolean stockUpdate = stockService.updateBatchById(list);
+        if (!checkUpdate || !stockUpdate) {
+            throw new BizException("确认失败");
+        }
+        return "确认成功";
+    }
+
 
     public CheckVo assembleCheckVo(Check check) {
         CheckVo vo = new CheckVo();
@@ -218,7 +256,3 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
         return vo;
     }
 }
-
-
-
-
