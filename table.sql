@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 23:36:37
+ Date: 06/05/2025 00:58:40
 */
 
 SET NAMES utf8mb4;
@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `notif_msg`;
 CREATE TABLE `notif_msg` (
   `id` varchar(32) NOT NULL COMMENT '通知ID',
-  `type` tinyint(1) NOT NULL COMMENT '通知类型：1-库存预警，2-质检通知，3-订单状态，4-异常通知，5-补货通知，6-其他',
+  `type` tinyint(1) NOT NULL COMMENT '1-入库单，2-出库单，3-质检单，4-库位变更，5-库存预警，6-库存盘点\n',
   `title` varchar(200) NOT NULL COMMENT '通知标题',
   `content` text NOT NULL COMMENT '通知内容',
   `recipient_id` varchar(32) NOT NULL COMMENT '接收人ID',
@@ -33,7 +33,7 @@ CREATE TABLE `notif_msg` (
   `read_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '阅读状态：0-未读，1-已读',
   `priority` tinyint(1) DEFAULT '0' COMMENT '优先级：0-普通，1-重要，2-紧急',
   `related_biz_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '关联业务ID,可能是入库id，出库id等用于跳转页面',
-  `related_biz_type` tinyint(1) DEFAULT NULL COMMENT '关联业务类型：1-入库单，2-出库单，3-质检单，4-异常标记，5-库存预警',
+  `related_biz_type` tinyint(1) DEFAULT NULL COMMENT '关联业务类型：1-入库单，2-出库单，3-质检单，4-库位变更，5-库存预警，6-库存盘点\n',
   `send_time` datetime NOT NULL COMMENT '发送时间',
   `read_time` datetime DEFAULT NULL COMMENT '阅读时间',
   `is_system` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否系统通知：0-否，1-是',
@@ -401,7 +401,7 @@ CREATE TABLE `stock_check` (
   `plan_end_time` datetime NOT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-待确认，2-已完成',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：-1-已废弃,0-待盘点，1-待确认，2-已完成',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -422,7 +422,7 @@ CREATE TABLE `stock_check_item` (
   `system_quantity` int NOT NULL COMMENT '系统数量',
   `actual_quantity` int DEFAULT NULL COMMENT '实际数量',
   `difference_quantity` int DEFAULT NULL COMMENT '差异数量',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-已盘点',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：-1-已废弃,0-待盘点，2-已盘点',
   `is_difference` tinyint(1) DEFAULT '0' COMMENT '是否有差异：0-无，1-有',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -555,7 +555,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2926 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2966 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
