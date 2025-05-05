@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 21:49:09
+ Date: 05/05/2025 23:36:37
 */
 
 SET NAMES utf8mb4;
@@ -401,7 +401,7 @@ CREATE TABLE `stock_check` (
   `plan_end_time` datetime NOT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-待确认，3-已完成',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-待确认，2-已完成',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -418,7 +418,7 @@ DROP TABLE IF EXISTS `stock_check_item`;
 CREATE TABLE `stock_check_item` (
   `id` varchar(32) NOT NULL COMMENT '明细ID',
   `check_id` varchar(32) NOT NULL COMMENT '盘点单ID',
-  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '产品ID',
+  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '库存ID',
   `system_quantity` int NOT NULL COMMENT '系统数量',
   `actual_quantity` int DEFAULT NULL COMMENT '实际数量',
   `difference_quantity` int DEFAULT NULL COMMENT '差异数量',
@@ -555,7 +555,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2922 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2926 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area

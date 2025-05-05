@@ -8,9 +8,8 @@ import lombok.Getter;
 public enum CheckStatus {
 
     WAIT_CHECK(0, "待盘点"),
-    CHECKING(1, "盘点中"),
-    WAIT_CONFIRM(2, "待确认"),
-    COMPLETED(3, "已完成");
+    WAIT_CONFIRM(1, "待确认"),
+    COMPLETED(2, "已完成");
 
     @JsonValue
     @EnumValue

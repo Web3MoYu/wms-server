@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 21:49:00
+ Date: 05/05/2025 23:36:28
 */
 
 SET NAMES utf8mb4;
@@ -130,6 +130,7 @@ INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `reci
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919386945454325761', 5, '库存盘点', '你有一条库位盘点消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SC20250505000004', 6, '2025-05-05 21:41:23', '2025-05-05 21:41:24', 1, '2025-05-05 21:41:23', '2025-05-05 21:41:23');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919387657336766466', 4, '库位变更', '你有一条库位变更消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SM20250505000001', 4, '2025-05-05 21:44:13', '2025-05-05 21:44:15', 1, '2025-05-05 21:44:13', '2025-05-05 21:44:13');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919388541642850305', 4, '库位变更', '你有一条库位变更消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SM20250505000002', 4, '2025-05-05 21:47:43', '2025-05-05 21:47:45', 1, '2025-05-05 21:47:43', '2025-05-05 21:47:43');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919404454211469313', 5, '库存盘点', '你有一条库位盘点消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SC20250505000005', 6, '2025-05-05 22:50:57', '2025-05-05 22:50:59', 1, '2025-05-05 22:50:57', '2025-05-05 22:50:57');
 COMMIT;
 
 -- ----------------------------
@@ -872,7 +873,7 @@ CREATE TABLE `stock_check` (
   `plan_end_time` datetime NOT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-待确认，3-已完成',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-待确认，2-已完成',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -887,7 +888,8 @@ CREATE TABLE `stock_check` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `stock_check` (`id`, `check_no`, `area_id`, `creator`, `checker`, `plan_start_time`, `plan_end_time`, `actual_start_time`, `actual_end_time`, `status`, `remark`, `create_time`, `update_time`) VALUES ('1919386207651094529', 'SC20250505000003', '1898646093588840449', '1896450516030771201', '1896450516030771201', '2025-05-05 00:00:00', '2025-05-12 00:00:00', NULL, NULL, 0, '', '2025-05-05 21:38:27', '2025-05-05 21:38:27');
-INSERT INTO `stock_check` (`id`, `check_no`, `area_id`, `creator`, `checker`, `plan_start_time`, `plan_end_time`, `actual_start_time`, `actual_end_time`, `status`, `remark`, `create_time`, `update_time`) VALUES ('1919386945164926977', 'SC20250505000004', '1898646093588840449', '1896450516030771201', '1896450516030771201', '2025-05-05 00:00:00', '2025-05-14 00:00:00', NULL, NULL, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
+INSERT INTO `stock_check` (`id`, `check_no`, `area_id`, `creator`, `checker`, `plan_start_time`, `plan_end_time`, `actual_start_time`, `actual_end_time`, `status`, `remark`, `create_time`, `update_time`) VALUES ('1919386945164926977', 'SC20250505000004', '1898646093588840449', '1896450516030771201', '1896450516030771201', '2025-05-05 00:00:00', '2025-05-14 00:00:00', '2025-05-05 23:32:42', NULL, 1, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
+INSERT INTO `stock_check` (`id`, `check_no`, `area_id`, `creator`, `checker`, `plan_start_time`, `plan_end_time`, `actual_start_time`, `actual_end_time`, `status`, `remark`, `create_time`, `update_time`) VALUES ('1919404453351608322', 'SC20250505000005', '1898645979654766593', '1896450516030771201', '1896450516030771201', '2025-05-26 00:00:00', '2025-05-31 00:00:00', NULL, NULL, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
 COMMIT;
 
 -- ----------------------------
@@ -897,7 +899,7 @@ DROP TABLE IF EXISTS `stock_check_item`;
 CREATE TABLE `stock_check_item` (
   `id` varchar(32) NOT NULL COMMENT '明细ID',
   `check_id` varchar(32) NOT NULL COMMENT '盘点单ID',
-  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '产品ID',
+  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '库存ID',
   `system_quantity` int NOT NULL COMMENT '系统数量',
   `actual_quantity` int DEFAULT NULL COMMENT '实际数量',
   `difference_quantity` int DEFAULT NULL COMMENT '差异数量',
@@ -918,8 +920,17 @@ CREATE TABLE `stock_check_item` (
 BEGIN;
 INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386207793700866', '1919386207651094529', '1912476713321988098', 3244, NULL, NULL, 0, 0, '', '2025-05-05 21:38:27', '2025-05-05 21:38:27');
 INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386207802089474', '1919386207651094529', '1918561943200985090', 1, NULL, NULL, 0, 0, '', '2025-05-05 21:38:27', '2025-05-05 21:38:27');
-INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386945328504833', '1919386945164926977', '1912476713321988098', 3244, NULL, NULL, 0, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
-INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386945332699138', '1919386945164926977', '1918561943200985090', 1, NULL, NULL, 0, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386945328504833', '1919386945164926977', '1912476713321988098', 3244, 3244, 0, 2, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386945332699138', '1919386945164926977', '1918561943200985090', 1, 1, 0, 2, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453854924801', '1919404453351608322', '1911094357797847042', 12309, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453896867842', '1919404453351608322', '1911094386121981953', 14402, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453901062146', '1919404453351608322', '1911094412244107266', 13412, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453901062147', '1919404453351608322', '1911094433572143105', 2154, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453901062148', '1919404453351608322', '1911094458909933570', 14431, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453901062149', '1919404453351608322', '1912476619063394306', 11234, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453901062150', '1919404453351608322', '1912476789536686082', 44428, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453905256450', '1919404453351608322', '1914662057091686401', 1227, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919404453905256451', '1919404453351608322', '1914662057418842114', 129, NULL, NULL, 0, 0, '', '2025-05-05 22:50:57', '2025-05-05 22:50:57');
 COMMIT;
 
 -- ----------------------------
@@ -1362,7 +1373,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2922 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2926 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of undo_log

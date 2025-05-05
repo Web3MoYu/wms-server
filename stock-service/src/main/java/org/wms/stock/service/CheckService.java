@@ -3,6 +3,7 @@ package org.wms.stock.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.wms.stock.model.dto.AddCheckDto;
 import org.wms.stock.model.dto.CheckQueryDto;
+import org.wms.stock.model.dto.StockCheckDto;
 import org.wms.stock.model.entity.Check;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.stock.model.vo.CheckItemVo;
@@ -40,4 +41,12 @@ public interface CheckService extends IService<Check> {
      * @return 详情信息
      */
     List<CheckItemVo> detail(String id);
+
+    /**
+     * 开始盘点
+     *
+     * @param dto 盘点信息
+     * @return 是否成功
+     */
+    String startCheck(List<StockCheckDto> dto);
 }

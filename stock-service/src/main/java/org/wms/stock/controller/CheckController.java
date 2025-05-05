@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.wms.common.model.Result;
 import org.wms.stock.model.dto.AddCheckDto;
 import org.wms.stock.model.dto.CheckQueryDto;
+import org.wms.stock.model.dto.StockCheckDto;
 import org.wms.stock.model.vo.CheckItemVo;
 import org.wms.stock.model.vo.CheckVo;
 import org.wms.stock.service.CheckService;
@@ -55,5 +56,17 @@ public class CheckController {
     @GetMapping("/detail/{id}")
     public Result<List<CheckItemVo>> detailMovement(@PathVariable String id) {
         return Result.success(checkService.detail(id), "查询详情成功");
+    }
+
+    /**
+     * 开始盘点
+     *
+     * @param dto 盘点信息
+     * @return 是否成功
+     */
+    @PostMapping("/startCheck")
+    @GlobalTransactional
+    public Result<String> startCheck(@RequestBody List<StockCheckDto> dto) {
+        return Result.success(null, checkService.startCheck(dto));
     }
 }

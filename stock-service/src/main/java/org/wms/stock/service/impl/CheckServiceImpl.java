@@ -25,8 +25,10 @@ import org.wms.common.utils.IdGenerate;
 import org.wms.security.util.SecurityUtil;
 import org.wms.stock.model.dto.AddCheckDto;
 import org.wms.stock.model.dto.CheckQueryDto;
+import org.wms.stock.model.dto.StockCheckDto;
 import org.wms.stock.model.entity.Check;
 import org.wms.stock.model.entity.CheckItem;
+import org.wms.stock.model.enums.CheckDiffStatus;
 import org.wms.stock.model.enums.CheckStatus;
 import org.wms.stock.model.vo.CheckItemVo;
 import org.wms.stock.model.vo.CheckVo;
@@ -149,6 +151,36 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
             vo.setStock(stockVo);
             return vo;
         }).toList();
+    }
+
+    @Override
+    public String startCheck(List<StockCheckDto> dto) {
+        String checkId = checkItemService.getById(dto.get(0).getCheckItemId()).getCheckId();
+        // 修改盘点信息
+        boolean checkUpdate = this.lambdaUpdate().eq(Check::getId, checkId)
+                .set(Check::getActualStartTime, LocalDateTime.now())
+                .set(Check::getStatus, CheckStatus.WAIT_CONFIRM)
+                .update();
+
+        List<CheckItem> list = dto.stream().map(item -> {
+            CheckItem checkItem = checkItemService.getById(item.getCheckItemId());
+            checkItem.setActualQuantity(item.getActualQuantity());
+            checkItem.setDifferenceQuantity(checkItem.getSystemQuantity() - item.getActualQuantity());
+            checkItem.setStatus(CheckStatus.COMPLETED);
+            if (checkItem.getDifferenceQuantity() == 0) {
+                checkItem.setIsDifference(CheckDiffStatus.NO);
+            } else {
+                checkItem.setIsDifference(CheckDiffStatus.YES);
+            }
+            return checkItem;
+        }).toList();
+
+        boolean checkItemUpdate = checkItemService.updateBatchById(list);
+
+        if (!checkUpdate || !checkItemUpdate) {
+            throw new BizException("盘点失败");
+        }
+        return "盘点成功";
     }
 
 
