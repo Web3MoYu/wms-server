@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 00:00:06
+ Date: 05/05/2025 09:10:21
 */
 
 SET NAMES utf8mb4;
@@ -806,7 +806,7 @@ CREATE TABLE `stock` (
 -- Records of stock
 -- ----------------------------
 BEGIN;
-INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `min_stock`, `max_stock`, `production_date`, `create_time`, `update_time`) VALUES ('1911094357797847042', '1897311533005512706', 'iPhone-15-pro', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1899421665568157700\"]}, {\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1898787743397023746\", \"1898787743397023747\"]}, {\"shelfId\": \"1898711159952617473\", \"storageIds\": [\"1898787743401218051\", \"1898787743401218050\"]}]', 12309, 12306, 0, 0, '2025041300000001', NULL, 23, '2025-04-13', '2025-04-13 00:00:00', '2025-04-15 00:00:00');
+INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `min_stock`, `max_stock`, `production_date`, `create_time`, `update_time`) VALUES ('1911094357797847042', '1897311533005512706', 'iPhone-15-pro', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352003\"]}]', 12309, 12306, 0, 0, '2025041300000001', NULL, 23, '2025-04-13', '2025-04-13 00:00:00', '2025-04-15 00:00:00');
 INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `min_stock`, `max_stock`, `production_date`, `create_time`, `update_time`) VALUES ('1911094386121981953', '1897315660058042369', 'Sansung-01', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898787401099874306\"]}]', 14402, 14401, 0, 0, '2025041300000002', NULL, NULL, '2025-04-13', '2025-04-13 00:00:00', '2025-04-13 00:00:00');
 INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `min_stock`, `max_stock`, `production_date`, `create_time`, `update_time`) VALUES ('1911094412244107266', '1901154713333276673', 'VIVO-X200', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352002\"]}, {\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898787361241403393\"]}]', 13412, 13411, 0, 0, '2025041300000003', 13410, 13430, '2025-04-13', '2025-04-13 00:00:00', '2025-05-03 00:00:00');
 INSERT INTO `stock` (`id`, `product_id`, `product_code`, `area_id`, `location`, `quantity`, `available_quantity`, `locked_quantity`, `alert_status`, `batch_number`, `min_stock`, `max_stock`, `production_date`, `create_time`, `update_time`) VALUES ('1911094433572143105', '1903068405488087041', 'HUAIWEI-MATE-60', '1898645979654766593', '[{\"shelfId\": \"1898711159952617473\", \"storageIds\": [\"1899421665572352006\"]}, {\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1898772262124433410\"]}]', 2154, 2154, 0, 0, '2025041300000004', NULL, NULL, '2025-04-13', '2025-04-13 00:00:00', '2025-05-03 00:00:00');
@@ -861,7 +861,6 @@ DROP TABLE IF EXISTS `stock_check`;
 CREATE TABLE `stock_check` (
   `id` varchar(32) NOT NULL COMMENT '盘点ID',
   `check_no` varchar(32) NOT NULL COMMENT '盘点单号',
-  `check_type` tinyint(1) NOT NULL COMMENT '盘点类型：1-全面盘点，2-抽样盘点，3-动态盘点',
   `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
   `creator` varchar(50) NOT NULL COMMENT '创建人',
   `checker` varchar(50) DEFAULT NULL COMMENT '盘点人',
@@ -869,7 +868,7 @@ CREATE TABLE `stock_check` (
   `plan_end_time` datetime DEFAULT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-已完成',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-待确认，3-已完成',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -892,10 +891,7 @@ DROP TABLE IF EXISTS `stock_check_item`;
 CREATE TABLE `stock_check_item` (
   `id` varchar(32) NOT NULL COMMENT '明细ID',
   `check_id` varchar(32) NOT NULL COMMENT '盘点单ID',
-  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
-  `batch_number` varchar(255) DEFAULT NULL COMMENT '批次号',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '产品ID',
   `system_quantity` int NOT NULL COMMENT '系统数量',
   `actual_quantity` int DEFAULT NULL COMMENT '实际数量',
   `difference_quantity` int DEFAULT NULL COMMENT '差异数量',
@@ -906,7 +902,7 @@ CREATE TABLE `stock_check_item` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_check_id` (`check_id`),
-  KEY `idx_product_id` (`product_id`),
+  KEY `idx_product_id` (`stock_id`),
   KEY `idx_is_difference` (`is_difference`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='盘点明细表';
 
@@ -946,7 +942,7 @@ CREATE TABLE `stock_movement` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `stock_movement` (`id`, `movement_no`, `stock_id`, `before_area_id`, `before_location`, `after_area_id`, `after_location`, `operator`, `approver`, `movement_time`, `reason`, `remark`, `create_time`, `status`) VALUES ('1918964273339588610', 'SM20250504000004', '1911094357797847042', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1899421665568157700\"]}, {\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1898787743397023746\", \"1898787743397023747\"]}, {\"shelfId\": \"1898711159952617473\", \"storageIds\": [\"1898787743401218051\", \"1898787743401218050\"]}]', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352003\"]}]', '1896450516030771201', '1896450516030771201', NULL, '不允许', '', '2025-05-04 17:41:39', -1);
-INSERT INTO `stock_movement` (`id`, `movement_no`, `stock_id`, `before_area_id`, `before_location`, `after_area_id`, `after_location`, `operator`, `approver`, `movement_time`, `reason`, `remark`, `create_time`, `status`) VALUES ('1919054288635699202', 'SM20250504000005', '1911094357797847042', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1899421665568157700\"]}, {\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1898787743397023746\", \"1898787743397023747\"]}, {\"shelfId\": \"1898711159952617473\", \"storageIds\": [\"1898787743401218051\", \"1898787743401218050\"]}]', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352003\"]}]', '1896450516030771201', '1896450516030771201', NULL, NULL, '', '2025-05-04 23:39:31', 1);
+INSERT INTO `stock_movement` (`id`, `movement_no`, `stock_id`, `before_area_id`, `before_location`, `after_area_id`, `after_location`, `operator`, `approver`, `movement_time`, `reason`, `remark`, `create_time`, `status`) VALUES ('1919054288635699202', 'SM20250504000005', '1911094357797847042', '1898645979654766593', '[{\"shelfId\": \"1898700659026018306\", \"storageIds\": [\"1899421665568157700\"]}, {\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1898787743397023746\", \"1898787743397023747\"]}, {\"shelfId\": \"1898711159952617473\", \"storageIds\": [\"1898787743401218051\", \"1898787743401218050\"]}]', '1898645979654766593', '[{\"shelfId\": \"1898707410911625217\", \"storageIds\": [\"1899421665572352003\"]}]', '1896450516030771201', '1896450516030771201', '2025-05-05 00:04:28', NULL, '', '2025-05-04 23:39:31', 2);
 COMMIT;
 
 -- ----------------------------
@@ -1354,7 +1350,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2912 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2918 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of undo_log
@@ -1531,12 +1527,12 @@ INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898772262124433410', '1898645979654766593', '1898700659026018306', '002', 'A-01-002', 0, '1903068405488087041', '2025-03-10 00:25:59', '2025-03-10 01:25:46');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787361241403393', '1898645979654766593', '1898700659026018306', '003', 'A-01-003', 0, '1901154713333276673', '2025-03-10 01:25:59', '2025-03-19 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787401099874306', '1898645979654766593', '1898700659026018306', '004', 'A-01-004', 0, '1897315660058042369', '2025-03-10 01:26:09', '2025-03-10 01:26:09');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023746', '1898645979654766593', '1898707410911625217', '001', 'A-02-001', 0, '1897311533005512706', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023747', '1898645979654766593', '1898707410911625217', '002', 'A-02-002', 0, '1897311533005512706', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023746', '1898645979654766593', '1898707410911625217', '001', 'A-02-001', 1, NULL, '2025-03-10 01:27:30', '2025-03-10 01:27:30');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023747', '1898645979654766593', '1898707410911625217', '002', 'A-02-002', 1, NULL, '2025-03-10 01:27:30', '2025-03-10 01:27:30');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023748', '1898645979654766593', '1898707410911625217', '003', 'A-02-003', 0, '1903068405488087041', '2025-03-10 01:27:30', '2025-03-19 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743397023749', '1898645979654766593', '1898707410911625217', '004', 'A-02-004', 0, '1897311533005512706', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218050', '1898645979654766593', '1898711159952617473', '001', 'A-03-001', 0, '1897311533005512706', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218051', '1898645979654766593', '1898711159952617473', '002', 'A-03-002', 0, '1897311533005512706', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218050', '1898645979654766593', '1898711159952617473', '001', 'A-03-001', 1, NULL, '2025-03-10 01:27:30', '2025-03-10 01:27:30');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218051', '1898645979654766593', '1898711159952617473', '002', 'A-03-002', 1, NULL, '2025-03-10 01:27:30', '2025-03-10 01:27:30');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218052', '1898645979654766593', '1898711159952617473', '003', 'A-03-003', 0, '1897311533005512706', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218053', '1898645979654766593', '1898711159952617473', '004', 'A-03-004', 0, '1897314226491072514', '2025-03-10 01:27:30', '2025-03-10 01:27:30');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898787743401218054', '1898645979654766593', '1898711268564119554', '001', 'A-04-001', 0, '1897314424227340290', '2025-03-10 01:27:30', '2025-03-19 00:00:00');
@@ -1673,12 +1669,12 @@ INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1898791027675467783', '1898649633312980994', '1898715064577024003', '004', 'F-06-004', 1, NULL, '2025-03-10 01:40:33', '2025-03-10 01:40:33');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157698', '1898645979654766593', '1898700659026018306', '005', 'A-01-005', 0, '1897311533005512706', '2025-03-11 00:00:00', '2025-03-29 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157699', '1898645979654766593', '1898700659026018306', '006', 'A-01-006', 0, '1897314226491072514', '2025-03-11 00:00:00', '2025-03-19 00:00:00');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157700', '1898645979654766593', '1898700659026018306', '007', 'A-01-007', 0, '1897311533005512706', '2025-03-11 00:00:00', '2025-03-19 00:00:00');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157700', '1898645979654766593', '1898700659026018306', '007', 'A-01-007', 1, NULL, '2025-03-11 00:00:00', '2025-03-19 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157701', '1898645979654766593', '1898700659026018306', '008', 'A-01-008', 0, '1897311533005512706', '2025-03-11 00:00:00', '2025-03-11 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157702', '1898645979654766593', '1898707410911625217', '005', 'A-02-005', 0, '1897314226491072514', '2025-03-11 00:00:00', '2025-03-11 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665568157703', '1898645979654766593', '1898707410911625217', '006', 'A-02-006', 0, '1897311533005512706', '2025-03-11 00:00:00', '2025-03-11 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665572352002', '1898645979654766593', '1898707410911625217', '007', 'A-02-007', 0, '1901154713333276673', '2025-03-11 00:00:00', '2025-03-11 00:00:00');
-INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665572352003', '1898645979654766593', '1898707410911625217', '008', 'A-02-008', 1, NULL, '2025-03-11 00:00:00', '2025-03-19 00:00:00');
+INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665572352003', '1898645979654766593', '1898707410911625217', '008', 'A-02-008', 0, '1897311533005512706', '2025-03-11 00:00:00', '2025-03-19 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665572352004', '1898645979654766593', '1898711159952617473', '005', 'A-03-005', 1, NULL, '2025-03-11 00:00:00', '2025-03-11 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665572352005', '1898645979654766593', '1898711159952617473', '006', 'A-03-006', 1, NULL, '2025-03-11 00:00:00', '2025-03-11 00:00:00');
 INSERT INTO `wms_storage_location` (`id`, `area_id`, `shelf_id`, `location_code`, `location_name`, `status`, `product_id`, `create_time`, `update_time`) VALUES ('1899421665572352006', '1898645979654766593', '1898711159952617473', '007', 'A-03-007', 0, '1903068405488087041', '2025-03-11 00:00:00', '2025-03-11 00:00:00');

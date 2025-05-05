@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 00:00:16
+ Date: 05/05/2025 09:10:30
 */
 
 SET NAMES utf8mb4;
@@ -394,7 +394,6 @@ DROP TABLE IF EXISTS `stock_check`;
 CREATE TABLE `stock_check` (
   `id` varchar(32) NOT NULL COMMENT '盘点ID',
   `check_no` varchar(32) NOT NULL COMMENT '盘点单号',
-  `check_type` tinyint(1) NOT NULL COMMENT '盘点类型：1-全面盘点，2-抽样盘点，3-动态盘点',
   `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
   `creator` varchar(50) NOT NULL COMMENT '创建人',
   `checker` varchar(50) DEFAULT NULL COMMENT '盘点人',
@@ -402,7 +401,7 @@ CREATE TABLE `stock_check` (
   `plan_end_time` datetime DEFAULT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-已完成',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-待确认，3-已完成',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
@@ -419,10 +418,7 @@ DROP TABLE IF EXISTS `stock_check_item`;
 CREATE TABLE `stock_check_item` (
   `id` varchar(32) NOT NULL COMMENT '明细ID',
   `check_id` varchar(32) NOT NULL COMMENT '盘点单ID',
-  `product_id` varchar(32) NOT NULL COMMENT '产品ID',
-  `batch_number` varchar(255) DEFAULT NULL COMMENT '批次号',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
-  `location` json DEFAULT NULL COMMENT '具体位置，格式\n[\n  {\n      shelfId:,\n      storageIds:[]\n  }\n]',
+  `stock_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '产品ID',
   `system_quantity` int NOT NULL COMMENT '系统数量',
   `actual_quantity` int DEFAULT NULL COMMENT '实际数量',
   `difference_quantity` int DEFAULT NULL COMMENT '差异数量',
@@ -433,7 +429,7 @@ CREATE TABLE `stock_check_item` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_check_id` (`check_id`),
-  KEY `idx_product_id` (`product_id`),
+  KEY `idx_product_id` (`stock_id`),
   KEY `idx_is_difference` (`is_difference`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='盘点明细表';
 
@@ -559,7 +555,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2912 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2918 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area
