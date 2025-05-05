@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 09:10:30
+ Date: 05/05/2025 21:42:47
 */
 
 SET NAMES utf8mb4;
@@ -394,11 +394,11 @@ DROP TABLE IF EXISTS `stock_check`;
 CREATE TABLE `stock_check` (
   `id` varchar(32) NOT NULL COMMENT '盘点ID',
   `check_no` varchar(32) NOT NULL COMMENT '盘点单号',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
+  `area_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区域ID',
   `creator` varchar(50) NOT NULL COMMENT '创建人',
-  `checker` varchar(50) DEFAULT NULL COMMENT '盘点人',
-  `plan_start_time` datetime DEFAULT NULL COMMENT '计划开始时间',
-  `plan_end_time` datetime DEFAULT NULL COMMENT '计划结束时间',
+  `checker` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '盘点人',
+  `plan_start_time` datetime NOT NULL COMMENT '计划开始时间',
+  `plan_end_time` datetime NOT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-待确认，3-已完成',
@@ -555,7 +555,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2918 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2922 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Table structure for wms_area

@@ -11,7 +11,7 @@
  Target Server Version : 80404 (8.4.4)
  File Encoding         : 65001
 
- Date: 05/05/2025 09:10:21
+ Date: 05/05/2025 21:42:29
 */
 
 SET NAMES utf8mb4;
@@ -103,7 +103,7 @@ INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `reci
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1916735587316842497', 3, '订单通知', '你有一笔入库订单需要审批', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'OR20250428000001', 1, '2025-04-28 14:05:50', '2025-04-30 10:23:51', 1, '2025-04-28 14:05:50', '2025-04-28 14:05:50');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1916735774722539522', 3, '订单通知', '你有一笔入库订单需要审批', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'OR20250428000002', 1, '2025-04-28 14:06:35', '2025-04-30 10:23:39', 1, '2025-04-28 14:06:35', '2025-04-28 14:06:35');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1916735871548047362', 2, '质检通知', '你有一笔出库质检订单', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'QI20250428000001', 3, '2025-04-28 14:06:58', '2025-05-03 15:01:07', 1, '2025-04-28 14:06:58', '2025-04-28 14:06:58');
-INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1916736038032556033', 3, '订单通知', '你有一笔出库订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', 'iKun', 0, 0, 'IR20250428000001', 2, '2025-04-28 14:07:37', NULL, 1, '2025-04-28 14:07:37', '2025-04-28 14:07:37');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1916736038032556033', 3, '订单通知', '你有一笔出库订单需要审批', '1896569037967204353', '负责人1', '1896450516030771201', 'iKun', 1, 0, 'IR20250428000001', 2, '2025-04-28 14:07:37', '2025-05-05 13:25:37', 1, '2025-04-28 14:07:37', '2025-04-28 14:07:37');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1916817089856512002', 2, '质检通知', '你有一笔出库质检订单', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'QI20250428000002', 3, '2025-04-28 19:29:41', '2025-05-03 15:01:07', 1, '2025-04-28 19:29:41', '2025-04-28 19:29:41');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1917405559801417729', 3, '订单通知', '你有一笔出库订单需要审批', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'IR20250430000001', 2, '2025-04-30 10:28:04', '2025-05-03 15:01:06', 1, '2025-04-30 10:28:04', '2025-04-30 10:28:04');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1917405798096605185', 2, '质检通知', '你有一笔入库质检订单', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'QO20250430000001', 3, '2025-04-30 10:29:01', '2025-05-03 15:01:06', 1, '2025-04-30 10:29:01', '2025-04-30 10:29:01');
@@ -126,6 +126,8 @@ INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `reci
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1918570009036304386', 2, '质检通知', '你有一笔入库质检订单', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'QO20250503000002', 3, '2025-05-03 15:35:10', '2025-05-03 15:35:12', 1, '2025-05-03 15:35:10', '2025-05-03 15:35:10');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1918964275713646594', 4, '库位变更', '你有一条库位变更消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SM20250504000004', 4, '2025-05-04 17:41:51', '2025-05-04 17:41:56', 1, '2025-05-04 17:41:51', '2025-05-04 17:41:51');
 INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919054289130733570', 4, '库位变更', '你有一条库位变更消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SM20250504000005', 4, '2025-05-04 23:39:31', '2025-05-04 23:39:36', 1, '2025-05-04 23:39:31', '2025-05-04 23:39:31');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919386207978242049', 5, '库存盘点', '你有一条库位盘点消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SC20250505000003', 6, '2025-05-05 21:38:27', '2025-05-05 21:38:29', 1, '2025-05-05 21:38:27', '2025-05-05 21:38:27');
+INSERT INTO `notif_msg` (`id`, `type`, `title`, `content`, `recipient_id`, `recipient_name`, `sender_id`, `sender_name`, `read_status`, `priority`, `related_biz_id`, `related_biz_type`, `send_time`, `read_time`, `is_system`, `create_time`, `update_time`) VALUES ('1919386945454325761', 5, '库存盘点', '你有一条库位盘点消息', '1896450516030771201', 'iKun', '1896450516030771201', 'iKun', 1, 0, 'SC20250505000004', 6, '2025-05-05 21:41:23', '2025-05-05 21:41:24', 1, '2025-05-05 21:41:23', '2025-05-05 21:41:23');
 COMMIT;
 
 -- ----------------------------
@@ -861,11 +863,11 @@ DROP TABLE IF EXISTS `stock_check`;
 CREATE TABLE `stock_check` (
   `id` varchar(32) NOT NULL COMMENT '盘点ID',
   `check_no` varchar(32) NOT NULL COMMENT '盘点单号',
-  `area_id` varchar(32) DEFAULT NULL COMMENT '区域ID',
+  `area_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区域ID',
   `creator` varchar(50) NOT NULL COMMENT '创建人',
-  `checker` varchar(50) DEFAULT NULL COMMENT '盘点人',
-  `plan_start_time` datetime DEFAULT NULL COMMENT '计划开始时间',
-  `plan_end_time` datetime DEFAULT NULL COMMENT '计划结束时间',
+  `checker` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '盘点人',
+  `plan_start_time` datetime NOT NULL COMMENT '计划开始时间',
+  `plan_end_time` datetime NOT NULL COMMENT '计划结束时间',
   `actual_start_time` datetime DEFAULT NULL COMMENT '实际开始时间',
   `actual_end_time` datetime DEFAULT NULL COMMENT '实际结束时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0-待盘点，1-盘点中，2-待确认，3-已完成',
@@ -882,6 +884,8 @@ CREATE TABLE `stock_check` (
 -- Records of stock_check
 -- ----------------------------
 BEGIN;
+INSERT INTO `stock_check` (`id`, `check_no`, `area_id`, `creator`, `checker`, `plan_start_time`, `plan_end_time`, `actual_start_time`, `actual_end_time`, `status`, `remark`, `create_time`, `update_time`) VALUES ('1919386207651094529', 'SC20250505000003', '1898646093588840449', '1896450516030771201', '1896450516030771201', '2025-05-05 00:00:00', '2025-05-12 00:00:00', NULL, NULL, 0, '', '2025-05-05 21:38:27', '2025-05-05 21:38:27');
+INSERT INTO `stock_check` (`id`, `check_no`, `area_id`, `creator`, `checker`, `plan_start_time`, `plan_end_time`, `actual_start_time`, `actual_end_time`, `status`, `remark`, `create_time`, `update_time`) VALUES ('1919386945164926977', 'SC20250505000004', '1898646093588840449', '1896450516030771201', '1896450516030771201', '2025-05-05 00:00:00', '2025-05-14 00:00:00', NULL, NULL, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
 COMMIT;
 
 -- ----------------------------
@@ -910,6 +914,10 @@ CREATE TABLE `stock_check_item` (
 -- Records of stock_check_item
 -- ----------------------------
 BEGIN;
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386207793700866', '1919386207651094529', '1912476713321988098', 3244, NULL, NULL, 0, 0, '', '2025-05-05 21:38:27', '2025-05-05 21:38:27');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386207802089474', '1919386207651094529', '1918561943200985090', 1, NULL, NULL, 0, 0, '', '2025-05-05 21:38:27', '2025-05-05 21:38:27');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386945328504833', '1919386945164926977', '1912476713321988098', 3244, NULL, NULL, 0, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
+INSERT INTO `stock_check_item` (`id`, `check_id`, `stock_id`, `system_quantity`, `actual_quantity`, `difference_quantity`, `status`, `is_difference`, `remark`, `create_time`, `update_time`) VALUES ('1919386945332699138', '1919386945164926977', '1918561943200985090', 1, NULL, NULL, 0, 0, '2323', '2025-05-05 21:41:23', '2025-05-05 21:41:23');
 COMMIT;
 
 -- ----------------------------
@@ -1350,7 +1358,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2918 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2922 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of undo_log
@@ -1379,8 +1387,8 @@ CREATE TABLE `wms_area` (
 -- Records of wms_area
 -- ----------------------------
 BEGIN;
-INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898645979654766593', 'A区', 'A', '1896450516030771201', 1, '这是A区', '2025-03-09 16:04:11', '2025-03-09 16:15:28');
-INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898646093588840449', 'B区', 'B', '1896450516030771201', 1, '这是B区', '2025-03-09 16:04:39', '2025-03-09 16:15:22');
+INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898645979654766593', 'A区', 'A', '1896450516030771201', 1, '这是A区', '2025-03-09 16:04:11', '2025-05-05 00:00:00');
+INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898646093588840449', 'B区', 'B', '1896450516030771201', 1, '这是B区', '2025-03-09 16:04:39', '2025-05-05 00:00:00');
 INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898648671391301633', 'C区', 'C', '1896450516030771201', 1, '这是C区', '2025-03-09 16:14:53', '2025-03-09 16:14:53');
 INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898648889922928641', 'D区', 'D', '1896450516030771201', 1, '这是D区', '2025-03-09 16:15:45', '2025-04-27 00:00:00');
 INSERT INTO `wms_area` (`id`, `area_name`, `area_code`, `area_manager`, `status`, `description`, `create_time`, `update_time`) VALUES ('1898649182169448450', 'E区', 'E', '1896450516030771201', 1, '这是E区', '2025-03-09 16:16:55', '2025-03-09 16:16:55');
@@ -1416,10 +1424,6 @@ CREATE TABLE `wms_area_inspector` (
 BEGIN;
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648671403884545', '1898648671391301633', 'C区', '1898647819238727682', '负责人3', '13122232224', 1, NULL, '2025-03-09 16:14:53', '2025-03-09 16:14:53');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648671403884546', '1898648671391301633', 'C区', '1898621669850411010', '质检员3', '13111111113', 0, NULL, '2025-03-09 16:14:53', '2025-03-09 16:14:53');
-INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648793089032194', '1898646093588840449', 'B区', '1895108523139411969', '负责人2', '13031392681', 1, NULL, '2025-03-09 16:15:22', '2025-03-09 16:15:22');
-INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648793093226498', '1898646093588840449', 'B区', '1898621550283386881', '质检员2', '13111111112', 0, NULL, '2025-03-09 16:15:22', '2025-03-09 16:15:22');
-INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648816572940290', '1898645979654766593', 'A区', '1896569037967204353', '负责人1', '13880681425', 1, NULL, '2025-03-09 16:15:28', '2025-03-09 16:15:28');
-INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898648816577134594', '1898645979654766593', 'A区', '1898621397732356097', '质检员1', '13111111111', 0, NULL, '2025-03-09 16:15:28', '2025-03-09 16:15:28');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898649182182031362', '1898649182169448450', 'E区', '1898647975300390914', '负责人5', '13122232225', 1, NULL, '2025-03-09 16:16:55', '2025-03-09 16:16:55');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1898649182186225666', '1898649182169448450', 'E区', '1898622012529242114', '质检员5', '13111111115', 0, NULL, '2025-03-09 16:16:55', '2025-03-09 16:16:55');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1899355150122721281', '1898649633312980994', 'F区', '1898648071593222145', '负责人6', '13122232227', 1, NULL, '2025-03-11 15:02:11', '2025-03-11 15:02:11');
@@ -1428,6 +1432,10 @@ INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, 
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1905977152026333185', '1905977110632747009', 'H区', '1898621397732356097', '质检员1', '13111111111', 1, NULL, '2025-03-29 00:00:00', '2025-03-29 00:00:00');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1916323562535190530', '1898648889922928641', 'D区', '1896569293849108482', '负责人4', '13880681422', 1, NULL, '2025-04-27 00:00:00', '2025-04-27 00:00:00');
 INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1916323562543579137', '1898648889922928641', 'D区', '1898621821399003138', '质检员4', '13111111114', 0, NULL, '2025-04-27 00:00:00', '2025-04-27 00:00:00');
+INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1919219781195767809', '1898645979654766593', 'A区', '1896450516030771201', 'iKun', '13880681423', 1, NULL, '2025-05-05 00:00:00', '2025-05-05 00:00:00');
+INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1919219781199962114', '1898645979654766593', 'A区', '1898621397732356097', '质检员1', '13111111111', 0, NULL, '2025-05-05 00:00:00', '2025-05-05 00:00:00');
+INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1919386084913168385', '1898646093588840449', 'B区', '1896450516030771201', 'iKun', '13880681423', 1, NULL, '2025-05-05 00:00:00', '2025-05-05 00:00:00');
+INSERT INTO `wms_area_inspector` (`id`, `area_id`, `area_name`, `inspector_id`, `inspector_name`, `inspector_phone`, `is_primary`, `remark`, `create_time`, `update_time`) VALUES ('1919386084917362689', '1898646093588840449', 'B区', '1898621550283386881', '质检员2', '13111111112', 0, NULL, '2025-05-05 00:00:00', '2025-05-05 00:00:00');
 COMMIT;
 
 -- ----------------------------
