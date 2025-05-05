@@ -5,7 +5,10 @@ import org.wms.stock.model.dto.AddCheckDto;
 import org.wms.stock.model.dto.CheckQueryDto;
 import org.wms.stock.model.entity.Check;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wms.stock.model.vo.CheckItemVo;
 import org.wms.stock.model.vo.CheckVo;
+
+import java.util.List;
 
 /**
  * @author moyu
@@ -29,4 +32,12 @@ public interface CheckService extends IService<Check> {
      * @return 是否成功
      */
     String addCheck(AddCheckDto dto);
+
+    /**
+     * 查看盘点详情
+     *
+     * @param id 盘点ID
+     * @return 详情信息
+     */
+    List<CheckItemVo> detail(String id);
 }

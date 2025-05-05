@@ -20,6 +20,7 @@ import org.wms.common.enums.msg.MsgEnums;
 import org.wms.common.enums.msg.MsgPriorityEnums;
 import org.wms.common.enums.msg.MsgTypeEnums;
 import org.wms.common.exception.BizException;
+import org.wms.common.model.vo.StockVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.security.util.SecurityUtil;
 import org.wms.stock.model.dto.AddCheckDto;
@@ -27,6 +28,7 @@ import org.wms.stock.model.dto.CheckQueryDto;
 import org.wms.stock.model.entity.Check;
 import org.wms.stock.model.entity.CheckItem;
 import org.wms.stock.model.enums.CheckStatus;
+import org.wms.stock.model.vo.CheckItemVo;
 import org.wms.stock.model.vo.CheckVo;
 import org.wms.stock.service.CheckItemService;
 import org.wms.stock.service.CheckService;
@@ -133,6 +135,20 @@ public class CheckServiceImpl extends ServiceImpl<CheckMapper, Check>
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), checker.getUserId()));
 
         return "新增成功";
+    }
+
+    @Override
+    public List<CheckItemVo> detail(String id) {
+
+        List<CheckItem> list = checkItemService.lambdaQuery().eq(CheckItem::getCheckId, id).list();
+        return list.stream().map(item -> {
+            CheckItemVo vo = new CheckItemVo();
+            BeanUtils.copyProperties(item, vo);
+            Stock stock = stockService.getById(item.getStockId());
+            StockVo stockVo = stockService.convertToStockVo(stock);
+            vo.setStock(stockVo);
+            return vo;
+        }).toList();
     }
 
 
