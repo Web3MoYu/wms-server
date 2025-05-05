@@ -59,6 +59,7 @@ public interface StockService extends IService<Stock> {
 
     /**
      * 将Stock转换为StockVo
+     *
      * @param stock stock
      * @return vo
      */

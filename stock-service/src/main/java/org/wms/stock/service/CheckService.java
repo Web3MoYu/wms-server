@@ -1,6 +1,7 @@
 package org.wms.stock.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.wms.stock.model.dto.AddCheckDto;
 import org.wms.stock.model.dto.CheckQueryDto;
 import org.wms.stock.model.entity.Check;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,4 +21,12 @@ public interface CheckService extends IService<Check> {
      * @return 分页数据
      */
     Page<CheckVo> pageList(CheckQueryDto dto);
+
+    /**
+     * 新增盘点信息
+     *
+     * @param dto 盘点信息
+     * @return 是否成功
+     */
+    String addCheck(AddCheckDto dto);
 }

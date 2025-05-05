@@ -8,13 +8,18 @@ import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.web.bind.annotation.*;
+import org.wms.api.client.UserClient;
 import org.wms.common.entity.location.Area;
+import org.wms.common.entity.sys.User;
 import org.wms.common.model.Location;
 import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.entity.location.Shelf;
 import org.wms.common.entity.location.Storage;
 import org.wms.common.enums.location.LocationStatusEnums;
+import org.wms.location.model.entity.AreaInspector;
+import org.wms.location.model.enums.IsPrimaryEnums;
+import org.wms.location.service.AreaInspectorService;
 import org.wms.location.service.AreaService;
 import org.wms.location.service.ShelfService;
 import org.wms.location.service.StorageLocationService;
@@ -29,10 +34,16 @@ public class LocationApiController {
     ShelfService service;
 
     @Resource
-    StorageLocationService storageService;
+    UserClient userClient;
 
     @Resource
     AreaService areaService;
+
+    @Resource
+    StorageLocationService storageService;
+
+    @Resource
+    AreaInspectorService areaInspectorService;
 
     /**
      * 获取位置列表
@@ -137,5 +148,20 @@ public class LocationApiController {
                     .set(Storage::getProductId, productId);
         }
         return storageService.update(wrapper);
+    }
+
+    /**
+     * 获取该区域的主要质检员
+     *
+     * @param areaId 区域ID
+     * @return User
+     */
+    @GetMapping("/getMainInspector/{areaId}")
+    public User getMainInspector(@PathVariable String areaId) {
+        AreaInspector one = areaInspectorService.lambdaQuery()
+                .eq(AreaInspector::getAreaId, areaId)
+                .eq(AreaInspector::getIsPrimary, IsPrimaryEnums.YES.getCode()).one();
+        return userClient.getUserById(one.getInspectorId());
+
     }
 }

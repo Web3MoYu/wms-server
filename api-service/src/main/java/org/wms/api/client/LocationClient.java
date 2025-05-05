@@ -1,11 +1,9 @@
 package org.wms.api.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.wms.common.entity.location.Area;
+import org.wms.common.entity.sys.User;
 import org.wms.common.model.Location;
 import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
@@ -60,4 +58,13 @@ public interface LocationClient {
     @PostMapping("/api/location/updateStatusInIds")
     boolean updateStatusInIds(@RequestBody Collection<String> ids, @RequestParam("status") Integer type,
                               @RequestParam(value = "productId", required = false) String productId);
+
+    /**
+     * 获取该区域的主要质检员
+     *
+     * @param areaId 区域ID
+     * @return User
+     */
+    @GetMapping("/api/location/getMainInspector/{areaId}")
+    User getMainInspector(@PathVariable String areaId);
 }
