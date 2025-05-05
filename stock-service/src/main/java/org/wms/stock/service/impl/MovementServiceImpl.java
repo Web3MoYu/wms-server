@@ -155,6 +155,7 @@ public class MovementServiceImpl extends ServiceImpl<MovementMapper, Movement>
 
         boolean update = this.lambdaUpdate().eq(Movement::getId, id)
                 .set(Movement::getReason, reason)
+                .set(Movement::getMovementTime, LocalDateTime.now())
                 .set(Movement::getStatus, MovementStatus.REJECT).update();
         if (!update) {
             throw new BizException("拒绝失败");
