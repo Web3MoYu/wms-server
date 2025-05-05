@@ -1,7 +1,10 @@
 package org.wms.stock.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.wms.stock.model.dto.CheckQueryDto;
 import org.wms.stock.model.entity.Check;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wms.stock.model.vo.CheckVo;
 
 /**
  * @author moyu
@@ -10,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CheckService extends IService<Check> {
 
+    /**
+     * 分页查询库存盘点信息
+     *
+     * @param dto 查询条件
+     * @return 分页数据
+     */
+    Page<CheckVo> pageList(CheckQueryDto dto);
 }
