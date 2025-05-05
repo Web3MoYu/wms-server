@@ -43,6 +43,9 @@ public class IdGenerate {
     // 库位移动前缀
     private static final String STORAGE_MOVEMENT_PREFIX = "SM"; // 库位移动 Storage Movement
 
+    // 库存盘点前缀
+    private static final String STOCK_CHECK_PREFIX = "SC"; // 库存盘点 Stock Check
+
     // 日期格式
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -183,6 +186,29 @@ public class IdGenerate {
         Long sequence = redisTemplate.opsForValue().increment(key);
         // 设置过期时间（3天）
         redisTemplate.expire(key, 3, TimeUnit.DAYS);
+
+        // 格式化为6位序列号，不足补0
+        String sequenceStr = String.format("%06d", sequence);
+
+        return prefix + date + sequenceStr;
+    }
+
+    /**
+     * 生成库存盘点编号
+     * 格式：前缀 + 日期 + 6位序列号
+     * 例如：SC2025031000001
+     *
+     * @return 库存盘点编号
+     */
+    public String generateStockCheckNo() {
+        String prefix = STOCK_CHECK_PREFIX;
+        String date = LocalDate.now().format(DATE_FORMATTER);
+        String key = "stockcheck:no:" + prefix + ":" + date;
+
+        // 使用Redis获取自增序列号
+        Long sequence = redisTemplate.opsForValue().increment(key);
+        // 设置过期时间（5天）
+        redisTemplate.expire(key, 5, TimeUnit.DAYS);
 
         // 格式化为6位序列号，不足补0
         String sequenceStr = String.format("%06d", sequence);
