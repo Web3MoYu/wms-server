@@ -89,6 +89,6 @@ public class PickingController {
      */
     @GetMapping("/statistics")
     public Result<List<PickingStatisticsVo>> getPickingStatistics(@RequestParam("range") String range) {
-        return Result.success(pickingOrderService.getOrderStatistics(range), "查询成功");
+        return Result.success(pickingOrderService.getPickingStatistics(range), "查询成功");
     }
 }

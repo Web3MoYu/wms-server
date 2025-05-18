@@ -433,7 +433,7 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
     }
 
     @Override
-    public List<PickingStatisticsVo> getOrderStatistics(String range) {
+    public List<PickingStatisticsVo> getPickingStatistics(String range) {
         DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         LocalDateTime endTime = LocalDateTime.now();

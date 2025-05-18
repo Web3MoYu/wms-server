@@ -65,5 +65,5 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @param range 时间范围：1day, 1week, 1month, 3months, 6months
      * @return 统计信息
      */
-    List<PickingStatisticsVo> getOrderStatistics(String range);
+    List<PickingStatisticsVo> getPickingStatistics(String range);
 }
