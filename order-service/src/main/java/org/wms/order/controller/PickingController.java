@@ -10,9 +10,7 @@ import org.wms.common.model.Result;
 import org.wms.order.model.dto.BatchAddPickingDto;
 import org.wms.order.model.dto.PickingOneDto;
 import org.wms.order.model.dto.PickingOrderDto;
-import org.wms.order.model.vo.PickingDetailVo;
-import org.wms.order.model.vo.PickingLocation;
-import org.wms.order.model.vo.PickingOrderVo;
+import org.wms.order.model.vo.*;
 import org.wms.order.service.PickingOrderService;
 
 import java.util.List;
@@ -81,5 +79,16 @@ public class PickingController {
     @GlobalTransactional(timeoutMills = 1000 * 60 * 10000)
     public Result<String> pickingOne(@RequestBody List<PickingOneDto> dto) {
         return pickingOrderService.pickOne(dto);
+    }
+
+    /**
+     * 获取拣货信息统计信息
+     *
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    @GetMapping("/statistics")
+    public Result<List<PickingStatisticsVo>> getPickingStatistics(@RequestParam("range") String range) {
+        return Result.success(pickingOrderService.getOrderStatistics(range), "查询成功");
     }
 }

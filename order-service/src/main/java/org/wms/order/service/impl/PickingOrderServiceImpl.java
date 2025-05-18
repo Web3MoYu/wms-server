@@ -32,6 +32,7 @@ import org.wms.common.model.vo.LocationInfo;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.common.utils.JsonUtils;
+import org.wms.common.utils.TimeUtils;
 import org.wms.order.mapper.InspectionItemMapper;
 import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.mapper.OrderOutItemMapper;
@@ -51,6 +52,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -82,6 +84,9 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
 
     @Resource
     InspectionMapper inspectionMapper;
+
+    @Resource
+    PickingOrderMapper pickingOrderMapper;
 
     @Resource
     OrderOutItemMapper orderOutItemMapper;
@@ -425,6 +430,32 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         Assert.hasLength(orderOutId, "orderOutId为空, 业务异常");
         addInspectionInfo(orderOutId, map);
         return Result.success(null, "拣货成功");
+    }
+
+    @Override
+    public List<PickingStatisticsVo> getOrderStatistics(String range) {
+        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime endTime = LocalDateTime.now();
+        LocalDateTime startTime = TimeUtils.getStartTime(range);
+        String startStr = startTime.format(FORMATTER);
+        String endStr = endTime.format(FORMATTER);
+        List<PickingStatisticsVo> list = pickingOrderMapper.getOrderStatistics(startStr, endStr);
+        for (PickingStatisticsVo vo : list) {
+            if (Objects.equals(vo.getStatus(), PickingStatus.UNPICKING.getCode())) {
+                vo.setStatusVo(PickingStatus.UNPICKING.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), PickingStatus.PICKING.getCode())) {
+                vo.setStatusVo(PickingStatus.PICKING.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), PickingStatus.PICKED.getCode())) {
+                vo.setStatusVo(PickingStatus.PICKED.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), PickingStatus.ERROR.getCode())) {
+                vo.setStatusVo(PickingStatus.ERROR.getDesc());
+            }
+        }
+        return list;
     }
 
 

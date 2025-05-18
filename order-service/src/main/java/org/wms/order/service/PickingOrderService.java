@@ -7,9 +7,7 @@ import org.wms.order.model.dto.PickingOneDto;
 import org.wms.order.model.dto.PickingOrderDto;
 import org.wms.order.model.entity.PickingOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.wms.order.model.vo.PickingDetailVo;
-import org.wms.order.model.vo.PickingLocation;
-import org.wms.order.model.vo.PickingOrderVo;
+import org.wms.order.model.vo.*;
 
 import java.util.List;
 
@@ -60,4 +58,12 @@ public interface PickingOrderService extends IService<PickingOrder> {
      * @return 是否分拣成功
      */
     Result<String> pickOne(List<PickingOneDto> dto);
+
+    /**
+     * 获取订单统计信息
+     *
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    List<PickingStatisticsVo> getOrderStatistics(String range);
 }

@@ -21,4 +21,13 @@
         id,picking_no,picker,status,remark,total_orders,
         total_items,total_quantity,create_time,update_time
     </sql>
+    <select id="getOrderStatistics" resultType="org.wms.order.model.vo.PickingStatisticsVo">
+        SELECT status,
+               SUM(total_orders)   AS orderCount,
+               SUM(total_quantity) AS itemCount,
+               COUNT(*)            AS count
+        FROM picking_order
+        WHERE create_time BETWEEN #{startStr} AND #{endStr}
+        GROUP BY status
+    </select>
 </mapper>
