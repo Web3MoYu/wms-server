@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 import org.wms.common.entity.order.InspectionItem;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.wms.order.model.vo.InspectStatisticsVo;
+
+import java.util.List;
 
 /**
  * @author moyu
@@ -27,4 +30,14 @@ public interface InspectionItemMapper extends BaseMapper<InspectionItem> {
     boolean updateItemStatusAndCount(@Param("remark") String remark, @Param("id") String id,
                                      @Param("status") Integer status, @Param("count") Integer count,
                                      @Param("actualCount") Integer actualCount);
+
+    /**
+     * 获取质检统计信息
+     *
+     * @param type all-全部，in-入库，out-出库
+     * @return 统计信息
+     */
+    List<InspectStatisticsVo> getInspectionStatistics(@Param("type") String type,
+                                                      @Param("startStr") String startStr,
+                                                      @Param("endStr") String endStr);
 }

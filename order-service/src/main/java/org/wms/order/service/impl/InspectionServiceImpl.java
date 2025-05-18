@@ -2,6 +2,7 @@ package org.wms.order.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import cn.hutool.core.lang.Assert;
@@ -34,6 +35,7 @@ import org.wms.common.model.Location;
 import org.wms.common.model.Result;
 import org.wms.common.utils.IdGenerate;
 import org.wms.common.utils.JsonUtils;
+import org.wms.common.utils.TimeUtils;
 import org.wms.order.mapper.InspectionItemMapper;
 import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.model.dto.InBoundInspectDto;
@@ -48,6 +50,7 @@ import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.InspectStatisticsVo;
 import org.wms.order.service.*;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -88,6 +91,9 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
 
     @Resource
     private OrderOutService orderOutService;
+
+    @Resource
+    private InspectionMapper inspectionMapper;
 
     @Resource
     private OrderInItemService orderInItemService;
@@ -376,6 +382,17 @@ public class InspectionServiceImpl extends ServiceImpl<InspectionMapper, Inspect
         vo.setOrderDetail(data);
         vo.setInspectionItems(inspectionItems);
         return Result.success(vo, "查询成功");
+    }
+
+    @Override
+    public List<InspectStatisticsVo> getInspectionStatistics(String type, String range) {
+        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime endTime = LocalDateTime.now();
+        LocalDateTime startTime = TimeUtils.getStartTime(range);
+        String startStr = startTime.format(FORMATTER);
+        String endStr = endTime.format(FORMATTER);
+        return inspectionItemMapper.getInspectionStatistics(type, startStr, endStr);
     }
 
     @Override

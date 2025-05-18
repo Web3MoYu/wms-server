@@ -36,4 +36,17 @@
             update_time          = NOW()
         WHERE id = #{id}
     </update>
+    <select id="getInspectionStatistics" resultType="org.wms.order.model.vo.InspectStatisticsVo">
+        SELECT status,
+        COUNT(*) AS count
+        FROM quality_inspection
+        WHERE create_time BETWEEN #{startStr} AND #{endStr}
+        <if test="type != null and type != '' and type == 'in'">
+            and inspection_type = 1
+        </if>
+        <if test="type != null and type != '' and type == 'out'">
+            and inspection_type = 2
+        </if>
+        GROUP BY status
+    </select>
 </mapper>

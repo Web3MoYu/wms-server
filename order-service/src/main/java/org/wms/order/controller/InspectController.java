@@ -11,6 +11,7 @@ import org.wms.order.model.dto.StockInDto;
 import org.wms.order.model.entity.Inspection;
 import org.wms.order.model.entity.OrderInItem;
 import org.wms.order.model.entity.OrderOutItem;
+import org.wms.order.model.vo.InspectStatisticsVo;
 import org.wms.order.model.vo.InspectionDetailVo;
 import org.wms.order.model.vo.InspectionVo;
 import org.wms.order.service.InspectionService;
@@ -20,6 +21,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/order/inspect")
@@ -108,5 +111,17 @@ public class InspectController {
     @GlobalTransactional
     public Result<String> stockOne(@RequestBody StockInDto dto) {
         return inspectService.stockOne(dto);
+    }
+
+    /**
+     * 获取质检统计信息
+     *
+     * @param type  all-全部，in-入库，out-出库
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    @GetMapping("/statistics/{type}")
+    public Result<List<InspectStatisticsVo>> getInspectionStatistics(@RequestParam("range") String range, @PathVariable String type) {
+        return Result.success(inspectService.getInspectionStatistics(type, range), "查询成功");
     }
 }
