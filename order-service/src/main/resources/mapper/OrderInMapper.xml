@@ -28,4 +28,12 @@
         inspector,expected_time,actual_time,total_amount,total_quantity,
         status,quality_status,remark,create_time,update_time
     </sql>
+    <select id="getOrderStatistics" resultType="org.wms.order.model.vo.OrderStatisticsVo">
+        SELECT status,
+               SUM(total_amount)   AS totalAmount,
+               SUM(total_quantity) AS totalQuantity
+        FROM order_in
+        WHERE create_time BETWEEN #{startStr} AND #{endStr}
+        GROUP BY status
+    </select>
 </mapper>

@@ -1,11 +1,6 @@
 package org.wms.order.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +19,7 @@ import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.OrderStatisticsVo;
 import org.wms.order.model.vo.OrderVo;
 import org.wms.order.service.OrderInService;
 import org.wms.order.service.OrderOutService;
@@ -92,6 +88,37 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result<String> approvalOutBound(String id, String inspector) {
         return orderOutService.approve(id, inspector);
+    }
+
+    @Override
+    public List<OrderStatisticsVo> getOrderStatistics(Integer type, String range) {
+        List<OrderStatisticsVo> orderStatistics = new ArrayList<>();
+        if (type.equals(OrderType.IN_ORDER.getCode())) {
+            orderStatistics = orderInService.getOrderStatistics(range);
+        } else {
+            orderStatistics = orderOutService.getOrderStatistics(range);
+        }
+        for (OrderStatisticsVo vo : orderStatistics) {
+            if (Objects.equals(OrderStatusEnums.PENDING_REVIEW.getCode(), vo.getStatus())) {
+                vo.setStatusVo(OrderStatusEnums.PENDING_REVIEW.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), OrderStatusEnums.APPROVED.getCode())) {
+                vo.setStatusVo(OrderStatusEnums.APPROVED.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), OrderStatusEnums.IN_PROGRESS.getCode())) {
+                vo.setStatusVo(OrderStatusEnums.IN_PROGRESS.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), OrderStatusEnums.COMPLETED.getCode())) {
+                vo.setStatusVo(OrderStatusEnums.COMPLETED.getDesc());
+            }
+            if (Objects.equals(OrderStatusEnums.CANCELED.getCode(), vo.getStatus())) {
+                vo.setStatusVo(OrderStatusEnums.CANCELED.getDesc());
+            }
+            if (Objects.equals(vo.getStatus(), OrderStatusEnums.REJECT.getCode())) {
+                vo.setStatusVo(OrderStatusEnums.REJECT.getDesc());
+            }
+        }
+        return orderStatistics;
     }
 
     @Override

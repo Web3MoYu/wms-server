@@ -32,4 +32,12 @@
         status,quality_status,delivery_address,contact_name,contact_phone,
         remark,create_time,update_time
     </sql>
+    <select id="getOrderStatistics" resultType="org.wms.order.model.vo.OrderStatisticsVo">
+        SELECT status,
+               SUM(total_amount)   AS totalAmount,
+               SUM(total_quantity) AS totalQuantity
+        FROM order_out
+        WHERE create_time BETWEEN #{startStr} AND #{endStr}
+        GROUP BY status
+    </select>
 </mapper>

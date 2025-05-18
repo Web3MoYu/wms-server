@@ -27,12 +27,14 @@ import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.model.vo.StockVo;
 import org.wms.common.utils.IdGenerate;
+import org.wms.common.utils.TimeUtils;
 import org.wms.order.mapper.OrderOutItemMapper;
 import org.wms.order.model.dto.OrderDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.OrderStatisticsVo;
 import org.wms.order.service.OrderOutService;
 import org.wms.order.mapper.OrderOutMapper;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,7 @@ import org.wms.security.util.SecurityUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -68,6 +71,9 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
 
     @Resource
     ProductClient productClient;
+
+    @Resource
+    OrderOutMapper orderOutMapper;
 
     @Resource
     RabbitTemplate rabbitTemplate;
@@ -247,6 +253,19 @@ public class OrderOutServiceImpl extends ServiceImpl<OrderOutMapper, OrderOut>
         });
 
         return Result.success(null, "出库成功");
+    }
+
+    @Override
+    public List<OrderStatisticsVo> getOrderStatistics(String range) {
+
+        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime endTime = LocalDateTime.now();
+        LocalDateTime startTime = TimeUtils.getStartTime(range);
+        String startStr = startTime.format(FORMATTER);
+        String endStr = endTime.format(FORMATTER);
+
+        return orderOutMapper.getOrderStatistics(startStr, endStr);
     }
 
     private @NotNull List<OrderOutItem> getOrderOutItems(OrderDto<OrderOut, OrderOutItem> order, OrderOut orderOut) {

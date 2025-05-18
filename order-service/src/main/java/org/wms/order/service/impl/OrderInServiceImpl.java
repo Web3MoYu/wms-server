@@ -1,6 +1,7 @@
 package org.wms.order.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -32,6 +33,7 @@ import org.wms.common.model.Result;
 import org.wms.common.model.vo.LocationVo;
 import org.wms.common.utils.IdGenerate;
 import org.wms.common.utils.JsonUtils;
+import org.wms.common.utils.TimeUtils;
 import org.wms.order.mapper.InspectionItemMapper;
 import org.wms.order.mapper.InspectionMapper;
 import org.wms.order.mapper.OrderInItemMapper;
@@ -46,6 +48,7 @@ import org.wms.order.model.enums.OrderInType;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.enums.QualityStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.OrderStatisticsVo;
 import org.wms.order.service.OrderInService;
 import org.wms.security.util.SecurityUtil;
 
@@ -292,6 +295,19 @@ public class OrderInServiceImpl extends ServiceImpl<OrderInMapper, OrderIn>
         rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_NAME, MQConstant.ROUTING_KEY,
                 new WsMsgDataVO<>(msg, MsgEnums.NOTICE.getCode(), to.getUserId()));
         return Result.success(null, "收货成功");
+    }
+
+    @Override
+    public List<OrderStatisticsVo> getOrderStatistics(String range) {
+
+        DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime endTime = LocalDateTime.now();
+        LocalDateTime startTime = TimeUtils.getStartTime(range);
+        String startStr = startTime.format(FORMATTER);
+        String endStr = endTime.format(FORMATTER);
+
+        return orderInMapper.getOrderStatistics(startStr, endStr);
     }
 }
 

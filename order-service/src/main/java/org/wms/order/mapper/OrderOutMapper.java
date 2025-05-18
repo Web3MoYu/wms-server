@@ -3,6 +3,9 @@ package org.wms.order.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.wms.order.model.entity.OrderOut;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.wms.order.model.vo.OrderStatisticsVo;
+
+import java.util.List;
 
 /**
  * @author moyu
@@ -13,6 +16,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 @Mapper
 public interface OrderOutMapper extends BaseMapper<OrderOut> {
 
+    /**
+     * 获取订单统计信息
+     *
+     * @return 统计信息
+     */
+    List<OrderStatisticsVo> getOrderStatistics(String startStr, String endStr);
 }
 
 

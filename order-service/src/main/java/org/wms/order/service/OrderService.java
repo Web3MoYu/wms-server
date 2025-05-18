@@ -12,6 +12,7 @@ import org.wms.order.model.entity.OrderOut;
 import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.OrderStatisticsVo;
 import org.wms.order.model.vo.OrderVo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -92,4 +93,13 @@ public interface OrderService {
      * @return 审批结果
      */
     Result<String> approvalOutBound(String id, String inspector);
+
+    /**
+     * 获取订单统计信息
+     *
+     * @param type  0-出库，1-入库
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    List<OrderStatisticsVo> getOrderStatistics(Integer type, String range);
 }

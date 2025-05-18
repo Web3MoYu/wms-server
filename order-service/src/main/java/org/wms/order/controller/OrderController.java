@@ -14,6 +14,7 @@ import org.wms.order.model.dto.OrderQueryDto;
 import org.wms.order.model.entity.*;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.OrderStatisticsVo;
 import org.wms.order.model.vo.OrderVo;
 import org.wms.order.service.*;
 
@@ -184,5 +185,17 @@ public class OrderController {
         res.add(orderInCount);
         res.add(orderOutCount);
         return Result.success(res, "查询成功");
+    }
+
+    /**
+     * 获取订单统计信息
+     *
+     * @param type  0-出库，1-入库
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    @GetMapping("/statistics/{type}")
+    public Result<List<OrderStatisticsVo>> getOrderStatistics(@PathVariable Integer type, @RequestParam("range") String range) {
+        return Result.success(orderService.getOrderStatistics(type, range), "查询成功");
     }
 }

@@ -11,6 +11,7 @@ import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.wms.order.model.vo.OrderStatisticsVo;
 
 /**
  * @author moyu
@@ -61,4 +62,12 @@ public interface OrderInService extends IService<OrderIn> {
      * @return 收货结果
      */
     Result<String> receiveGoods(String id);
+
+    /**
+     * 获取订单统计信息
+     *
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    List<OrderStatisticsVo> getOrderStatistics(String range);
 }

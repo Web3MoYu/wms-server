@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.wms.order.model.entity.OrderOutItem;
 import org.wms.order.model.enums.OrderStatusEnums;
 import org.wms.order.model.vo.OrderDetailVo;
+import org.wms.order.model.vo.OrderStatisticsVo;
 
 import java.util.List;
 
@@ -58,4 +59,12 @@ public interface OrderOutService extends IService<OrderOut> {
      * @return 是否出库成功
      */
     Result<String> doneOutBound(String id);
+
+    /**
+     * 获取订单统计信息
+     *
+     * @param range 时间范围：1day, 1week, 1month, 3months, 6months
+     * @return 统计信息
+     */
+    List<OrderStatisticsVo> getOrderStatistics(String range);
 }
