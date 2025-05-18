@@ -31,7 +31,8 @@
     <select id="getOrderStatistics" resultType="org.wms.order.model.vo.OrderStatisticsVo">
         SELECT status,
                SUM(total_amount)   AS totalAmount,
-               SUM(total_quantity) AS totalQuantity
+               SUM(total_quantity) AS totalQuantity,
+               COUNT(*)            AS count
         FROM order_in
         WHERE create_time BETWEEN #{startStr} AND #{endStr}
         GROUP BY status
