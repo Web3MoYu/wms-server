@@ -440,22 +440,7 @@ public class PickingOrderServiceImpl extends ServiceImpl<PickingOrderMapper, Pic
         LocalDateTime startTime = TimeUtils.getStartTime(range);
         String startStr = startTime.format(FORMATTER);
         String endStr = endTime.format(FORMATTER);
-        List<PickingStatisticsVo> list = pickingOrderMapper.getOrderStatistics(startStr, endStr);
-        for (PickingStatisticsVo vo : list) {
-            if (Objects.equals(vo.getStatus(), PickingStatus.UNPICKING.getCode())) {
-                vo.setStatusVo(PickingStatus.UNPICKING.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), PickingStatus.PICKING.getCode())) {
-                vo.setStatusVo(PickingStatus.PICKING.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), PickingStatus.PICKED.getCode())) {
-                vo.setStatusVo(PickingStatus.PICKED.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), PickingStatus.ERROR.getCode())) {
-                vo.setStatusVo(PickingStatus.ERROR.getDesc());
-            }
-        }
-        return list;
+        return pickingOrderMapper.getOrderStatistics(startStr, endStr);
     }
 
 

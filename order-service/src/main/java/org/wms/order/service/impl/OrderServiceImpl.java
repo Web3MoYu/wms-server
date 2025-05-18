@@ -98,26 +98,6 @@ public class OrderServiceImpl implements OrderService {
         } else {
             orderStatistics = orderOutService.getOrderStatistics(range);
         }
-        for (OrderStatisticsVo vo : orderStatistics) {
-            if (Objects.equals(OrderStatusEnums.PENDING_REVIEW.getCode(), vo.getStatus())) {
-                vo.setStatusVo(OrderStatusEnums.PENDING_REVIEW.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), OrderStatusEnums.APPROVED.getCode())) {
-                vo.setStatusVo(OrderStatusEnums.APPROVED.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), OrderStatusEnums.IN_PROGRESS.getCode())) {
-                vo.setStatusVo(OrderStatusEnums.IN_PROGRESS.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), OrderStatusEnums.COMPLETED.getCode())) {
-                vo.setStatusVo(OrderStatusEnums.COMPLETED.getDesc());
-            }
-            if (Objects.equals(OrderStatusEnums.CANCELED.getCode(), vo.getStatus())) {
-                vo.setStatusVo(OrderStatusEnums.CANCELED.getDesc());
-            }
-            if (Objects.equals(vo.getStatus(), OrderStatusEnums.REJECT.getCode())) {
-                vo.setStatusVo(OrderStatusEnums.REJECT.getDesc());
-            }
-        }
         return orderStatistics;
     }
 
