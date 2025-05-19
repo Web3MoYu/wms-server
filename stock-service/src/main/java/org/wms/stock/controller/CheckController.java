@@ -54,7 +54,7 @@ public class CheckController {
      * @return 详情信息
      */
     @GetMapping("/detail/{id}")
-    public Result<List<CheckItemVo>> detailMovement(@PathVariable String id) {
+    public Result<List<CheckItemVo>> detailCheck(@PathVariable String id) {
         return Result.success(checkService.detail(id), "查询详情成功");
     }
 
